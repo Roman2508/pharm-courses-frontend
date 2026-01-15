@@ -1,14 +1,18 @@
-import { Outlet } from 'react-router'
+import { Outlet, useLocation } from 'react-router'
+
 import Header from '../common/header'
+import { Footer } from '../common/footer'
 
 export const RootLayout = () => {
+  const location = useLocation()
+
   return (
     <div className="min-h-screen">
-      <Header />
+      {location.pathname !== '/auth' && <Header />}
 
       <Outlet />
 
-      <footer>footer</footer>
+      {location.pathname === '/' && <Footer />}
     </div>
   )
 }
