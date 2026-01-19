@@ -1,3 +1,4 @@
+import { Toaster } from 'sonner'
 import { Outlet, useLocation } from 'react-router'
 
 import Header from '../common/header'
@@ -9,10 +10,10 @@ export const RootLayout = () => {
   return (
     <div className="min-h-screen">
       {location.pathname !== '/auth' && <Header />}
-
       <Outlet />
-
       {location.pathname === '/' && <Footer />}
+
+      <Toaster />
     </div>
   )
 }

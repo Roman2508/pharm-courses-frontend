@@ -28,5 +28,9 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "../examples/front/src/pages/internal-server-error.tsx",
+    "../examples/front/src/pages/not-found-page.tsx"
+  ]
 }
