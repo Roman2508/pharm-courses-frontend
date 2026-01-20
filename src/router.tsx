@@ -7,6 +7,12 @@ import { RootLayout } from './components/layouts/root-layout'
 import AuthPage from './pages/auth-page'
 import NotFoundPage from '../../examples/front/src/pages/not-found-page'
 import InternalServerError from '../../examples/front/src/pages/internal-server-error'
+import AdminPage from './pages/admin-page'
+import AdminCoursesPage from './pages/admin-courses-page'
+import AdminRegistrationsPage from './pages/admin-registrations-page'
+import AdminCertificatesPage from './pages/admin-certificates-page'
+import AdminUsersPage from './pages/admin-users-page'
+import ProfilePage from './pages/profile-page'
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +29,30 @@ export const router = createBrowserRouter([
       {
         path: '/my-courses',
         element: <MyCoursesPage />,
+      },
+      {
+        path: '/profile',
+        element: <ProfilePage />,
+      },
+      {
+        path: '/admin',
+        element: <AdminPage />,
+      },
+      {
+        path: '/admin/courses',
+        element: <AdminCoursesPage />,
+      },
+      {
+        path: '/admin/registrations',
+        element: <AdminRegistrationsPage />,
+      },
+      {
+        path: '/admin/certificates',
+        element: <AdminCertificatesPage />,
+      },
+      {
+        path: '/admin/users',
+        element: <AdminUsersPage />,
       },
       {
         path: '/auth',

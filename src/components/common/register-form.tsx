@@ -1,4 +1,5 @@
 import z from 'zod'
+import { toast } from 'sonner'
 import { useNavigate } from 'react-router'
 import { useState, type Dispatch, type FC, type MouseEvent, type SetStateAction } from 'react'
 
@@ -6,7 +7,6 @@ import { Button } from '../ui/button'
 import { signUp } from '@/api/auth-client'
 import BaseField from '../custom/base-field'
 import { getFormErrors } from '@/helpers/get-form-errors'
-import { toast } from 'sonner'
 
 const initialFormData = { name: '', email: '', phone: '', password: '' }
 
@@ -33,7 +33,6 @@ const RegisterForm: FC<Props> = ({ setAuthType }) => {
 
   const [isPending, setIsPanding] = useState(false)
   const [showErrors, setShowErrors] = useState(false)
-  const [registerError, setRegisterError] = useState<string | null>(null)
   const [userFormData, setUserFormData] = useState(initialFormData)
 
   const formData = {
@@ -55,13 +54,13 @@ const RegisterForm: FC<Props> = ({ setAuthType }) => {
     const errors = validate()
     if (errors) {
       setShowErrors(true)
+      setIsPanding(false)
       return
     }
     await signUp.email(
       { ...formData, callbackURL: '/' },
       {
         onRequest: (ctx) => {
-          setRegisterError(null)
           setIsPanding(true)
         },
         onSuccess: (ctx) => {
@@ -71,7 +70,6 @@ const RegisterForm: FC<Props> = ({ setAuthType }) => {
         onError: (ctx) => {
           setIsPanding(false)
           toast.error(ctx.error.message)
-          // setRegisterError(ctx.error.message)
         },
       },
     )
@@ -79,9 +77,8 @@ const RegisterForm: FC<Props> = ({ setAuthType }) => {
 
   const changeUserFormData = (key: keyof FormData, value: string) => {
     setUserFormData((prev) => ({ ...prev, [key]: value }))
+    setShowErrors(false)
   }
-
-  console.log('errors', errors)
 
   return (
     <form className="">
