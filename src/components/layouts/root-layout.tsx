@@ -3,17 +3,20 @@ import { Outlet, useLocation } from 'react-router'
 
 import Header from '../common/header'
 import { Footer } from '../common/footer'
+import TanstackLayout from './tanstack-layout'
 
 export const RootLayout = () => {
   const location = useLocation()
 
   return (
-    <div className="min-h-screen">
-      {location.pathname !== '/auth' && <Header />}
-      <Outlet />
-      {location.pathname === '/' && <Footer />}
+    <TanstackLayout>
+      <div className="min-h-screen">
+        {location.pathname !== '/auth' && <Header />}
+        <Outlet />
+        {location.pathname === '/' && <Footer />}
 
-      <Toaster />
-    </div>
+        <Toaster />
+      </div>
+    </TanstackLayout>
   )
 }

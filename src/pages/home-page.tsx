@@ -1,11 +1,16 @@
-import { Button } from '@/components/ui/button'
-import bgImage from '../assets/medical-laboratory.jpg'
 import { Link } from 'react-router'
 import { Archive, ArrowRight, BadgeCheck } from 'lucide-react'
-import SectionHeader from '@/components/common/section-header'
+
+import { useCourses } from '@/api/hooks/use-coueses'
+import bgImage from '../assets/medical-laboratory.jpg'
 import CourseCard from '@/components/common/course-card'
+import SectionHeader from '@/components/common/section-header'
+import type { CourseType } from '@/types/course.type'
 
 const HomePage = () => {
+  const { data: plannedCourses } = useCourses('PLANNED')
+  const { data: archivedCourses } = useCourses('ARCHIVED')
+
   return (
     <main className="">
       <section className="relative overflow-hidden min-h-[90vh] flex items-center">
@@ -137,9 +142,9 @@ const HomePage = () => {
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24 max-w-7xl mx-auto px-4">
-        <CourseCard />
-        <CourseCard />
-        <CourseCard />
+        {plannedCourses?.map((course) => (
+          <CourseCard {...course} />
+        ))}
       </div>
 
       <SectionHeader
@@ -151,9 +156,9 @@ const HomePage = () => {
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24 max-w-7xl mx-auto px-4">
-        <CourseCard />
-        <CourseCard />
-        <CourseCard />
+        {archivedCourses?.map((course) => (
+          <CourseCard {...course} />
+        ))}
       </div>
     </main>
   )

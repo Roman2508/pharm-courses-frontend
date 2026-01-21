@@ -1,7 +1,14 @@
+import type { FC } from 'react'
+
 import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
+import type { CourseType } from '@/types/course.type'
+import { getDate } from '@/helpers/get-date'
+import { Archive, Clock4 } from 'lucide-react'
 
-const CourseCard = () => {
+type Props = CourseType
+
+const CourseCard: FC<Props> = ({ name, price, description, startDate, endDate, status }) => {
   return (
     <article className="group relative h-full">
       <div className="absolute -inset-1 bg-gradient-to-r from-primary/0 via-primary/20 to-secondary/0 rounded-[2rem] opacity-0 group-hover:opacity-100 blur-xl transition-all duration-700" />
@@ -13,12 +20,23 @@ const CourseCard = () => {
 
         <div className="relative p-7 lg:p-8 flex flex-col h-full">
           <div className="flex items-center justify-between mb-6">
-            <Badge>Відкрито</Badge>
-            <div className="text-3xl font-black text-primary">1300 грн</div>
+            {status === 'PLANNED' && (
+              <Badge className="border-2 px-3.5 py-2 rounded-xl text-xs font-bold bg-success/10 text-success border-success/30">
+                <Clock4 />
+                Відкрито
+              </Badge>
+            )}
+            {status === 'ARCHIVED' && (
+              <Badge className="border-2 px-3.5 py-2 rounded-xl text-xs font-bold bg-secondary/10 text-secondary border-secondary/30">
+                <Archive />
+                Архів
+              </Badge>
+            )}
+            <div className="text-3xl font-black text-primary">{price} грн</div>
           </div>
 
           <h2 className="text-2xl lg:text-[1.65rem] font-black text-text-primary mb-4 text-balance leading-tight tracking-tight group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-secondary transition-all duration-300">
-            Назва курсу
+            {name}
           </h2>
 
           <p className="text-sm text-muted-foreground line-clamp-3 mb-6 leading-relaxed min-h-[4.5rem] font-medium">
@@ -44,7 +62,7 @@ const CourseCard = () => {
 
               <div className="flex-1 min-w-0">
                 <div className="text-xs font-bold text-primary/70 mb-1 tracking-wider uppercase">Дата курсу</div>
-                <div className="text-base font-black text-text-primary truncate">25 жовтня 2025</div>
+                <div className="text-base font-black text-text-primary truncate">{getDate(startDate)}</div>
               </div>
             </div>
           </div>
