@@ -24,7 +24,7 @@ export const Pagination = <QueryType extends Record<string, any>>({
 }: PaginationProps<QueryType>) => {
   const totalPages = Math.ceil(total / limit)
   
-  if (totalPages <= 1) return null
+  // if (totalPages <= 1) return null
 
   const goLast = () => {
     if (page > 1) {
@@ -69,7 +69,7 @@ export const Pagination = <QueryType extends Record<string, any>>({
       </ShadPagination>
 
       <Select defaultValue={String(limit)} onValueChange={(count) => changeLimit(Number(count))}>
-        <SelectTrigger className="w-30 !h-9">
+        <SelectTrigger className="w-20 min-[400px]:w-30 !h-9">
           <SelectValue placeholder="На сторінці" />
         </SelectTrigger>
         <SelectContent position="popper">

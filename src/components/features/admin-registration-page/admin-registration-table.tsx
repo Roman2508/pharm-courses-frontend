@@ -119,7 +119,7 @@ const AdminRegistrationTable: FC<Props> = ({
       <TableBody>
         {registrations.map((reg: RegistrationType) => (
           <TableRow key={reg.id} className="border-b border-border last:border-0 hover:bg-surface-hover/50">
-            <TableCell className="px-6 py-2">
+            <TableCell className="px-2 xl:px-6 py-2 xl:py-2 text-center">
               <input
                 type="checkbox"
                 checked={checkIsSelected(reg.id)}
@@ -128,20 +128,22 @@ const AdminRegistrationTable: FC<Props> = ({
               />
             </TableCell>
 
-            <TableCell className="px-6 py-2">
+            <TableCell className="px-2 xl:px-6 py-2 xl:py-2">
               <div className="font-medium text-text-primary">{reg.user.name}</div>
               <div className="text-sm text-text-secondary">{reg.user.email}</div>
             </TableCell>
 
-            <TableCell className="px-6 py-4 text-text-primary max-w-xs break-words whitespace-normal">
-              {reg.course.name}
+            <TableCell className="px-2 xl:px-6 py-2 xl:py-4 text-text-primary max-w-xs break-words whitespace-normal">
+              <span className="line-clamp-3" title={reg.course.name}>
+                {reg.course.name}
+              </span>
             </TableCell>
 
-            <TableCell className="px-6 py-2">
+            <TableCell className="px-2 xl:px-6 py-2 xl:py-2">
               <span className="font-semibold text-primary truncate">{reg.amount} грн.</span>
             </TableCell>
 
-            <TableCell className="px-6 py-2">
+            <TableCell className="px-2 xl:px-6 py-2 xl:py-2">
               <span
                 className={`inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium ${
                   reg.paymentStatus === "PAID"
@@ -155,7 +157,7 @@ const AdminRegistrationTable: FC<Props> = ({
               </span>
             </TableCell>
 
-            <TableCell className="px-6 py-2">
+            <TableCell className="px-2 xl:px-6 py-2 xl:py-2">
               <button
                 // onClick={() => toggleCertificate.mutate({ id: reg.id, enabled: !reg.certificate_enabled })}
                 // disabled={toggleCertificate.isPending}
@@ -169,7 +171,7 @@ const AdminRegistrationTable: FC<Props> = ({
               </button>
             </TableCell>
 
-            <TableCell className="px-6 py-2">
+            <TableCell className="px-2 xl:px-6 py-2 xl:py-2">
               <button
                 onClick={() => setIsOpen(true)}
                 className={`truncate cursor-pointer inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-colors ${
@@ -182,7 +184,7 @@ const AdminRegistrationTable: FC<Props> = ({
               </button>
             </TableCell>
 
-            <TableCell className="px-6 py-2">
+            <TableCell className="px-2 xl:px-6 py-2 xl:py-2">
               <span className="text-sm text-text-secondary truncate">{getDate(reg.createdAt)}</span>
             </TableCell>
           </TableRow>

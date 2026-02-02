@@ -1,11 +1,11 @@
 import type { FC } from 'react'
+import { Link } from 'react-router'
+import { Archive, Clock4 } from 'lucide-react'
 
 import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
-import type { CourseType } from '@/types/course.type'
 import { getDate } from '@/helpers/get-date'
-import { Archive, Clock4 } from 'lucide-react'
-import { Link } from 'react-router'
+import type { CourseType } from '@/types/course.type'
 
 type Props = CourseType
 
@@ -33,7 +33,7 @@ const CourseCard: FC<Props> = ({ id, name, price, description, startDate, endDat
                 Архів
               </Badge>
             )}
-            <div className="text-3xl font-black text-primary">{price} грн</div>
+            <div className="text-2xl sm:text-3xl font-black text-primary">{price} грн</div>
           </div>
 
           <Link to={`/courses/${id}`}>

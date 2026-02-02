@@ -12,6 +12,7 @@ import { useGetAllCertificateTemplates } from "@/api/hooks/use-certificate-templ
 import { useCreateCourse, useFullCourse, useUpdateCourse } from "@/api/hooks/use-courses"
 import { courseFormSchema } from "@/components/features/admin-full-course-page/admin-full-course-page-form-schema"
 import PageLoader from "@/components/custom/page-loader"
+import { Title } from "@/components/custom/title"
 
 const AdminFullCoursePage = () => {
   const params = useParams()
@@ -64,16 +65,16 @@ const AdminFullCoursePage = () => {
   return (
     <div className="container mx-auto px-4 py-12 md:py-16 max-w-4xl">
       <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-3">
-          <div className="h-1 w-12 bg-gradient-to-r from-primary to-secondary rounded-full" />
-          <h1 className="text-3xl font-bold text-text-primary">{isUpdate ? "Редагувати захід" : "Новий захід"}</h1>
-        </div>
+        <Title>{isUpdate ? "Редагувати захід" : "Новий захід"}</Title>
       </div>
 
       {isUpdate && !course ? (
         <PageLoader />
       ) : (
-        <form onSubmit={handleSubmit} className="bg-surface rounded-2xl border border-border p-8 space-y-6">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-surface rounded-2xl border-[0] min-[500px]:border min-[500px]:border-border min-[500px]:p-8 space-y-6"
+        >
           {fields.slice(0, 4).map((field) => (
             <FormField
               key={field.name}
@@ -125,8 +126,8 @@ const AdminFullCoursePage = () => {
               </div>
             )}
 
-            <div className="flex gap-3 pt-4">
-              <Button disabled={isLoading} onClick={handleSubmit} className="flex-1" size="lg">
+            <div className="flex gap-3 pt-4 flex-col min-[500px]:flex-row">
+              <Button disabled={isLoading} onClick={handleSubmit} className="flex-1 min-h-12" size="lg">
                 {isLoading ? "Збереження..." : course ? "Оновити захід" : "Створити захід"}
               </Button>
 

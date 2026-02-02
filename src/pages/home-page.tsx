@@ -5,6 +5,13 @@ import { useCourses } from "@/api/hooks/use-courses"
 import bgImage from "../assets/medical-laboratory.jpg"
 import SectionHeader from "@/components/common/section-header"
 import { CoursesList } from "@/components/common/courses-list"
+import { StatIcons } from "@/components/features/home-page/stat-icons"
+
+const stats = [
+  { title: "Проведених заходів", value: 4, icon: <StatIcons type="users" />, color: "primary" },
+  { title: "Учасників заходів", value: 3500, icon: <StatIcons type="members" />, color: "secondary" },
+  { title: "Задоволених", value: 98, icon: <StatIcons type="reviews" />, color: "success" },
+]
 
 const HomePage = () => {
   const { data: plannedCourses } = useCourses("PLANNED")
@@ -38,8 +45,8 @@ const HomePage = () => {
           <div className="max-w-3xl">
             <h1
               className={
-                "text-4xl md:text-5xl lg:text-6xl text-center sm:text-left " +
-                "font-black text-white mb-8 text-balance leading-[1.1] tracking-tight"
+                "max-[420px]:text-2xl max-[500px]:text-3xl text-4xl md:text-5xl lg:text-6xl text-center sm:text-left " +
+                "font-black text-white max-[500px]:mb-5 mb-8 text-balance leading-[1.1] tracking-tight"
               }
             >
               Підвищуйте кваліфікацію з провідними експертами
@@ -47,8 +54,8 @@ const HomePage = () => {
 
             <p
               className={
-                "text-lg md:text-xl text-center sm:text-left " +
-                "text-white/90 text-pretty mb-12 max-w-2xl leading-relaxed"
+                "max-[500px]:text-base text-lg md:text-xl text-center sm:text-left " +
+                "text-white/90 text-pretty max-[500px]:mb-8 mb-12 max-w-2xl leading-relaxed"
               }
             >
               Сертифіковані програми для фармацевтів та медичних працівників. Інвестуйте в майбутнє своєї кар'єри.
@@ -60,7 +67,7 @@ const HomePage = () => {
                 className={
                   "inline-flex items-center justify-center gap-3 px-10 rounded-2xl bg-white " +
                   "text-primary font-bold text-lg hover:bg-white/95 transition-all hover:scale-105 hover:shadow-2xl " +
-                  "w-full sm:w-auto py-4 sm:py-5"
+                  "w-full sm:w-auto py-3 min-[500px]:py-4 sm:py-5"
                 }
               >
                 Переглянути заходи
@@ -72,7 +79,7 @@ const HomePage = () => {
                 className={
                   "inline-flex items-center justify-center gap-3 px-10 rounded-2xl bg-white/10 backdrop-blur-md " +
                   "border-2 border-white/30 text-white font-bold text-lg hover:bg-white/20 transition-all hover:scale-105 " +
-                  "w-full sm:w-auto py-4 sm:py-5"
+                  "w-full sm:w-auto py-3 min-[500px]:py-4 sm:py-5"
                 }
               >
                 <Archive />
@@ -93,62 +100,33 @@ const HomePage = () => {
       </section>
 
       <section className="container mx-auto px-4 py-20 max-w-7xl">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <div className="group relative p-8 rounded-3xl bg-gradient-to-br from-surface/80 to-surface/40 backdrop-blur-sm border border-border/50 hover:border-primary/50 transition-all hover:scale-105 hover:shadow-xl">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
-            <div className="relative">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform">
-                <svg className="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                  />
-                </svg>
-              </div>
-              <div className="text-5xl font-black text-primary mb-2">{4}+</div>
-              <div className="text-sm text-text-secondary font-semibold uppercase tracking-wide">
-                Проведених заходів
-              </div>
-            </div>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {stats.map((stat) => (
+            <div
+              key={stat.title}
+              className="group relative p-6 lg:p-8 rounded-3xl bg-gradient-to-br from-surface/80 to-surface/40 backdrop-blur-sm border border-border/50 hover:border-primary/50 transition-all md:hover:scale-105 md:hover:shadow-xl"
+            >
+              <div
+                className={`absolute inset-0 bg-gradient-to-br from-${stat.color}/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity`}
+              />
 
-          <div className="group relative p-8 rounded-3xl bg-gradient-to-br from-surface/80 to-surface/40 backdrop-blur-sm border border-border/50 hover:border-secondary/50 transition-all hover:scale-105 hover:shadow-xl">
-            <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
-            <div className="relative">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-secondary/20 to-secondary/10 flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform">
-                <svg className="w-8 h-8 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                  />
-                </svg>
-              </div>
-              <div className="text-5xl font-black text-secondary mb-2">3500+</div>
-              <div className="text-sm text-text-secondary font-semibold uppercase tracking-wide">Учасників заходів</div>
-            </div>
-          </div>
+              <div className="relative flex gap-6 md:gap-4 flex-row md:flex-col">
+                <div
+                  className={
+                    `w-16 h-16 rounded-2xl bg-gradient-to-br from-${stat.color}/20 to-${stat.color}/10 flex items-center ` +
+                    "justify-center mx-0 md:mx-auto group-hover:scale-110 transition-transform"
+                  }
+                >
+                  {stat.icon}
+                </div>
 
-          <div className="group relative p-8 rounded-3xl bg-gradient-to-br from-surface/80 to-surface/40 backdrop-blur-sm border border-border/50 hover:border-success/50 transition-all hover:scale-105 hover:shadow-xl">
-            <div className="absolute inset-0 bg-gradient-to-br from-success/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
-            <div className="relative">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-success/20 to-success/10 flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform">
-                <svg className="w-8 h-8 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
-                  />
-                </svg>
+                <div className="flex flex-col">
+                  <div className={`text-2xl max-[500px]:text-3xl text-4xl sm:text-5xl font-black text-${stat.color} mb-2`}>{stat.value}+</div>
+                  <div className="text-sm text-text-secondary font-semibold uppercase tracking-wide">{stat.title}</div>
+                </div>
               </div>
-              <div className="text-5xl font-black text-success mb-2">98%</div>
-              <div className="text-sm text-text-secondary font-semibold uppercase tracking-wide">Задоволених</div>
             </div>
-          </div>
+          ))}
         </div>
       </section>
 
@@ -158,7 +136,7 @@ const HomePage = () => {
         color="success"
         bageText="Доступно зараз"
         title="Заплановані заходи"
-        icon={<BadgeCheck className="text-success" />}
+        icon={<BadgeCheck className="w-5 h-5 sm:w-6 sm:h-6 text-success" />}
         description="Оберіть програму та розпочніть своє професійне зростання"
       />
 
@@ -170,7 +148,7 @@ const HomePage = () => {
         color="secondary"
         bageText="Архів заходів"
         title="Проведені заходи"
-        icon={<BadgeCheck className="text-secondary" />}
+        icon={<BadgeCheck className="w-5 h-5 sm:w-6 sm:h-6 text-secondary" />}
         description="Ознайомтеся з нашими попередніми програмами"
       />
 

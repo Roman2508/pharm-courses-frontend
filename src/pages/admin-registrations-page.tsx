@@ -8,6 +8,9 @@ import { useAllCourses, useFullCourse } from "@/api/hooks/use-courses"
 import AdminRegistrationTable from "@/components/features/admin-registration-page/admin-registration-table"
 import { useAllRegistrations, useUpdateRegistration, type GetRegistrationsQuery } from "@/api/hooks/use-registration"
 import PaymentReceiptDialog from "@/components/features/admin-registration-page/payment-receipt-dialog"
+import { Title } from "@/components/custom/title"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 
 const initialParams = { page: 1, limit: 20, orderBy: "createdAt", orderType: "desc" } as const
 
@@ -47,55 +50,64 @@ const AdminRegistrationsPage = () => {
       <PaymentReceiptDialog open={isOpen} onOpenChange={setIsOpen} />
 
       <div className="container mx-auto px-4 py-12 md:py-16">
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-3">
-            <div className="h-1 w-12 bg-gradient-to-r from-primary to-secondary rounded-full" />
-            <h1 className="text-3xl font-bold text-text-primary">Всі реєстрації</h1>
-          </div>
+        <div className="flex gap-4 items-center justify-between mb-8 flex-col lg:flex-row">
+          <Title>Всі реєстрації</Title>
 
-          <div className="flex items-center gap-2">
-            {!!selectedRegistrations.length && (
-              <>
-                <button
-                  disabled={updateEnabled.isPending}
-                  onClick={() => updateEnabled.mutate({ id: selectedRegistrations[0], certificateEnabled: true })}
-                  className="cursor-pointer px-4 h-9 rounded-xl bg-success/10 text-success font-medium hover:bg-success/20 transition-colors"
-                >
-                  Відкрити доступ ({selectedRegistrations.length})
-                </button>
-                <button
-                  disabled={updateEnabled.isPending}
-                  onClick={() => updateEnabled.mutate({ id: selectedRegistrations[0], certificateEnabled: false })}
-                  className="cursor-pointer px-4 h-9 rounded-xl bg-destructive/10 text-destructive font-medium hover:bg-destructive/20 transition-colors"
-                >
-                  Закрити доступ
-                </button>
-              </>
-            )}
+          <div
+            className={cn("flex items-center gap-2 flex-col sm:flex-row", {
+              "items-center lg:items-end sm:flex-col 2xl:items-center 2xl:justify-center 2xl:flex-row":
+                selectedRegistrations.length,
+            })}
+          >
+            <div className="flex gap-2 items-center">
+              {!!selectedRegistrations.length && (
+                <>
+                  <Button
+                    variant="success"
+                    className="rounded-xl"
+                    disabled={updateEnabled.isPending}
+                    onClick={() => updateEnabled.mutate({ id: selectedRegistrations[0], certificateEnabled: true })}
+                  >
+                    Відкрити доступ ({selectedRegistrations.length})
+                  </Button>
+                  
+                  <Button
+                    variant="destructive"
+                    className="rounded-xl"
+                    disabled={updateEnabled.isPending}
+                    onClick={() => updateEnabled.mutate({ id: selectedRegistrations[0], certificateEnabled: false })}
+                  >
+                    Закрити доступ
+                  </Button>
+                </>
+              )}
+            </div>
 
-            <Pagination
-              total={totalCount}
-              limit={params.limit}
-              page={params.page}
-              handleChangeParams={handleChangeParams}
-            />
-
-            {!pageParams.id && (
-              <FormField
-                label=""
-                name="name"
-                type="select"
-                defaultValue="0"
-                placeholder="Захід"
-                className="w-60 !h-9"
-                value={String(params.courseId)}
-                onChange={handleChangeCourseId}
-                items={[
-                  { label: "Всі", value: "0" },
-                  ...(courses ? courses.map((el) => ({ label: el.name, value: String(el.id) })) : []),
-                ]}
+            <div className="flex gap-2 items-center flex-col sm:flex-row">
+              <Pagination
+                total={totalCount}
+                limit={params.limit}
+                page={params.page}
+                handleChangeParams={handleChangeParams}
               />
-            )}
+
+              {!pageParams.id && (
+                <FormField
+                  label=""
+                  name="name"
+                  type="select"
+                  defaultValue="0"
+                  placeholder="Захід"
+                  className="w-60 !h-9"
+                  value={String(params.courseId)}
+                  onChange={handleChangeCourseId}
+                  items={[
+                    { label: "Всі", value: "0" },
+                    ...(courses ? courses.map((el) => ({ label: el.name, value: String(el.id) })) : []),
+                  ]}
+                />
+              )}
+            </div>
           </div>
         </div>
 

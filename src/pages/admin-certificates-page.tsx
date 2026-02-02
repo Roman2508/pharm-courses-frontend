@@ -1,9 +1,9 @@
 import { Link } from "react-router"
 
-import { useDeleteCertificateTemplate, useGetAllCertificateTemplates } from "@/api/hooks/use-certificate-template"
-import PageLoader from "@/components/custom/page-loader"
 import { getDate } from "@/helpers/get-date"
 import { Button } from "@/components/ui/button"
+import PageLoader from "@/components/custom/page-loader"
+import { useDeleteCertificateTemplate, useGetAllCertificateTemplates } from "@/api/hooks/use-certificate-template"
 
 const AdminCertificatesPage = () => {
   const { data: certificateTemplates, isLoading } = useGetAllCertificateTemplates()
@@ -45,6 +45,7 @@ const AdminCertificatesPage = () => {
               d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
+
           <div className="text-sm text-text-secondary">
             <p className="font-medium text-text-primary mb-1">Налаштування шаблону сертифіката</p>
             <p>

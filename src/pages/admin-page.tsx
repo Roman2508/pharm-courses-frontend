@@ -11,7 +11,7 @@ const AdminPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-12 md:py-16">
-      <Title className="mb-12">Адміністратрування</Title>
+      <Title className="mb-12">Адміністрування</Title>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
         <AdminActionCard
@@ -47,13 +47,13 @@ const AdminPage = () => {
         />
       </div>
 
-      <div className="bg-surface rounded-2xl border border-border p-8">
+      <div className="bg-surface rounded-2xl border border-border p-4 sm:p-6 md:p-8">
         <h2 className="text-xl font-bold text-text-primary mb-6">Останні реєстрації</h2>
 
         {isLoading ? (
           <PageLoader />
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-4 text-sm sm:text-base">
             {(lastRegistrations || []).map((reg) => {
               return <RegistrationItem key={reg.id} {...reg} />
             })}

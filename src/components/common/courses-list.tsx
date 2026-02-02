@@ -13,8 +13,13 @@ export const CoursesList = ({ courses }: { courses?: CourseType[] }) => {
       ) : (
         <section className="container mx-auto px-4 pb-20 text-center max-w-7xl">
           <div className="max-w-md mx-auto">
-            <div className="w-24 h-24 rounded-3xl bg-primary/10 mx-auto mb-8 flex items-center justify-center">
-              <svg className="w-16 h-16 text-primary/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="w-18 h-18 sm:w-24 sm:h-24 rounded-3xl bg-primary/10 mx-auto mb-4 sm:mb-8 flex items-center justify-center">
+              <svg
+                className="w-10 h-10sm:w-16 sm:h-16 text-primary/50"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -23,8 +28,8 @@ export const CoursesList = ({ courses }: { courses?: CourseType[] }) => {
                 />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold text-text-primary mb-2">Заходи тимчасово відсутні</h3>
-            <p className="text-lg text-text-secondary mb-8">Незабаром тут з'являться нові заходи</p>
+            <h3 className="text-xl sm:text-2xl font-bold text-text-primary mb-0 sm:mb-2">Заходи тимчасово відсутні</h3>
+            <p className="text-base sm:text-lg text-text-secondary mb-8">Незабаром тут з'являться нові заходи</p>
           </div>
         </section>
       )}
