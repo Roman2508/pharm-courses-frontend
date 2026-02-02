@@ -1,15 +1,14 @@
-import { Link } from 'react-router'
-import { Archive, ArrowRight, BadgeCheck } from 'lucide-react'
+import { Link } from "react-router"
+import { Archive, ArrowRight, BadgeCheck } from "lucide-react"
 
-import { useCourses } from '@/api/hooks/use-coueses'
-import bgImage from '../assets/medical-laboratory.jpg'
-import CourseCard from '@/components/common/course-card'
-import SectionHeader from '@/components/common/section-header'
-import type { CourseType } from '@/types/course.type'
+import { useCourses } from "@/api/hooks/use-courses"
+import bgImage from "../assets/medical-laboratory.jpg"
+import SectionHeader from "@/components/common/section-header"
+import { CoursesList } from "@/components/common/courses-list"
 
 const HomePage = () => {
-  const { data: plannedCourses } = useCourses('PLANNED')
-  const { data: archivedCourses } = useCourses('ARCHIVED')
+  const { data: plannedCourses } = useCourses("PLANNED")
+  const { data: archivedCourses } = useCourses("ARCHIVED")
 
   return (
     <main className="">
@@ -37,29 +36,47 @@ const HomePage = () => {
 
         <div className="container mx-auto px-4 pb-20 relative z-10 max-w-7xl">
           <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-8 text-balance leading-[1.1] tracking-tight">
+            <h1
+              className={
+                "text-4xl md:text-5xl lg:text-6xl text-center sm:text-left " +
+                "font-black text-white mb-8 text-balance leading-[1.1] tracking-tight"
+              }
+            >
               Підвищуйте кваліфікацію з провідними експертами
             </h1>
 
-            <p className="text-xl md:text-2xl text-white/90 text-pretty mb-12 max-w-2xl leading-relaxed">
+            <p
+              className={
+                "text-lg md:text-xl text-center sm:text-left " +
+                "text-white/90 text-pretty mb-12 max-w-2xl leading-relaxed"
+              }
+            >
               Сертифіковані програми для фармацевтів та медичних працівників. Інвестуйте в майбутнє своєї кар'єри.
             </p>
 
-            <div className="flex gap-5">
-              <Link
-                to=""
-                className="inline-flex items-center justify-center gap-3 px-10 py-5 rounded-2xl bg-white text-primary font-bold text-lg hover:bg-white/95 transition-all hover:scale-105 hover:shadow-2xl"
+            <div className="flex flex-wrap gap-5">
+              <a
+                href="#events"
+                className={
+                  "inline-flex items-center justify-center gap-3 px-10 rounded-2xl bg-white " +
+                  "text-primary font-bold text-lg hover:bg-white/95 transition-all hover:scale-105 hover:shadow-2xl " +
+                  "w-full sm:w-auto py-4 sm:py-5"
+                }
               >
                 Переглянути заходи
                 <ArrowRight />
-              </Link>
+              </a>
 
               <Link
                 to="/archive"
-                className="inline-flex items-center justify-center gap-3 px-10 py-5 rounded-2xl bg-white/10 backdrop-blur-md border-2 border-white/30 text-white font-bold text-lg hover:bg-white/20 transition-all hover:scale-105"
+                className={
+                  "inline-flex items-center justify-center gap-3 px-10 rounded-2xl bg-white/10 backdrop-blur-md " +
+                  "border-2 border-white/30 text-white font-bold text-lg hover:bg-white/20 transition-all hover:scale-105 " +
+                  "w-full sm:w-auto py-4 sm:py-5"
+                }
               >
                 <Archive />
-                Архів курсів
+                Архів заходів
               </Link>
             </div>
           </div>
@@ -91,7 +108,9 @@ const HomePage = () => {
                 </svg>
               </div>
               <div className="text-5xl font-black text-primary mb-2">{4}+</div>
-              <div className="text-sm text-text-secondary font-semibold uppercase tracking-wide">Проведених курсів</div>
+              <div className="text-sm text-text-secondary font-semibold uppercase tracking-wide">
+                Проведених заходів
+              </div>
             </div>
           </div>
 
@@ -109,7 +128,7 @@ const HomePage = () => {
                 </svg>
               </div>
               <div className="text-5xl font-black text-secondary mb-2">3500+</div>
-              <div className="text-sm text-text-secondary font-semibold uppercase tracking-wide">Слухачів курсів</div>
+              <div className="text-sm text-text-secondary font-semibold uppercase tracking-wide">Учасників заходів</div>
             </div>
           </div>
 
@@ -133,33 +152,29 @@ const HomePage = () => {
         </div>
       </section>
 
+      <div id="events" />
+
       <SectionHeader
-        title="Заплановані заходи"
-        description="Оберіть програму та розпочніть своє професійне зростання"
         color="success"
-        icon={<BadgeCheck className="text-success" />}
         bageText="Доступно зараз"
+        title="Заплановані заходи"
+        icon={<BadgeCheck className="text-success" />}
+        description="Оберіть програму та розпочніть своє професійне зростання"
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24 max-w-7xl mx-auto px-4">
-        {plannedCourses?.map((course) => (
-          <CourseCard {...course} />
-        ))}
+      <div className="mb-20">
+        <CoursesList courses={plannedCourses} />
       </div>
 
       <SectionHeader
-        title="Проведені заходи"
-        description="Ознайомтеся з нашими попередніми програмами"
         color="secondary"
+        bageText="Архів заходів"
+        title="Проведені заходи"
         icon={<BadgeCheck className="text-secondary" />}
-        bageText="Архів курсів"
+        description="Ознайомтеся з нашими попередніми програмами"
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24 max-w-7xl mx-auto px-4">
-        {archivedCourses?.map((course) => (
-          <CourseCard {...course} />
-        ))}
-      </div>
+      <CoursesList courses={archivedCourses} />
     </main>
   )
 }

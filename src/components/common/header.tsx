@@ -1,5 +1,4 @@
-import { Link, useNavigate } from 'react-router'
-import logo from '../../assets/logo.png'
+import { Link, useNavigate } from "react-router"
 
 import {
   DropdownMenu,
@@ -7,11 +6,14 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
-} from '@/components/ui/dropdown-menu'
-import { signOut, useSession } from '@/api/auth-client'
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
-import { Spinner } from '../ui/spinner'
-import { Button } from '../ui/button'
+} from "@/components/ui/dropdown-menu"
+import { Button } from "../ui/button"
+import Navigation from "./navigation"
+import { Spinner } from "../ui/spinner"
+import logo from "../../assets/logo.png"
+import { HeaderDrawer } from "./header-drawer"
+import { signOut, useSession } from "@/api/auth-client"
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 
 const Header = () => {
   const navigate = useNavigate()
@@ -29,20 +31,7 @@ const Header = () => {
         </Link>
 
         <div className="flex items-center gap-6">
-          <ul className="flex gap-6">
-            <li className="text-sm font-medium text-text-secondary hover:text-primary transition-colors">
-              <Link to="/">Заходи</Link>
-            </li>
-            <li className="text-sm font-medium text-text-secondary hover:text-primary transition-colors">
-              <Link to="/archive">Архів</Link>
-            </li>
-            <li className="text-sm font-medium text-text-secondary hover:text-primary transition-colors">
-              <Link to="/my-courses">Мої заходи</Link>
-            </li>
-            <li className="text-sm font-medium text-text-secondary hover:text-primary transition-colors">
-              <Link to="/admin">Адміністрування</Link>
-            </li>
-          </ul>
+          <Navigation className="hidden sm:flex gap-6" />
 
           {isPending ? (
             <div className="w-9">
@@ -70,7 +59,7 @@ const Header = () => {
                   variant="destructive"
                   onClick={() => {
                     signOut()
-                    navigate('/', { replace: true })
+                    navigate("/", { replace: true })
                   }}
                 >
                   Вийти
@@ -79,17 +68,19 @@ const Header = () => {
             </DropdownMenu>
           ) : (
             <div className="flex gap-2">
-              <Link to="/auth">
+              <Link to="/auth/login">
                 <Button variant="primary" size="sm">
                   Увійти
                 </Button>
               </Link>
 
-              <Link to="/auth">
+              <Link to="/auth/register">
                 <Button size="sm">Зареєструватись</Button>
               </Link>
             </div>
           )}
+
+          <HeaderDrawer />
         </div>
       </div>
     </header>

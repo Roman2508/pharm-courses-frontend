@@ -17,6 +17,7 @@ const buttonVariants = cva(
           'bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
         primary: 'bg-primary/10 text-primary hover:bg-primary/20',
         secondary: 'bg-secondary/10 text-secondary hover:bg-secondary/20',
+        ghost: 'bg-surface-hover text-text-secondary hover:bg-border transition-colors',
       },
       size: {
         default: 'h-10 px-4 py-2 has-[>svg]:px-3',
@@ -28,7 +29,7 @@ const buttonVariants = cva(
       variant: 'default',
       size: 'default',
     },
-  }
+  },
 )
 
 function Button({

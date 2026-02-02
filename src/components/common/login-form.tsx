@@ -2,8 +2,8 @@ import z from 'zod'
 import { useState, type Dispatch, type FC, type MouseEvent, type SetStateAction } from 'react'
 
 import { Button } from '../ui/button'
-import BaseField from '../custom/base-field'
-import { useNavigate } from 'react-router'
+import FormField from '../custom/form-field'
+import { Link, useNavigate } from 'react-router'
 import { signIn } from '@/api/auth-client'
 import { toast } from 'sonner'
 import { getFormErrors } from '@/helpers/get-form-errors'
@@ -78,7 +78,8 @@ const LoginForm: FC<Props> = ({ setAuthType }) => {
 
   return (
     <form className="">
-      <BaseField
+      <FormField
+        name="email"
         label="Email"
         type="email"
         placeholder="Введіть email"
@@ -87,7 +88,8 @@ const LoginForm: FC<Props> = ({ setAuthType }) => {
         className="mb-4"
       />
 
-      <BaseField
+      <FormField
+        name="password"
         label="Пароль"
         type="password"
         placeholder="Введіть пароль"
@@ -111,12 +113,13 @@ const LoginForm: FC<Props> = ({ setAuthType }) => {
       <div className="mt-6 text-center">
         <p className="text-sm text-text-secondary flex gap-1 justify-center">
           Не маєте облікового запису?
-          <div
+          <Link
+            to="/auth/register"
             onClick={() => setAuthType('register')}
             className="text-primary font-medium hover:text-primary-hover transition-colors cursor-pointer"
           >
             Зареєструватися
-          </div>
+          </Link>
         </p>
       </div>
     </form>

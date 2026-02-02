@@ -1,80 +1,77 @@
 import { Link } from 'react-router'
 
+import { getDate } from '@/helpers/get-date'
 import { Button } from '@/components/ui/button'
+import { getCourseStatus } from '@/helpers/get-course-status'
+import { useAllCourses, useDeleteCourse } from '@/api/hooks/use-courses'
 
 const AdminCoursesPage = () => {
+  const { data: courses, isLoading } = useAllCourses()
+
+  const deleteCourse = useDeleteCourse()
+
+  const handleDelete = (id: number) => {
+    if (!id) return
+    if (!confirm('Ви впевнені, що хочете видалити захід?')) return
+    deleteCourse.mutate(id)
+  }
+
   return (
     <div className="container mx-auto px-4 py-12 md:py-16">
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-3">
           <div className="h-1 w-12 bg-gradient-to-r from-primary to-secondary rounded-full" />
-          <h1 className="text-3xl font-bold text-text-primary">Управління курсами</h1>
+          <h1 className="text-3xl font-bold text-text-primary">Управління заходами</h1>
         </div>
         <Link
           to="/admin/courses/new"
           className="px-6 py-3 rounded-xl bg-primary text-white font-medium hover:bg-primary-hover transition-all hover:shadow-lg hover:shadow-primary/20"
         >
-          Створити курс
+          Створити захід
         </Link>
       </div>
 
-      {false ? (
-        <div className="text-center py-12 text-text-secondary">Завантаження курсів...</div>
-      ) : 1 > 0 ? (
+      {isLoading ? (
+        <div className="text-center py-12 text-text-secondary">Завантаження заходів...</div>
+      ) : courses && courses.length > 0 ? (
         <div className="space-y-4">
-          {[
-            {
-              id: 1,
-              name: 'Course 1',
-              status: 'open',
-              registration_open: true,
-              start_date: '2022-01-01',
-              end_date: '2022-01-02',
-              price: 100,
-              program: 'Program 1',
-            },
-            {
-              id: 1,
-              name: 'Course 1',
-              status: 'open',
-              registration_open: true,
-              start_date: '2022-01-01',
-              end_date: '2022-01-02',
-              price: 100,
-              program: 'Program 1',
-            },
-          ].map((course) => (
+          {courses.map((course) => (
             <div key={course.id} className="bg-surface rounded-2xl border border-border p-6">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-xl font-bold text-text-primary">{course.name}</h3>
+                    <Link to={`/courses/${course.id}`}>
+                      <h3 className="text-xl font-bold text-text-primary">{course.name}</h3>
+                    </Link>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-4 text-sm text-text-secondary">
                     <span
                       className={`inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium ${
-                        course.status === 'open'
+                        course.status === 'PLANNED'
                           ? 'bg-success/10 text-success'
-                          : course.status === 'upcoming'
+                          : course.status === 'ARCHIVED'
                             ? 'bg-secondary/10 text-secondary'
                             : 'bg-text-muted/10 text-text-muted'
                       }`}
                     >
-                      {course.status}
+                      Статус: {getCourseStatus(course.status)}
                     </span>
-                    {!course.registration_open && (
-                      <span className="inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium bg-destructive/10 text-destructive">
-                        Закрито
-                      </span>
-                    )}
-                  </div>
-                  {/* <p className="text-sm font-medium text-secondary mb-2">{course.program}</p> */}
-                  <div className="flex flex-wrap items-center gap-4 text-sm text-text-secondary">
+                    <span
+                      className={`inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium ${
+                        course.registrationOpen === 'CLOSE'
+                          ? 'bg-destructive/10 text-destructive'
+                          : 'bg-success/10 text-success'
+                      }`}
+                    >
+                      Реєстрацію: {course.registrationOpen === 'CLOSE' ? 'закрито' : 'відкрито'}
+                    </span>
+
                     <span>
-                      {`{formatDate(course.start_date)}`}
-                      {course.end_date && course.end_date !== course.start_date && (
-                        <> - {`{formatDate(course.end_date)}`}</>
-                      )}
+                      {getDate(course.startDate)}
+                      {course.endDate && course.endDate !== course.startDate && <> - {getDate(course.endDate)}</>}
                     </span>
-                    <span className="font-semibold text-primary">{`{formatPrice(course.price)}`}</span>
+
+                    <span className="font-semibold text-primary text-lg">{course.price} грн</span>
                   </div>
                 </div>
 
@@ -87,7 +84,9 @@ const AdminCoursesPage = () => {
                     <Button variant="secondary">Реєстрації</Button>
                   </Link>
 
-                  <Button variant="destructive">Видалити</Button>
+                  <Button variant="destructive" onClick={() => handleDelete(course.id)}>
+                    Видалити
+                  </Button>
                 </div>
               </div>
             </div>
@@ -106,13 +105,13 @@ const AdminCoursesPage = () => {
                 />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-text-primary mb-2">Курсів ще немає</h3>
-            <p className="text-text-secondary mb-6">Створіть свій перший курс, щоб почати.</p>
+            <h3 className="text-xl font-semibold text-text-primary mb-2">Заходів ще немає</h3>
+            <p className="text-text-secondary mb-6">Створіть свій перший захід, щоб почати.</p>
             <Link
               to="/admin/courses/new"
               className="inline-block px-6 py-3 rounded-xl bg-primary text-white font-medium hover:bg-primary-hover transition-all hover:shadow-lg hover:shadow-primary/20"
             >
-              Створити курс
+              Створити захід
             </Link>
           </div>
         </div>

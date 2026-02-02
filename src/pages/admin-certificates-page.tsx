@@ -1,6 +1,20 @@
-import { Link } from 'react-router'
+import { Link } from "react-router"
+
+import { useDeleteCertificateTemplate, useGetAllCertificateTemplates } from "@/api/hooks/use-certificate-template"
+import PageLoader from "@/components/custom/page-loader"
+import { getDate } from "@/helpers/get-date"
+import { Button } from "@/components/ui/button"
 
 const AdminCertificatesPage = () => {
+  const { data: certificateTemplates, isLoading } = useGetAllCertificateTemplates()
+
+  const deleteTemplates = useDeleteCertificateTemplate()
+
+  const onDeleteTemplate = (id: number) => {
+    if (!confirm("Ви дійсно хочете видалити шаблон сертифіката")) return
+    deleteTemplates.mutate(id)
+  }
+
   return (
     <div className="container mx-auto px-4 py-12 md:py-16">
       <div className="flex items-center justify-between mb-8">
@@ -35,34 +49,37 @@ const AdminCertificatesPage = () => {
             <p className="font-medium text-text-primary mb-1">Налаштування шаблону сертифіката</p>
             <p>
               Завантажте PDF шаблон сертифіката та вкажіть точні позиції, де повинні відображатися ПІБ студента, назва
-              курсу, номер сертифіката та дата курсу. Система згенерує персоналізовані сертифікати для кожного студента.
+              заходу, номер сертифіката, дата заходу, та інші текстові блоки. Система згенерує персоналізовані
+              сертифікати для кожного студента.
             </p>
           </div>
         </div>
       </div>
 
-      {false ? (
-        <div className="text-center py-12 text-text-secondary">Завантаження шаблонів...</div>
-      ) : 1 > 0 ? (
+      {isLoading ? (
+        <PageLoader />
+      ) : !!certificateTemplates?.length ? (
         <div className="grid gap-6">
-          {[{ id: 1, course_id: 1, template_url: 'https://example.com/template.pdf' }].map((template) => (
+          {certificateTemplates.map((template) => (
             <div key={template.id} className="bg-surface rounded-2xl border border-border p-6">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
-                  <h3 className="text-xl font-bold text-text-primary mb-2">
-                    {template.course_id ? `Шаблон для курсу` : 'Глобальний шаблон'}
-                  </h3>
+                  <h3 className="text-xl font-bold text-text-primary mb-2">{template.name}</h3>
                   <div className="text-sm text-text-secondary space-y-1">
-                    <p>URL шаблону: {template.template_url}</p>
-                    <p>Налаштовано позиції: ПІБ, Назва курсу, Номер сертифіката, Дата курсу</p>
+                    <p>URL шаблону: {template.templateUrl}</p>
+                    <p>Створено: {getDate(template.createdAt)}</p>
                   </div>
                 </div>
-                <Link
-                  to={`/admin/certificates/${template.id}`}
-                  className="px-4 py-2 rounded-xl bg-primary/10 text-primary font-medium hover:bg-primary/20 transition-colors"
-                >
-                  Редагувати
-                </Link>
+
+                <div className="flex gap-2">
+                  <Button variant="destructive" onClick={() => onDeleteTemplate(template.id)}>
+                    Видалити
+                  </Button>
+
+                  <Link to={`/admin/certificates/${template.id}`}>
+                    <Button variant="primary">Редагувати</Button>
+                  </Link>
+                </div>
               </div>
             </div>
           ))}

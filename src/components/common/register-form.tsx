@@ -1,11 +1,11 @@
 import z from 'zod'
 import { toast } from 'sonner'
-import { useNavigate } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { useState, type Dispatch, type FC, type MouseEvent, type SetStateAction } from 'react'
 
 import { Button } from '../ui/button'
 import { signUp } from '@/api/auth-client'
-import BaseField from '../custom/base-field'
+import FormField from '../custom/form-field'
 import { getFormErrors } from '@/helpers/get-form-errors'
 
 const initialFormData = { name: '', email: '', phone: '', password: '' }
@@ -82,7 +82,8 @@ const RegisterForm: FC<Props> = ({ setAuthType }) => {
 
   return (
     <form className="">
-      <BaseField
+      <FormField
+        name="name"
         label="ПІБ"
         type="text"
         placeholder="Прізвище Ім'я Побатькові"
@@ -91,7 +92,8 @@ const RegisterForm: FC<Props> = ({ setAuthType }) => {
         className="mb-4"
       />
 
-      <BaseField
+      <FormField
+        name="email"
         label="Email"
         type="email"
         placeholder="Введіть свій email"
@@ -100,7 +102,8 @@ const RegisterForm: FC<Props> = ({ setAuthType }) => {
         className="mb-4"
       />
 
-      <BaseField
+      <FormField
+        name="phone"
         label="Телефон"
         type="tel"
         placeholder="Введіть номер телефону"
@@ -109,7 +112,8 @@ const RegisterForm: FC<Props> = ({ setAuthType }) => {
         className="mb-4"
       />
 
-      <BaseField
+      <FormField
+        name="password"
         label="Пароль"
         type="password"
         placeholder="Введіть пароль"
@@ -133,12 +137,13 @@ const RegisterForm: FC<Props> = ({ setAuthType }) => {
       <div className="mt-6 text-center">
         <p className="text-sm text-text-secondary flex gap-1 justify-center">
           Вже маєте акаунт?
-          <div
+          <Link
+            to="/auth/login"
             onClick={() => setAuthType('login')}
             className="text-primary font-medium hover:text-primary-hover transition-colors cursor-pointer"
           >
             Увійти
-          </div>
+          </Link>
         </p>
       </div>
     </form>

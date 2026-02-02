@@ -1,14 +1,22 @@
-import { useState } from 'react'
+import { useEffect, useState, type FC } from "react"
 
-import logo from '../assets/logo.png'
-import LoginForm from '@/components/common/login-form'
-import RegisterForm from '@/components/common/register-form'
+import logo from "../assets/logo.png"
+import LoginForm from "@/components/common/login-form"
+import RegisterForm from "@/components/common/register-form"
 
-const AuthPage = () => {
-  const [authType, setAuthType] = useState<'login' | 'register'>('login')
+interface Props {
+  defaultAuthType: "login" | "register"
+}
+
+const AuthPage: FC<Props> = ({ defaultAuthType }) => {
+  const [authType, setAuthType] = useState<"login" | "register">(defaultAuthType)
+
+  useEffect(() => {
+    setAuthType(defaultAuthType)
+  }, [defaultAuthType])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 flex items-center justify-center p-4">
+    <div className="min-h-[calc(100vh-100px)] bg-gradient-to-br from-primary/5 via-background to-secondary/5 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="bg-surface rounded-2xl border border-border shadow-xl p-8">
           <div className="mb-8 text-center">
@@ -17,17 +25,17 @@ const AuthPage = () => {
             </div>
 
             <h1 className="text-2xl font-bold text-text-primary mb-2">
-              {authType === 'login' ? 'Ласкаво просимо' : 'Створити акаунт'}
+              {authType === "login" ? "Ласкаво просимо" : "Створити акаунт"}
             </h1>
 
             <p className="text-sm text-text-secondary">
-              {authType === 'login'
-                ? 'Увійдіть до свого облікового запису'
-                : 'Зареєструйтесь для доступу до наших заходів'}
+              {authType === "login"
+                ? "Увійдіть до свого облікового запису"
+                : "Зареєструйтесь для доступу до наших заходів"}
             </p>
           </div>
 
-          {authType === 'login' ? <LoginForm setAuthType={setAuthType} /> : <RegisterForm setAuthType={setAuthType} />}
+          {authType === "login" ? <LoginForm setAuthType={setAuthType} /> : <RegisterForm setAuthType={setAuthType} />}
         </div>
       </div>
     </div>

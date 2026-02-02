@@ -1,7 +1,26 @@
-import { createRoot } from 'react-dom/client'
-import { RouterProvider } from 'react-router'
+import { createRoot } from "react-dom/client"
+import { RouterProvider } from "react-router"
 
-import './index.css'
-import { router } from './router.tsx'
+import "./index.css"
+import { router } from "./router.tsx"
 
-createRoot(document.getElementById('root')!).render(<RouterProvider router={router} />)
+createRoot(document.getElementById("root")!).render(<RouterProvider router={router} />)
+
+// TODO:
+// Баг при оновленні заходів
+// Мобільна адаптація
+// Кнопка для завантаження сертифікатів (доступність лише після реєстрації та оплати)
+// Завантаження аватара
+// Завантаження квитанції про оплату
+// Можливо потрібно вивантажувати в ексель реєстрації студентів по курсам
+// Під час оновлення профілю не оновлюється пошта (подивитись в better-auth docs)
+// Зробити кнопку "Оплатити зараз" також і на сторінці "Мої заходи". Можливо ще й кнопку "Завантажити сертифікат"
+//
+//
+//
+//
+//
+//
+//
+//
+//

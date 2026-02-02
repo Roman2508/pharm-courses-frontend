@@ -1,16 +1,14 @@
 import { Title } from '@/components/custom/title'
-import CourseCard from '@/components/common/course-card'
+import { useCourses } from '@/api/hooks/use-courses'
+import { CoursesList } from '@/components/common/courses-list'
 
 export const ArchivePage = () => {
+  const { data: courses } = useCourses('ARCHIVED')
+
   return (
     <div className="my-16">
       <Title className="mb-12 mx-auto max-w-7xl px-4">Архів заходів</Title>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24 max-w-7xl mx-auto px-4">
-        <CourseCard />
-        <CourseCard />
-        <CourseCard />
-      </div>
+      <CoursesList courses={courses} />
     </div>
   )
 }

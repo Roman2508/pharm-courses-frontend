@@ -1,8 +1,11 @@
-import { Link } from 'react-router'
+import { Link } from "react-router"
 
-import logo from '../../assets/logo.png'
+import logo from "../../assets/logo.png"
+import { useSession } from "@/api/auth-client"
 
 export function Footer() {
+  const { data: user } = useSession()
+
   return (
     <footer className="bg-surface border-t border-border">
       <div className="container mx-auto px-4 py-12 max-w-7xl">
@@ -24,11 +27,6 @@ export function Footer() {
             <h3 className="font-bold text-text-primary mb-4">Навігація</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/" className="text-sm text-text-secondary hover:text-primary transition-colors">
-                  Головна
-                </Link>
-              </li>
-              <li>
                 <Link to="/#courses" className="text-sm text-text-secondary hover:text-primary transition-colors">
                   Заходи
                 </Link>
@@ -38,11 +36,13 @@ export function Footer() {
                   Архів
                 </Link>
               </li>
-              <li>
-                <Link to="/my-courses" className="text-sm text-text-secondary hover:text-primary transition-colors">
-                  Мої заходи
-                </Link>
-              </li>
+              {user && (
+                <li>
+                  <Link to="/my-courses" className="text-sm text-text-secondary hover:text-primary transition-colors">
+                    Мої заходи
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
 
@@ -50,16 +50,29 @@ export function Footer() {
           <div>
             <h3 className="font-bold text-text-primary mb-4">Акаунт</h3>
             <ul className="space-y-2">
-              <li>
-                <Link to="/auth/login" className="text-sm text-text-secondary hover:text-primary transition-colors">
-                  Увійти
-                </Link>
-              </li>
-              <li>
-                <Link to="/auth/sign-up" className="text-sm text-text-secondary hover:text-primary transition-colors">
-                  Реєстрація
-                </Link>
-              </li>
+              {user ? (
+                <li>
+                  <Link to="/profile" className="text-sm text-text-secondary hover:text-primary transition-colors">
+                    Профіль
+                  </Link>
+                </li>
+              ) : (
+                <>
+                  <li>
+                    <Link to="/auth/login" className="text-sm text-text-secondary hover:text-primary transition-colors">
+                      Увійти
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/auth/register"
+                      className="text-sm text-text-secondary hover:text-primary transition-colors"
+                    >
+                      Реєстрація
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
         </div>

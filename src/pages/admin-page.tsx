@@ -1,9 +1,14 @@
-import { BookSearch, Captions, LayoutDashboard, Users } from 'lucide-react'
+import { BookSearch, Captions, LayoutDashboard, Users } from "lucide-react"
 
-import { Title } from '@/components/custom/title'
-import AdminActionCard from '@/components/common/admin-action-card'
+import { Title } from "@/components/custom/title"
+import PageLoader from "@/components/custom/page-loader"
+import { useAllRegistrations } from "@/api/hooks/use-registration"
+import RegistrationItem from "@/components/common/registration-item"
+import AdminActionCard from "@/components/features/admin-page/admin-action-card"
 
 const AdminPage = () => {
+  const { data: { data: lastRegistrations } = { data: [] }, isLoading } = useAllRegistrations({ limit: 20, page: 1 })
+
   return (
     <div className="container mx-auto px-4 py-12 md:py-16">
       <Title className="mb-12">Адміністратрування</Title>
@@ -12,8 +17,8 @@ const AdminPage = () => {
         <AdminActionCard
           link="/admin/courses"
           icon={<LayoutDashboard className="w-7 h-7 text-primary" />}
-          title="Управління курсами"
-          description="Створювати та налаштувати курси"
+          title="Управління заходами"
+          description="Створювати та налаштувати заходи"
           color="primary"
         />
 
@@ -44,39 +49,16 @@ const AdminPage = () => {
 
       <div className="bg-surface rounded-2xl border border-border p-8">
         <h2 className="text-xl font-bold text-text-primary mb-6">Останні реєстрації</h2>
-        <div className="space-y-4">
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((reg) => {
-            return (
-              <div className="flex items-center justify-between py-3 border-b border-border last:border-0">
-                <div className="flex gap-4">
-                  <div>
-                    <div className="font-medium">
-                      <span className="font-bold">Студент:</span>{' '}
-                      <span className="text-text-primary">{'reg.user?.name'}</span>
-                    </div>
 
-                    <div className="text-medium">
-                      <span className="font-bold">Захід:</span>{' '}
-                      <span className="text-text-primary">{'reg.course?.name'}</span>
-                    </div>
-
-                    <div className="text-sm mt-0.5 text-text-secondary">Дата реєстрації: 28 жовтня 2026 - 12:30</div>
-                  </div>
-                </div>
-
-                <div className="text-right">
-                  <span
-                    className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-                      'PAID' === 'PAID' ? 'bg-success/10 text-success' : 'bg-secondary/10 text-secondary'
-                    }`}
-                  >
-                    {'PAID' === 'PAID' ? 'Оплачено' : 'Очікує оплати'}
-                  </span>
-                </div>
-              </div>
-            )
-          })}
-        </div>
+        {isLoading ? (
+          <PageLoader />
+        ) : (
+          <div className="space-y-4">
+            {(lastRegistrations || []).map((reg) => {
+              return <RegistrationItem key={reg.id} {...reg} />
+            })}
+          </div>
+        )}
       </div>
     </div>
   )
