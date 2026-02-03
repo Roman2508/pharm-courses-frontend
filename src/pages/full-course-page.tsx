@@ -52,7 +52,7 @@ const FullCoursePage = () => {
 
   return (
     <>
-      <PaymentModal open={isOpen} onOpenChange={setIsOpen} price={course.price} />
+      <PaymentModal open={isOpen} onOpenChange={setIsOpen} registration={registration} />
 
       <div className="container mx-auto px-4 py-12 md:py-16">
         <Button variant="ghost" className="mb-8 gap-2" onClick={() => navigate(-1)}>
@@ -141,19 +141,16 @@ const FullCoursePage = () => {
               {registration && <FullCoursePagePaymentStatus registration={registration} />}
 
               {/* Action buttons */}
-              <div className="">
-                {/* <div className="pt-4 border-t border-border"> */}
-                <FullCoursePageActions
-                  courseId={course.id}
-                  setIsOpen={setIsOpen}
-                  amount={course.price}
-                  userId={session?.user.id}
-                  registration={registration}
-                  isLoading={isRegistrationLoading}
-                  course={course}
-                  userName={session?.user.name}
-                />
-              </div>
+              <FullCoursePageActions
+                course={course}
+                courseId={course.id}
+                setIsOpen={setIsOpen}
+                amount={course.price}
+                userId={session?.user.id}
+                registration={registration}
+                userName={session?.user.name}
+                isLoading={isRegistrationLoading}
+              />
             </div>
           </div>
         </div>

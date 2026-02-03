@@ -36,7 +36,8 @@ const MyCourseCard: FC<Props> = ({ course, paymentStatus }) => {
           </div>
         </div>
 
-        {paymentStatus === "PENDING" && <Badge className="bg-warning mb-4 md:mb-0">Очікує оплати</Badge>}
+        {paymentStatus === "NONE" && <Badge className="bg-warning mb-4 md:mb-0">Очікує оплати</Badge>}
+        {paymentStatus === "PENDING" && <Badge className="bg-warning mb-4 md:mb-0">Опрацьовується</Badge>}
         {paymentStatus === "PAID" && <Badge className="bg-success mb-4 md:mb-0">Оплачено</Badge>}
         {paymentStatus === "REFUNDED" && <Badge className="bg-destructive mb-4 md:mb-0">Скасовано</Badge>}
       </div>

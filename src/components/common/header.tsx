@@ -74,7 +74,7 @@ const Header = () => {
                 </Button>
               </Link>
 
-              <Link to="/auth/register">
+              <Link to="/auth/register" className="hidden sm:inline-flex">
                 <Button size="sm">Зареєструватись</Button>
               </Link>
             </div>

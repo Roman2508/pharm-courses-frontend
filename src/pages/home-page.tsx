@@ -55,7 +55,7 @@ const HomePage = () => {
             <p
               className={
                 "max-[500px]:text-base text-lg md:text-xl text-center sm:text-left " +
-                "text-white/90 text-pretty max-[500px]:mb-8 mb-12 max-w-2xl leading-relaxed"
+                "text-white/90 text-pretty max-[500px]:mb-8 mb-12 max-w-2xl leading-5 sm:leading-relaxed"
               }
             >
               Сертифіковані програми для фармацевтів та медичних працівників. Інвестуйте в майбутнє своєї кар'єри.
@@ -89,7 +89,7 @@ const HomePage = () => {
           </div>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0">
+        <div className="absolute bottom-[-2px] left-0 right-0">
           <svg className="w-full h-24" preserveAspectRatio="none" viewBox="0 0 1200 120" fill="none">
             <path
               d="M0,60 C150,90 350,0 600,60 C850,120 1050,30 1200,60 L1200,120 L0,120 Z"
@@ -113,7 +113,7 @@ const HomePage = () => {
               <div className="relative flex gap-6 md:gap-4 flex-row md:flex-col">
                 <div
                   className={
-                    `w-16 h-16 rounded-2xl bg-gradient-to-br from-${stat.color}/20 to-${stat.color}/10 flex items-center ` +
+                    `w-16 h-16 rounded-2xl bg-${stat.color}/10 flex items-center ` +
                     "justify-center mx-0 md:mx-auto group-hover:scale-110 transition-transform"
                   }
                 >
@@ -121,7 +121,11 @@ const HomePage = () => {
                 </div>
 
                 <div className="flex flex-col">
-                  <div className={`text-2xl max-[500px]:text-3xl text-4xl sm:text-5xl font-black text-${stat.color} mb-2`}>{stat.value}+</div>
+                  <div
+                    className={`text-2xl max-[500px]:text-3xl text-4xl sm:text-5xl font-black text-${stat.color} mb-2`}
+                  >
+                    {stat.value}+
+                  </div>
                   <div className="text-sm text-text-secondary font-semibold uppercase tracking-wide">{stat.title}</div>
                 </div>
               </div>

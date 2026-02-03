@@ -2,9 +2,10 @@ import { Link } from "react-router"
 import type { Dispatch, FC, SetStateAction } from "react"
 
 import { Button } from "../../ui/button"
+import { Spinner } from "@/components/ui/spinner"
+import type { CourseType } from "@/types/course.type"
 import { useCreateRegistration } from "@/api/hooks/use-registration"
 import { CertificateDownloadButton } from "./certificate-download-button"
-import type { CourseType } from "@/types/course.type"
 
 interface Props {
   userId?: string
@@ -30,26 +31,30 @@ export const FullCoursePageActions: FC<Props> = ({
   const { mutate: createRegistration, isPending: isCreateRegistrationPending } = useCreateRegistration()
 
   if (isLoading) {
-    return <div>Завантажується реєстрація на захід та сесія юзера</div>
+    return (
+      <div className="flex justify-center">
+        <Spinner className="w-10 h-10 text-primary" />
+      </div>
+    )
   }
 
   if (!userId) {
     return (
       <Link to="/auth/login">
         <Button className="w-full" size="lg">
-          Для участі в заході потрібна авторізація
+          Авторизуйтесь для реєстрації
         </Button>
       </Link>
     )
   }
 
-  return (
-    <>
-      {course && userName && (
-        <CertificateDownloadButton course={course} registration={registration} userName={userName} />
-      )}
-    </>
-  )
+  // return (
+  //   <>
+  //     {course && userName && (
+  //       <CertificateDownloadButton course={course} registration={registration} userName={userName} />
+  //     )}
+  //   </>
+  // )
 
   if (!registration && courseId && amount) {
     // Реєстрація є, статус - не оплачено
@@ -65,7 +70,7 @@ export const FullCoursePageActions: FC<Props> = ({
     )
   }
 
-  if (registration && registration.paymentStatus !== "PAID") {
+  if (registration && (registration.paymentStatus !== "PAID" || registration.paymentStatus !== "PENDING")) {
     return (
       <Button size="lg" className="w-full" onClick={() => setIsOpen(true)}>
         Оплатити
@@ -73,7 +78,7 @@ export const FullCoursePageActions: FC<Props> = ({
     )
   }
 
-  if (registration && registration.paymentStatus === "PENDING") {
+  if (registration && registration.paymentStatus === "NONE") {
     // Або можливо краще тут нічого не показувати, а просто змінити інф. в блоку вище: Статус: Перевірка оплати (або якось так)
     return <div>Реєстрація є, статус - очікується оплата</div>
   }
@@ -92,6 +97,10 @@ export const FullCoursePageActions: FC<Props> = ({
         )}
       </>
     )
+  }
+
+  if (registration && registration.paymentStatus === "PENDING") {
+    return <div>Реєстрація є, квитанцію завантажено але ще не перевірено</div>
   }
 
   if (registration && registration.paymentStatus === "PAID") {

@@ -1,28 +1,23 @@
 import { createAuthClient } from "better-auth/react"
-import { createAccessControl } from "better-auth/plugins"
 import { adminClient, multiSessionClient } from "better-auth/client/plugins"
-import { adminAc, defaultStatements } from "better-auth/plugins/organization/access"
 
-// const statement = {
-//   ...defaultStatements,
-//   project: ["create", "share", "update", "delete"],
-// } as const
+const fetchWith500Redirect: typeof fetch = async (input, init) => {
+  const res = await fetch(input, init);
 
-// const ac = createAccessControl(statement)
+  if (res.status === 500) {
+    if (typeof window !== "undefined") {
+      window.location.href = "/500";
+    }
+  }
 
-// export const user = ac.newRole({ project: ["create"] })
-// const admin = ac.newRole({ project: ["create", "update"], ...adminAc.statements })
-
-// /*  */
+  return res;
+};
 
 export const authClient = createAuthClient({
   baseURL: import.meta.env.VITE_BASE_URL || "http://localhost:7777",
   basePath: "/auth",
-  plugins: [
-    // { roles: { admin, user } }
-    adminClient(),
-    multiSessionClient(),
-  ],
+  plugins: [adminClient(), multiSessionClient()],
+   fetch: fetchWith500Redirect,
 })
 
 export const { signIn, signUp, signOut, useSession, multiSession } = authClient

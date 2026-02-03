@@ -1,5 +1,5 @@
-import { useRef } from 'react'
-import { Upload } from 'lucide-react'
+import { Upload } from "lucide-react"
+import { useRef, type ChangeEvent } from "react"
 
 import {
   Dialog,
@@ -8,26 +8,41 @@ import {
   DialogHeader,
   DialogContent,
   DialogDescription,
-} from '@/components/ui/dialog'
-import { Button } from '../ui/button'
+} from "@/components/ui/dialog"
+import { Button } from "../ui/button"
+import type { RegistrationType } from "@/types/registration.type"
+import { usePayment } from "@/api/hooks/use-payment"
 
-const bankAccountNumber = 'UA528201720314271004202020020'
+const bankAccountNumber = "UA528201720314271004202020020"
 
 const paymentDetails = [
-  { label: 'Отримувач', value: 'Державна казначейська служба України, м. Київ' },
-  { label: 'Рахунок (IBAN)', value: bankAccountNumber },
-  { label: 'Код ЄДРПОУ', value: '02011261' },
-  { label: 'Призначення платежу', value: 'Плата за БПР, ПІБ учасника' },
+  { label: "Отримувач", value: "Державна казначейська служба України, м. Київ" },
+  { label: "Рахунок (IBAN)", value: bankAccountNumber },
+  { label: "Код ЄДРПОУ", value: "02011261" },
+  { label: "Призначення платежу", value: "Плата за БПР, ПІБ учасника" },
 ]
 
 interface Props {
   open: boolean
-  price: number
   onOpenChange: (open: boolean) => void
+  registration: RegistrationType | undefined
 }
 
-export const PaymentModal = ({ open, onOpenChange, price }: Props) => {
+export const PaymentModal = ({ open, onOpenChange, registration }: Props) => {
   const fileRef = useRef<HTMLInputElement | null>(null)
+
+  const uploadPaymentReceipt = usePayment()
+
+  const handleUploadPaymentReceipt = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file || !registration) return
+
+    const formData = new FormData()
+    formData.append("paymentReceipt", file)
+    uploadPaymentReceipt.mutate({ id: registration.id, formData })
+  }
+
+  if (!registration) return
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -51,7 +66,7 @@ export const PaymentModal = ({ open, onOpenChange, price }: Props) => {
               ))}
               <div className="flex gap-2">
                 <span className="font-bold min-w-[200px]">Сума:</span>
-                <span>{price} грн.</span>
+                <span>{registration.amount} грн.</span>
               </div>
             </div>
 
@@ -89,12 +104,26 @@ export const PaymentModal = ({ open, onOpenChange, price }: Props) => {
           </div>
         </DialogDescription>
 
-        <DialogFooter className="border-t border-border">
-          <input type="file" className="hidden" ref={fileRef} />
+        <DialogFooter className="flex !flex-col border-t border-border">
+          {registration.paymentReceipt && (
+            <p className="text-center pt-4">
+              Ваша квитанція завантажена та відправлена адміністратору на перевірку. Ви можете відслідкувати статус
+              перевірки на сторінці "Мої заходи"
+            </p>
+          )}
 
-          <Button onClick={() => fileRef?.current?.click()} className="mt-4 w-full">
+          <input type="file" className="hidden" accept="image/*" ref={fileRef} onChange={handleUploadPaymentReceipt} />
+          <Button
+            className="mt-4 w-full"
+            onClick={() => fileRef?.current?.click()}
+            disabled={uploadPaymentReceipt.isPending || registration.paymentStatus === "PAID"}
+          >
             <Upload />
-            Підтвердити оплату
+            {uploadPaymentReceipt.isPending
+              ? "Завантаження..."
+              : registration.paymentReceipt
+                ? "Завантажити іншу квитанцію"
+                : "Підтвердити оплату"}
           </Button>
         </DialogFooter>
       </DialogContent>

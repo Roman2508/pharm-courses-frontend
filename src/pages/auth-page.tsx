@@ -18,7 +18,7 @@ const AuthPage: FC<Props> = ({ defaultAuthType }) => {
   return (
     <div className="min-h-[calc(100vh-100px)] bg-gradient-to-br from-primary/5 via-background to-secondary/5 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="bg-surface rounded-2xl border border-border shadow-xl p-8">
+        <div className="bg-surface rounded-2xl border border-border shadow-xl py-8 px-6 min-[500px]:p-8">
           <div className="mb-8 text-center">
             <div className="w-16 h-16 rounded-xl bg-primary mx-auto mb-4 flex items-center justify-center">
               <img src={logo} alt="logo" className="w-12 h-12" />

@@ -1,27 +1,27 @@
-import z from 'zod'
-import { useState, type Dispatch, type FC, type MouseEvent, type SetStateAction } from 'react'
+import z from "zod"
+import { useState, type Dispatch, type FC, type MouseEvent, type SetStateAction } from "react"
 
-import { Button } from '../ui/button'
-import FormField from '../custom/form-field'
-import { Link, useNavigate } from 'react-router'
-import { signIn } from '@/api/auth-client'
-import { toast } from 'sonner'
-import { getFormErrors } from '@/helpers/get-form-errors'
+import { Button } from "../ui/button"
+import FormField from "../custom/form-field"
+import { Link, useNavigate } from "react-router"
+import { signIn } from "@/api/auth-client"
+import { toast } from "sonner"
+import { getFormErrors } from "@/helpers/get-form-errors"
 
-const initialFormData = { email: '', password: '' }
+const initialFormData = { email: "", password: "" }
 
 const formSchema = z.object({
-  email: z.email({ message: 'Не правильний формат пошти' }),
+  email: z.email({ message: "Не правильний формат пошти" }),
   password: z
     .string()
-    .min(8, { message: 'Мінімальна довжина пароля - 8 символів' })
-    .max(30, { message: 'Максимальна довжина пароля - 30 символів' }),
+    .min(8, { message: "Мінімальна довжина пароля - 8 символів" })
+    .max(30, { message: "Максимальна довжина пароля - 30 символів" }),
 })
 
 export type FormData = z.infer<typeof formSchema>
 
 interface Props {
-  setAuthType: Dispatch<SetStateAction<'login' | 'register'>>
+  setAuthType: Dispatch<SetStateAction<"login" | "register">>
 }
 
 const LoginForm: FC<Props> = ({ setAuthType }) => {
@@ -54,14 +54,14 @@ const LoginForm: FC<Props> = ({ setAuthType }) => {
       return
     }
     await signIn.email(
-      { ...formData, callbackURL: '/' },
+      { ...formData, callbackURL: "/" },
       {
         onRequest: (ctx) => {
           setIsPanding(true)
         },
         onSuccess: (ctx) => {
           setIsPanding(false)
-          navigate('/', { replace: true })
+          navigate("/", { replace: true })
         },
         onError: (ctx) => {
           setIsPanding(false)
@@ -84,7 +84,7 @@ const LoginForm: FC<Props> = ({ setAuthType }) => {
         type="email"
         placeholder="Введіть email"
         value={formData.email}
-        onChange={(value) => changeUserFormData('email', value)}
+        onChange={(value) => changeUserFormData("email", value)}
         className="mb-4"
       />
 
@@ -94,7 +94,7 @@ const LoginForm: FC<Props> = ({ setAuthType }) => {
         type="password"
         placeholder="Введіть пароль"
         value={formData.password}
-        onChange={(value) => changeUserFormData('password', value)}
+        onChange={(value) => changeUserFormData("password", value)}
         className="mb-4"
       />
 
@@ -107,15 +107,15 @@ const LoginForm: FC<Props> = ({ setAuthType }) => {
       )}
 
       <Button type="submit" className="w-full mt-4" size="lg" disabled={isPending} onClick={handleLogin}>
-        {isPending ? 'Завантаження...' : 'Увійти'}
+        {isPending ? "Завантаження..." : "Увійти"}
       </Button>
 
       <div className="mt-6 text-center">
-        <p className="text-sm text-text-secondary flex gap-1 justify-center">
-          Не маєте облікового запису?
+        <p className="text-sm text-text-secondary flex flex-col min-[500px]:flex-row gap-1 justify-center">
+          <span>Не маєте облікового запису?</span>
           <Link
             to="/auth/register"
-            onClick={() => setAuthType('register')}
+            onClick={() => setAuthType("register")}
             className="text-primary font-medium hover:text-primary-hover transition-colors cursor-pointer"
           >
             Зареєструватися

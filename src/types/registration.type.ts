@@ -1,12 +1,11 @@
 import type { CourseType } from "./course.type"
 
-export type PaymentStatus = "PENDING" | "PAID" | "FAILED" | "REFUNDED"
+export type PaymentStatus = "NONE" | "PENDING" | "PAID" | "FAILED" | "REFUNDED"
 
 export type RegistrationType = {
   id: number
   paymentStatus: PaymentStatus
-  paymentId: string
-  liqpayOrderId: string
+  paymentReceipt: string
   amount: number
   certificateEnabled: boolean
 

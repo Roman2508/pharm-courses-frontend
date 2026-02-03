@@ -1,3 +1,4 @@
+import { toast } from "sonner"
 import { useState } from "react"
 import { Upload } from "lucide-react"
 
@@ -6,11 +7,11 @@ import { Button } from "@/components/ui/button"
 import { findError } from "@/helpers/find-error"
 import type { UserType } from "@/types/user.type"
 import FormField from "@/components/custom/form-field"
+import { useUpdateAvatar } from "@/api/hooks/use-user"
 import { getFormErrors } from "@/helpers/get-form-errors"
 import { authClient, useSession } from "@/api/auth-client"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { userFormSchema } from "@/components/features/admin-users-page/admin-users-form-schema"
-import { toast } from "sonner"
 
 const ProfilePage = () => {
   const { data } = useSession()
@@ -19,6 +20,23 @@ const ProfilePage = () => {
 
   const [isPending, setIsPending] = useState(false)
   const [showErrors, setShowErrors] = useState(false)
+
+  const [preview, setPreview] = useState<string | null>(null)
+
+  const updateAvatar = useUpdateAvatar()
+
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    const formData = new FormData()
+    formData.append("avatar", file)
+    updateAvatar.mutate(formData, {
+      onSuccess: () => {
+        setPreview(URL.createObjectURL(file))
+      },
+    })
+  }
 
   const validate = () => {
     const res = userFormSchema.safeParse(formData)
@@ -68,7 +86,10 @@ const ProfilePage = () => {
       <div className="bg-surface rounded-2xl border border-border p-8">
         <div className="flex flex-col items-center gap-4 mb-8">
           <Avatar className="w-40 h-40 relative group">
-            <AvatarImage src="" alt="" />
+            <AvatarImage
+              src={preview || `${import.meta.env.VITE_BASE_URL}${data?.user?.image}` || ""}
+              alt="profile avarar"
+            />
             <AvatarFallback className="text-5xl">AA</AvatarFallback>
 
             <label>
@@ -79,7 +100,8 @@ const ProfilePage = () => {
                   </div>
                 </div>
               </div>
-              <input type="file" className="hidden" />
+
+              <input type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
             </label>
           </Avatar>
         </div>
