@@ -15,6 +15,7 @@ interface Props {
   setIsOpen: Dispatch<SetStateAction<boolean>>
   setParams: Dispatch<SetStateAction<GetRegistrationsQuery>>
   setSelectedRegistrations: Dispatch<SetStateAction<number[]>>
+  setRegistrationPayment: Dispatch<SetStateAction<RegistrationType | null>>
 }
 
 const AdminRegistrationTable: FC<Props> = ({
@@ -23,6 +24,7 @@ const AdminRegistrationTable: FC<Props> = ({
   setIsOpen,
   registrations,
   selectedRegistrations,
+  setRegistrationPayment,
   setSelectedRegistrations,
 }) => {
   const handleSelectAll = () => {
@@ -173,14 +175,17 @@ const AdminRegistrationTable: FC<Props> = ({
 
             <TableCell className="px-2 xl:px-6 py-2 xl:py-2">
               <button
-                onClick={() => setIsOpen(true)}
+                onClick={() => {
+                  setIsOpen(true)
+                  setRegistrationPayment(reg)
+                }}
                 className={`truncate cursor-pointer inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-colors ${
-                  false
+                  reg.paymentReceipt
                     ? "bg-primary/10 text-primary hover:bg-primary/20"
                     : "bg-destructive/10 text-destructive hover:bg-destructive/20"
                 }`}
               >
-                {false ? "Переглянути" : "Не завантажена"}
+                {reg.paymentReceipt ? "Переглянути" : "Не завантажена"}
               </button>
             </TableCell>
 

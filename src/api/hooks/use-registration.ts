@@ -2,7 +2,7 @@ import { toast } from "sonner"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
 import { axiosClient } from "../client"
-import type { RegistrationType } from "@/types/registration.type"
+import type { PaymentStatus, RegistrationType } from "@/types/registration.type"
 
 export type GetRegistrationsQuery = {
   page: number
@@ -73,6 +73,28 @@ export const useUpdateRegistration = (params?: GetRegistrationsQuery) => {
     mutationFn: async (payload: { id: number; certificateEnabled: boolean }) => {
       const { data } = await axiosClient.patch(`/registration/${payload.id}`, {
         certificateEnabled: payload.certificateEnabled,
+      })
+      return data
+    },
+    onSuccess() {
+      queryClient.invalidateQueries({
+        queryKey: ["all-registrations", params],
+      })
+      toast.success("Оновлено доступ до сертифікатів!")
+    },
+    onError(error) {
+      toast.error(`Помилка реєстрації. ${error?.message}`)
+    },
+  })
+}
+
+export const useUpdateRegistrationPayment = (params?: GetRegistrationsQuery) => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationKey: ["update-registration-payment"],
+    mutationFn: async (payload: { id: number; status: PaymentStatus }) => {
+      const { data } = await axiosClient.patch(`/registration/payment/${payload.id}`, {
+        status: payload.status,
       })
       return data
     },

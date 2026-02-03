@@ -1,16 +1,17 @@
 import { useParams } from "react-router"
 import { useEffect, useState } from "react"
 
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Title } from "@/components/custom/title"
 import FormField from "@/components/custom/form-field"
 import PageLoader from "@/components/custom/page-loader"
 import { Pagination } from "@/components/custom/pagination"
+import type { RegistrationType } from "@/types/registration.type"
 import { useAllCourses, useFullCourse } from "@/api/hooks/use-courses"
+import PaymentReceiptDialog from "@/components/features/admin-registration-page/payment-receipt-dialog"
 import AdminRegistrationTable from "@/components/features/admin-registration-page/admin-registration-table"
 import { useAllRegistrations, useUpdateRegistration, type GetRegistrationsQuery } from "@/api/hooks/use-registration"
-import PaymentReceiptDialog from "@/components/features/admin-registration-page/payment-receipt-dialog"
-import { Title } from "@/components/custom/title"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
 
 const initialParams = { page: 1, limit: 20, orderBy: "createdAt", orderType: "desc" } as const
 
@@ -20,6 +21,7 @@ const AdminRegistrationsPage = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [params, setParams] = useState<GetRegistrationsQuery>(initialParams)
   const [selectedRegistrations, setSelectedRegistrations] = useState<number[]>([])
+  const [registrationPayment, setRegistrationPayment] = useState<RegistrationType | null>(null)
 
   const { data: courses } = useAllCourses()
   const { data: fullCourse } = useFullCourse(pageParams.id)
@@ -47,7 +49,12 @@ const AdminRegistrationsPage = () => {
 
   return (
     <>
-      <PaymentReceiptDialog open={isOpen} onOpenChange={setIsOpen} />
+      <PaymentReceiptDialog
+        open={isOpen}
+        onOpenChange={setIsOpen}
+        registrationPayment={registrationPayment}
+        setRegistrationPayment={setRegistrationPayment}
+      />
 
       <div className="container mx-auto px-4 py-12 md:py-16">
         <div className="flex gap-4 items-center justify-between mb-8 flex-col lg:flex-row">
@@ -70,7 +77,7 @@ const AdminRegistrationsPage = () => {
                   >
                     Відкрити доступ ({selectedRegistrations.length})
                   </Button>
-                  
+
                   <Button
                     variant="destructive"
                     className="rounded-xl"
@@ -128,6 +135,7 @@ const AdminRegistrationsPage = () => {
                 setIsOpen={setIsOpen}
                 registrations={registrations}
                 selectedRegistrations={selectedRegistrations}
+                setRegistrationPayment={setRegistrationPayment}
                 setSelectedRegistrations={setSelectedRegistrations}
               />
             </div>
