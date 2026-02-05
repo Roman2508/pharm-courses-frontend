@@ -8,7 +8,7 @@ import FormField from "@/components/custom/form-field"
 import PageLoader from "@/components/custom/page-loader"
 import { Pagination } from "@/components/custom/pagination"
 import type { RegistrationType } from "@/types/registration.type"
-import { useAllCourses, useFullCourse } from "@/api/hooks/use-courses"
+import { useCourses, useFullCourse } from "@/api/hooks/use-courses"
 import PaymentReceiptDialog from "@/components/features/admin-registration-page/payment-receipt-dialog"
 import AdminRegistrationTable from "@/components/features/admin-registration-page/admin-registration-table"
 import { useAllRegistrations, useUpdateRegistration, type GetRegistrationsQuery } from "@/api/hooks/use-registration"
@@ -23,7 +23,10 @@ const AdminRegistrationsPage = () => {
   const [selectedRegistrations, setSelectedRegistrations] = useState<number[]>([])
   const [registrationPayment, setRegistrationPayment] = useState<RegistrationType | null>(null)
 
-  const { data: courses } = useAllCourses()
+  // В фільтрі реєстрацій можна вибрати лише заходи, які є запланованими
+  const { data: courses } = useCourses("PLANNED")
+  // const { data: courses } = useAllCourses()
+
   const { data: fullCourse } = useFullCourse(pageParams.id)
   const { data: { data: registrations, totalCount } = { data: [], totalCount: 0 }, isLoading } =
     useAllRegistrations(params)

@@ -10,8 +10,8 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog"
 import { Button } from "../ui/button"
-import type { RegistrationType } from "@/types/registration.type"
 import { usePayment } from "@/api/hooks/use-payment"
+import type { RegistrationType } from "@/types/registration.type"
 
 const bankAccountNumber = "UA528201720314271004202020020"
 
@@ -25,7 +25,7 @@ const paymentDetails = [
 interface Props {
   open: boolean
   onOpenChange: (open: boolean) => void
-  registration: RegistrationType | undefined
+  registration?: RegistrationType
 }
 
 export const PaymentModal = ({ open, onOpenChange, registration }: Props) => {

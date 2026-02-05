@@ -1,11 +1,11 @@
 import { Link } from "react-router"
 import type { Dispatch, FC, SetStateAction } from "react"
 
-import { Button } from "../../ui/button"
+import { Button } from "../ui/button"
 import { Spinner } from "@/components/ui/spinner"
 import type { CourseType } from "@/types/course.type"
 import { useCreateRegistration } from "@/api/hooks/use-registration"
-import { CertificateDownloadButton } from "./certificate-download-button"
+import { CertificateDownloadButton } from "../features/full-course-page/certificate-download-button"
 
 interface Props {
   userId?: string
@@ -16,9 +16,11 @@ interface Props {
   setIsOpen: Dispatch<SetStateAction<boolean>>
   course?: CourseType
   userName?: string
+  className?: string
+  size?: "lg" | "sm"
 }
 
-export const FullCoursePageActions: FC<Props> = ({
+export const CourseActions: FC<Props> = ({
   userId,
   courseId,
   registration,
@@ -27,6 +29,8 @@ export const FullCoursePageActions: FC<Props> = ({
   setIsOpen,
   course,
   userName,
+  size = "lg",
+  className = "w-full",
 }) => {
   const { mutate: createRegistration, isPending: isCreateRegistrationPending } = useCreateRegistration()
 
@@ -41,7 +45,7 @@ export const FullCoursePageActions: FC<Props> = ({
   if (!userId) {
     return (
       <Link to="/auth/login">
-        <Button className="w-full" size="lg">
+        <Button className={className} size={size}>
           Авторизуйтесь для реєстрації
         </Button>
       </Link>
@@ -60,8 +64,8 @@ export const FullCoursePageActions: FC<Props> = ({
     // Немає реєстрації
     return (
       <Button
-        size="lg"
-        className="w-full"
+        size={size}
+        className={className}
         disabled={isCreateRegistrationPending}
         onClick={() => createRegistration({ userId, courseId, amount }, { onSuccess: () => setIsOpen(true) })}
       >
@@ -73,9 +77,9 @@ export const FullCoursePageActions: FC<Props> = ({
   if (registration) {
     //
     // Реєстрація є, квитанцію НЕ завантажено завантажено
-    if (registration.paymentStatus !== "PAID" || registration.paymentStatus !== "PENDING") {
+    if (registration.paymentStatus !== "PAID" && registration.paymentStatus !== "PENDING") {
       return (
-        <Button size="lg" className="w-full" onClick={() => setIsOpen(true)}>
+        <Button size={size} className={className} onClick={() => setIsOpen(true)}>
           Оплатити
         </Button>
       )
@@ -85,7 +89,7 @@ export const FullCoursePageActions: FC<Props> = ({
     // Реєстрація є, квитанцію завантажено але ще не перевірено
     if (registration.paymentStatus === "PENDING") {
       return (
-        <Button size="lg" className="w-full">
+        <Button size={size} className={className} onClick={() => setIsOpen(true)}>
           Завантажити іншу квитанцію
         </Button>
       )
@@ -102,7 +106,12 @@ export const FullCoursePageActions: FC<Props> = ({
           </div>
 
           {course && userName && (
-            <CertificateDownloadButton course={course} registration={registration} userName={userName} />
+            <CertificateDownloadButton
+              course={course}
+              userName={userName}
+              className={className}
+              registration={registration}
+            />
           )}
         </>
       )

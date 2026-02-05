@@ -1,8 +1,8 @@
+import { useSession } from "@/api/auth-client"
 import { Title } from "@/components/custom/title"
+import PageLoader from "@/components/custom/page-loader"
 import MyCourseCard from "@/components/common/my-course-card"
 import { useUserRegistrations } from "@/api/hooks/use-registration"
-import { useSession } from "@/api/auth-client"
-import PageLoader from "@/components/custom/page-loader"
 
 const MyCoursesPage = () => {
   const { data: session } = useSession()
@@ -15,10 +15,15 @@ const MyCoursesPage = () => {
 
       {isLoading ? (
         <PageLoader />
-      ) : registrations?.length ? (
+      ) : !!registrations?.length && session ? (
         <div className="grid grid-cols-1 gap-2 mb-24 max-w-7xl mx-auto px-4">
           {registrations.map((registration) => (
-            <MyCourseCard key={registration.id} {...registration} />
+            <MyCourseCard
+              key={registration.id}
+              userId={session.user.id}
+              registration={registration}
+              userName={session.user.name}
+            />
           ))}
         </div>
       ) : (

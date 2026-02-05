@@ -1,38 +1,55 @@
+import { useState } from "react"
 import { Link } from "react-router"
+import { Pencil, Trash, Users } from "lucide-react"
 
 import { getDate } from "@/helpers/get-date"
 import { Button } from "@/components/ui/button"
-import { getCourseStatus } from "@/helpers/get-course-status"
-import { useAllCourses, useDeleteCourse } from "@/api/hooks/use-courses"
 import { Title } from "@/components/custom/title"
-import { Pencil, Trash, Users } from "lucide-react"
+import PageLoader from "@/components/custom/page-loader"
+import { Pagination } from "@/components/custom/pagination"
+import { getCourseStatus } from "@/helpers/get-course-status"
+import { useAllCourses, useDeleteCourse, type GetCoursesQuery } from "@/api/hooks/use-courses"
 
 const AdminCoursesPage = () => {
-  const { data: courses, isLoading } = useAllCourses()
+  const [params, setParams] = useState<GetCoursesQuery>({ page: 1, limit: 20 })
 
-  const deleteCourse = useDeleteCourse()
+  const deleteCourse = useDeleteCourse(params)
+  const { data: { data: courses, totalCount } = { data: [], totalCount: 0 }, isLoading } = useAllCourses(params)
+
+  const handleChangeParams = (key: keyof GetCoursesQuery, value: any) => {
+    setParams((prev) => ({ ...prev, [key]: value }))
+  }
 
   const handleDelete = (id: number) => {
     if (!id) return
-    if (!confirm("Ви впевнені, що хочете видалити захід?")) return
+    if (!confirm("Ви впевнені, що хочете видалити цей захід?")) return
     deleteCourse.mutate(id)
   }
 
   return (
     <div className="container mx-auto px-4 py-12 md:py-16">
-      <div className="flex gap-4 items-start sm:items-center justify-between mb-8 flex-col sm:flex-row">
+      <div className="flex gap-4 items-start sm:items-center justify-between mb-8 flex-col lg:flex-row">
         <Title>Управління заходами</Title>
 
-        <Link
-          to="/admin/courses/new"
-          className="px-4 lg:px-6 py-2 lg:py-3 rounded-xl bg-primary text-white font-medium hover:bg-primary-hover transition-all hover:shadow-lg hover:shadow-primary/20"
-        >
-          Створити захід
-        </Link>
+        <div className="flex items-start sm:items-center gap-2 sm:gap-4 flex-col-reverse sm:flex-row">
+          <Pagination
+            total={totalCount}
+            page={params.page || 1}
+            limit={params.limit || 20}
+            handleChangeParams={handleChangeParams}
+          />
+
+          <Link
+            to="/admin/courses/new"
+            className="px-4 lg:px-6 py-2 lg:py-3 rounded-xl bg-primary text-white font-medium hover:bg-primary-hover transition-all hover:shadow-lg hover:shadow-primary/20"
+          >
+            Створити захід
+          </Link>
+        </div>
       </div>
 
       {isLoading ? (
-        <div className="text-center py-12 text-text-secondary">Завантаження заходів...</div>
+        <PageLoader />
       ) : courses && courses.length > 0 ? (
         <div className="space-y-4">
           {courses.map((course) => (

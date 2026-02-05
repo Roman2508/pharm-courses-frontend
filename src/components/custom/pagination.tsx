@@ -1,16 +1,17 @@
-import {
-  Pagination as ShadPagination,
-  PaginationItem,
-  PaginationContent,
-  PaginationLink,
-} from "@/components/ui/pagination"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 
+import {
+  PaginationItem,
+  PaginationLink,
+  PaginationContent,
+  Pagination as ShadPagination,
+} from "@/components/ui/pagination"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
+
 type PaginationProps<QueryType extends Record<string, any>> = {
-  total: number // общее количество элементов
-  page: number // текущая страница
-  limit: number // элементов на странице
+  total: number // загальна к-ть елементів
+  page: number // поточна сторінка
+  limit: number // к-ть елементів на сторінці
   handleChangeParams: (key: keyof QueryType, value: any) => void
   limitOptions?: number[]
 }
@@ -24,7 +25,7 @@ export const Pagination = <QueryType extends Record<string, any>>({
 }: PaginationProps<QueryType>) => {
   const totalPages = Math.ceil(total / limit)
 
-  // if (totalPages <= 1) return null
+  if (totalPages <= 1) return null
 
   const goLast = () => {
     if (page > 1) {

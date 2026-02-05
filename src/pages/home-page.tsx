@@ -8,14 +8,14 @@ import { CoursesList } from "@/components/common/courses-list"
 import { StatIcons } from "@/components/features/home-page/stat-icons"
 
 const stats = [
-  { title: "Проведених заходів", value: 4, icon: <StatIcons type="users" />, color: "primary" },
-  { title: "Учасників заходів", value: 3500, icon: <StatIcons type="members" />, color: "secondary" },
-  { title: "Задоволених", value: 98, icon: <StatIcons type="reviews" />, color: "success" },
+  { title: "Проведених заходів", value: "4+", icon: <StatIcons type="users" />, color: "primary" },
+  { title: "Учасників заходів", value: "3500+", icon: <StatIcons type="members" />, color: "secondary" },
+  { title: "Задоволених", value: "98%", icon: <StatIcons type="reviews" />, color: "success" },
 ]
 
 const HomePage = () => {
   const { data: plannedCourses } = useCourses("PLANNED")
-  const { data: archivedCourses } = useCourses("ARCHIVED")
+  const { data: archivedCourses } = useCourses("ARCHIVED", { limit: 3 })
 
   return (
     <main className="">
@@ -124,7 +124,7 @@ const HomePage = () => {
                   <div
                     className={`text-2xl max-[500px]:text-3xl text-4xl sm:text-5xl font-black text-${stat.color} mb-2`}
                   >
-                    {stat.value}+
+                    {stat.value}
                   </div>
                   <div className="text-sm text-text-secondary font-semibold uppercase tracking-wide">{stat.title}</div>
                 </div>

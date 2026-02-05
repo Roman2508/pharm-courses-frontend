@@ -1,10 +1,9 @@
 import { toast } from "sonner"
-import { useMutation /* , useQueryClient  */ } from "@tanstack/react-query"
+import { useMutation  } from "@tanstack/react-query"
 
 import { axiosClient } from "../client"
 
 export const usePayment = () => {
-  //   const queryClient = useQueryClient()
   return useMutation({
     mutationKey: ["payment"],
     mutationFn: async (payload: { id: number; formData: FormData }) => {
@@ -18,7 +17,6 @@ export const usePayment = () => {
       toast.success(
         'Квитанцію про оплату відправлено на перевірку адміністратору. Ви можете відслідкувати статус перевірки на сторінці "Мої заходи"',
       )
-      //   queryClient.invalidateQueries({ queryKey: ["session"] })
     },
     onError: () => {
       toast.error(`Сталась помилка під час завантаження квитанції про оплату. Спробуйте пізніше!`)

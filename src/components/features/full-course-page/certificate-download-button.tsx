@@ -12,9 +12,11 @@ interface CertificateDownloadButtonProps {
   course: CourseType
   registration: RegistrationType
   userName: string
+  size?: "lg" | "sm"
+  className?: string
 }
 
-export const CertificateDownloadButton = ({ course, registration, userName }: CertificateDownloadButtonProps) => {
+export const CertificateDownloadButton = ({ course, registration, userName, size = "lg", className = "w-full" }: CertificateDownloadButtonProps) => {
   const [isGenerating, setIsGenerating] = useState(false)
 
   const generateCertificate = async () => {
@@ -146,8 +148,8 @@ export const CertificateDownloadButton = ({ course, registration, userName }: Ce
 
   return (
     <Button
-      size="lg"
-      className="w-full"
+      size={size}
+      className={className}
       onClick={generateCertificate}
       disabled={isGenerating || !course.certificateTemplate}
     >

@@ -4,21 +4,26 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { axiosClient } from "../client"
 import type { CourseType } from "@/types/course.type"
 
-export const useCourses = (status: "PLANNED" | "ARCHIVED") => {
+export type GetCoursesQuery = {
+  page?: number
+  limit?: number
+}
+
+export const useCourses = (status: "PLANNED" | "ARCHIVED", params?: GetCoursesQuery) => {
   return useQuery({
-    queryKey: ["courses", { status }],
+    queryKey: ["courses", { status, params }],
     queryFn: async () => {
-      const { data } = await axiosClient.get<CourseType[]>(`/course/status/${status}`)
+      const { data } = await axiosClient.get<CourseType[]>(`/course/status/${status}`, { params })
       return data
     },
   })
 }
 
-export const useAllCourses = () => {
+export const useAllCourses = (params?: GetCoursesQuery) => {
   return useQuery({
-    queryKey: ["all-courses"],
+    queryKey: ["all-courses", params],
     queryFn: async () => {
-      const { data } = await axiosClient.get<CourseType[]>(`/course`)
+      const { data } = await axiosClient.get<{ data: CourseType[]; totalCount: number }>(`/course`, { params })
       return data
     },
   })
@@ -47,8 +52,7 @@ export const useCreateCourse = () => {
     },
   })
 }
-// Сертифікат учасника / Сертифікат тренера
-// Майстер клас або семінар // брав(ла) участь у роботі || брав(ла) участь у роботі (проведенні)
+
 export const useUpdateCourse = () => {
   const queryClient = useQueryClient()
   return useMutation({
@@ -66,7 +70,7 @@ export const useUpdateCourse = () => {
   })
 }
 
-export const useDeleteCourse = () => {
+export const useDeleteCourse = (params?: GetCoursesQuery) => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationKey: ["delete-course"],
@@ -75,7 +79,7 @@ export const useDeleteCourse = () => {
       return data
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["all-courses"] })
+      queryClient.invalidateQueries({ queryKey: ["all-courses", params] })
     },
     onError: (error) => toast.error(`Помилка видалення заходу. ${error?.message}`),
   })

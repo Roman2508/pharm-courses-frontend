@@ -8,10 +8,10 @@ import { Button } from "@/components/ui/button"
 import { useFullCourse } from "@/api/hooks/use-courses"
 import PageLoader from "@/components/custom/page-loader"
 import { PaymentModal } from "@/components/common/payment-modal"
-import { useCurrentRegistration } from "@/api/hooks/use-registration"
-import { FullCoursePageActions } from "@/components/features/full-course-page/full-course-page-actions"
-import { FullCoursePagePaymentStatus } from "@/components/features/full-course-page/full-course-page-payment-status"
 import { getTargetAudience } from "@/helpers/get-target-audience"
+import { CourseActions } from "@/components/common/course-actions"
+import { useCurrentRegistration } from "@/api/hooks/use-registration"
+import { FullCoursePagePaymentStatus } from "@/components/features/full-course-page/full-course-page-payment-status"
 
 const statusColors = {
   PLANNED: "bg-success/10 text-success border-success/20",
@@ -151,7 +151,7 @@ const FullCoursePage = () => {
               {registration && <FullCoursePagePaymentStatus registration={registration} />}
 
               {/* Action buttons */}
-              <FullCoursePageActions
+              <CourseActions
                 course={course}
                 courseId={course.id}
                 setIsOpen={setIsOpen}
