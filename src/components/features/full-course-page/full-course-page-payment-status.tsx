@@ -39,7 +39,11 @@ export const FullCoursePagePaymentStatus = ({ registration }: Props) => {
             <span
               className={cn("font-medium", registration.paymentStatus === "PAID" ? "text-success" : "text-destructive")}
             >
-              {registration.paymentStatus === "PAID" ? "Оплачено" : "Очікується оплата"}
+              {registration.paymentStatus === "PAID"
+                ? "Оплачено"
+                : registration.paymentStatus === "PENDING"
+                  ? "Опрацьовується адміністратором"
+                  : "Очікується оплата"}
             </span>
           </p>
         </div>

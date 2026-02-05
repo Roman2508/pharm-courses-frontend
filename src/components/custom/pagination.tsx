@@ -23,7 +23,7 @@ export const Pagination = <QueryType extends Record<string, any>>({
   limitOptions = [10, 20, 50, 100],
 }: PaginationProps<QueryType>) => {
   const totalPages = Math.ceil(total / limit)
-  
+
   // if (totalPages <= 1) return null
 
   const goLast = () => {

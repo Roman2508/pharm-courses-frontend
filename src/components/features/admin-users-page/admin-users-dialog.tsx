@@ -4,18 +4,18 @@ import {
   Dialog,
   DialogTitle,
   DialogHeader,
+  DialogFooter,
   DialogContent,
   DialogDescription,
-  DialogFooter,
 } from "@/components/ui/dialog"
-import { authClient } from "@/api/auth-client"
 import useUserData from "@/hooks/use-user-data"
 import { Button } from "@/components/ui/button"
 import { findError } from "@/helpers/find-error"
 import type { UserType } from "@/types/user.type"
 import FormField from "@/components/custom/form-field"
 import { getFormErrors } from "@/helpers/get-form-errors"
-import { userFormSchema } from "./admin-users-form-schema"
+import { authClient, useSession } from "@/api/auth-client"
+import { createUserSchema, updateUserSchema } from "./admin-users-form-schema"
 
 interface Props {
   open: boolean
@@ -25,13 +25,29 @@ interface Props {
 }
 
 const AdminUsersDialog: FC<Props> = ({ open, editedUser, onOpenChange, setEditedUser }) => {
-  const { fields, formData } = useUserData(editedUser ? editedUser : {})
+  const { data } = useSession()
+
+  const { fields, formData } = useUserData(editedUser)
+
+  const availableFields = fields.filter((field) => {
+    if (data?.user.id === editedUser?.id) {
+      if (field.name === "role") {
+        return false
+      }
+    }
+    return field
+  })
 
   const [isPending, setIsPending] = useState(false)
   const [showErrors, setShowErrors] = useState(false)
 
   const validate = () => {
-    const res = userFormSchema.safeParse(formData)
+    let res
+    if (editedUser) {
+      res = updateUserSchema.safeParse(formData)
+    } else {
+      res = createUserSchema.safeParse(formData)
+    }
     if (res.success) return
     return res.error.format()
   }
@@ -46,47 +62,66 @@ const AdminUsersDialog: FC<Props> = ({ open, editedUser, onOpenChange, setEdited
       return
     }
 
-    if (editedUser?.id) {
-      try {
-        setIsPending(true)
+    try {
+      setIsPending(true)
+      if (editedUser?.id) {
         await authClient.admin.updateUser({ userId: editedUser.id, data: formData })
-      } finally {
-        setIsPending(false)
+        onDialogClose()
+      } else {
+        const { email, password, name, ...data } = formData
+        if (password) {
+          await authClient.admin.createUser({ email, password, name, data })
+          onDialogClose()
+        }
       }
+    } finally {
+      setIsPending(false)
     }
   }
 
   const onDialogClose = () => {
     onOpenChange(false)
     setEditedUser(null)
-    useUserData({})
+    useUserData(null)
   }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader className="pb-4">
-          <DialogTitle>Редагувати користувача</DialogTitle>
+          <DialogTitle>{editedUser ? "Редагувати користувача" : "Створити користувача"}</DialogTitle>
         </DialogHeader>
 
         <DialogDescription className="max-h-[calc(100vh-240px)] overflow-x-hidden overflow-y-auto pt-4 pb-8 px-2 border-y">
           <form className="space-y-4 text-black">
-            {fields.map((field) => (
-              <FormField
-                key={field.name}
-                name={field.name}
-                type={field.type}
-                label={field.label}
-                items={field.items}
-                value={field.value}
-                onChange={field.onChange}
-                required={field.required}
-                className={field.className}
-                placeholder={field.placeholder}
-                defaultValue={field.defaultValue}
-                error={findError(field.name, errors)}
-              />
-            ))}
+            {availableFields.map((field) => {
+              let label = field.label
+              let placeholder = field.placeholder
+              let required = field.required
+
+              if (field.name === "password" && !editedUser) {
+                label = "Пароль"
+                placeholder = ""
+                required = true
+              }
+
+              return (
+                <FormField
+                  label={label}
+                  key={field.name}
+                  name={field.name}
+                  type={field.type}
+                  items={field.items}
+                  value={field.value}
+                  required={required}
+                  placeholder={placeholder}
+                  onChange={field.onChange}
+                  className={field.className}
+                  defaultValue={field.defaultValue}
+                  error={findError(field.name, errors)}
+                />
+              )
+            })}
 
             {showErrors && !!getFormErrors(errors).length && (
               <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20">

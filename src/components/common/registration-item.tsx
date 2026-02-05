@@ -1,10 +1,12 @@
 import { type FC } from "react"
 
-import type { RegistrationType } from "@/types/registration.type"
 import { getDate } from "@/helpers/get-date"
-import { getPaymentStatus } from "@/helpers/get-payment-status"
+import type { RegistrationType } from "@/types/registration.type"
+import { getPaymentColor, getPaymentStatus } from "@/helpers/get-payment-status"
 
 const RegistrationItem: FC<RegistrationType> = ({ user, course, createdAt, paymentStatus }) => {
+  const color = getPaymentColor(paymentStatus)
+
   return (
     <div className="flex gap-2 items-start md:items-center justify-between py-3 border-b border-border last:border-0 flex-col md:flex-row">
       <div className="flex gap-4">
@@ -31,13 +33,7 @@ const RegistrationItem: FC<RegistrationType> = ({ user, course, createdAt, payme
 
       <div className="text-right">
         <span
-          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-            paymentStatus === "PAID"
-              ? "bg-success/10 text-success"
-              : paymentStatus === "FAILED"
-                ? "bg-destructive/10 text-destructive"
-                : "bg-secondary/10 text-secondary"
-          }`}
+          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-${color}/10 text-${color}`}
         >
           {getPaymentStatus(paymentStatus)}
         </span>

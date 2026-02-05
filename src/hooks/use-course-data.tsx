@@ -50,8 +50,6 @@ const useCourseData = (course: Partial<CourseType> = {}, certificateTemplates: C
     ...userFormData,
   }
 
-  console.log("courseData", courseData, "formData", formData)
-
   const certificateTemplatesList = certificateTemplates
     ? certificateTemplates.map((el) => ({ label: el.name, value: String(el.id) }))
     : []
@@ -162,6 +160,7 @@ const useCourseData = (course: Partial<CourseType> = {}, certificateTemplates: C
         items: [
           { label: "Фармація", value: "PHARMACISTS" },
           { label: "Лабораторна діагностика", value: "LABORATORY_ASSISTANTS" },
+          { label: "Фармація та лабораторна діагностика", value: "PHARMACISTS_AND_LABORATORY_ASSISTANTS" },
         ],
       },
       {

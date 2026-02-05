@@ -2,7 +2,7 @@ import type { RegistrationType } from "./registration.type"
 
 export type CourseStatusType = "DRAFT" | "PLANNED" | "ARCHIVED"
 export type CourseRegistrationStatusType = "OPEN" | "CLOSE"
-export type CourseTargetAudienceType = "PHARMACISTS" | "LABORATORY_ASSISTANTS"
+export type CourseTargetAudienceType = "PHARMACISTS" | "LABORATORY_ASSISTANTS" | "PHARMACISTS_AND_LABORATORY_ASSISTANTS"
 
 export type CourseType = {
   id: number

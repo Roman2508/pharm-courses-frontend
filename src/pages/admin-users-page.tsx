@@ -8,6 +8,8 @@ import PageLoader from "@/components/custom/page-loader"
 import { Pagination } from "@/components/custom/pagination"
 import AdminUsersDialog from "@/components/features/admin-users-page/admin-users-dialog"
 import AdminUserPageTable from "@/components/features/admin-users-page/admin-user-page-table"
+import { Button } from "@/components/ui/button"
+import { Plus } from "lucide-react"
 
 type GetUsersQuery = {
   page: number
@@ -81,6 +83,17 @@ const AdminUsersPage = () => {
           </div>
 
           <div className="flex items-center gap-2">
+            <Button
+              size="sm"
+              title="Створити нового користувача"
+              onClick={() => {
+                setEditedUser(null)
+                setIsDialogOpen(true)
+              }}
+            >
+              <Plus />
+            </Button>
+
             <Pagination
               total={totalPages}
               page={params.page}

@@ -1,5 +1,5 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
 import { axiosClient } from "../client"
 import type { CertificateTemplateType } from "@/types/certificate-template.type"

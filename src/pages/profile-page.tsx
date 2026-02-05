@@ -18,6 +18,8 @@ const ProfilePage = () => {
 
   const { fields, formData } = useUserData(data?.user ? (data.user as Partial<UserType> | undefined) : {})
 
+  const availableFields = fields.filter((field) => field.name !== "role")
+
   const [isPending, setIsPending] = useState(false)
   const [showErrors, setShowErrors] = useState(false)
 
@@ -128,7 +130,7 @@ const ProfilePage = () => {
         </div>
 
         <form className="space-y-6">
-          {fields.map((field) => (
+          {availableFields.map((field) => (
             <FormField
               key={field.name}
               name={field.name}

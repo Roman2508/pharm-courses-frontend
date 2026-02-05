@@ -57,7 +57,7 @@ export const FullCoursePageActions: FC<Props> = ({
   // )
 
   if (!registration && courseId && amount) {
-    // Реєстрація є, статус - не оплачено
+    // Немає реєстрації
     return (
       <Button
         size="lg"
@@ -70,45 +70,55 @@ export const FullCoursePageActions: FC<Props> = ({
     )
   }
 
-  if (registration && (registration.paymentStatus !== "PAID" || registration.paymentStatus !== "PENDING")) {
-    return (
-      <Button size="lg" className="w-full" onClick={() => setIsOpen(true)}>
-        Оплатити
-      </Button>
-    )
-  }
+  if (registration) {
+    //
+    // Реєстрація є, квитанцію НЕ завантажено завантажено
+    if (registration.paymentStatus !== "PAID" || registration.paymentStatus !== "PENDING") {
+      return (
+        <Button size="lg" className="w-full" onClick={() => setIsOpen(true)}>
+          Оплатити
+        </Button>
+      )
+    }
 
-  if (registration && registration.paymentStatus === "NONE") {
-    // Або можливо краще тут нічого не показувати, а просто змінити інф. в блоку вище: Статус: Перевірка оплати (або якось так)
-    return <div>Реєстрація є, статус - очікується оплата</div>
-  }
+    //
+    // Реєстрація є, квитанцію завантажено але ще не перевірено
+    if (registration.paymentStatus === "PENDING") {
+      return (
+        <Button size="lg" className="w-full">
+          Завантажити іншу квитанцію
+        </Button>
+      )
+    }
 
-  if (registration && registration.paymentStatus === "PAID" && registration.certificateEnabled) {
-    // Certificate is available for download
-    return (
-      <>
+    //
+    // Реєстрація є, статус - оплачено. Сертифікат доступний для завантаження
+    if (registration.paymentStatus === "PAID" && registration.certificateEnabled) {
+      return (
+        <>
+          <div className="mt-3 text-sm text-success font-medium flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
+            Сертифікат доступний
+          </div>
+
+          {course && userName && (
+            <CertificateDownloadButton course={course} registration={registration} userName={userName} />
+          )}
+        </>
+      )
+    }
+
+    //
+    // Реєстрація є, статус - оплачено. Сертифікат НЕ доступний для завантаження
+    if (registration.paymentStatus === "PAID" && !registration.certificateEnabled) {
+      return (
         <div className="mt-3 text-sm text-success font-medium flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
-          Сертифікат доступний
+          <span className="border border-success/50 rounded-xl p-4 bg-success/10 text-center">
+            Після завершення заходу, тут ви зможете завантажити сертифікат про участь
+          </span>
         </div>
-
-        {course && userName && (
-          <CertificateDownloadButton course={course} registration={registration} userName={userName} />
-        )}
-      </>
-    )
-  }
-
-  if (registration && registration.paymentStatus === "PENDING") {
-    return <div>Реєстрація є, квитанцію завантажено але ще не перевірено</div>
-  }
-
-  if (registration && registration.paymentStatus === "PAID") {
-    return <div>Реєстрація є, статус - оплачено</div>
-  }
-
-  if (!registration) {
-    return <div>реєстрації немає - показую кнопку реєстрації</div>
+      )
+    }
   }
 
   return null

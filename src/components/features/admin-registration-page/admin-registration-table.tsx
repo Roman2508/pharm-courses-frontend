@@ -3,7 +3,7 @@ import type { Dispatch, FC, SetStateAction } from "react"
 
 import { cn } from "@/lib/utils"
 import { getDate } from "@/helpers/get-date"
-import { getPaymentStatus } from "@/helpers/get-payment-status"
+import { getPaymentColor, getPaymentStatus } from "@/helpers/get-payment-status"
 import type { RegistrationType } from "@/types/registration.type"
 import type { GetRegistrationsQuery } from "@/api/hooks/use-registration"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -147,13 +147,8 @@ const AdminRegistrationTable: FC<Props> = ({
 
             <TableCell className="px-2 xl:px-6 py-2 xl:py-2">
               <span
-                className={`inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium ${
-                  reg.paymentStatus === "PAID"
-                    ? "bg-success/10 text-success"
-                    : reg.paymentStatus === "FAILED"
-                      ? "bg-destructive/10 text-destructive"
-                      : "bg-secondary/10 text-secondary"
-                }`}
+                className={`inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium 
+                  bg-${getPaymentColor(reg.paymentStatus)}/10 text-${getPaymentColor(reg.paymentStatus)}`}
               >
                 {getPaymentStatus(reg.paymentStatus)}
               </span>

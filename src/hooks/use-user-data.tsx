@@ -1,27 +1,18 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState } from "react"
 
-import type { UserType } from "@/types/user.type";
+import type { UserType } from "@/types/user.type"
 
 interface IFields {
-  name: keyof UserType;
-  required: boolean;
-  type:
-    | "text"
-    | "email"
-    | "password"
-    | "number"
-    | "date"
-    | "tel"
-    | "url"
-    | "select"
-    | "rich-text";
-  label: string;
-  value: any;
-  defaultValue?: string;
-  placeholder?: string;
-  className?: string;
-  items?: { label: string; value: string }[];
-  onChange: (value: string) => void;
+  name: keyof UserType
+  required: boolean
+  type: "text" | "email" | "password" | "number" | "date" | "tel" | "url" | "select" | "rich-text"
+  label: string
+  value: any
+  defaultValue?: string
+  placeholder?: string
+  className?: string
+  items?: { label: string; value: string }[]
+  onChange: (value: string) => void
 }
 
 const defaultFormData: Partial<UserType> = {
@@ -36,16 +27,16 @@ const defaultFormData: Partial<UserType> = {
   workplace: "",
   region_city: "",
   image: "",
-};
+}
 
-const useUserData = (user: Partial<UserType> = {}) => {
-  const [userFormData, setUserFormData] = useState<Partial<UserType>>({});
+const useUserData = (user: UserType | null) => {
+  const [userFormData, setUserFormData] = useState<UserType>({} as UserType)
 
   const formData = {
     ...defaultFormData,
-    ...user,
+    ...(user ? user : {}),
     ...userFormData,
-  };
+  }
 
   const fields: IFields[] = useMemo(
     () => [
@@ -93,8 +84,7 @@ const useUserData = (user: Partial<UserType> = {}) => {
           { label: "Користувач", value: "user" },
           { label: "Адміністратор", value: "admin" },
         ],
-        onChange: (value) =>
-          setUserFormData({ ...formData, role: value as "user" | "admin" }),
+        onChange: (value) => setUserFormData({ ...formData, role: value as "user" | "admin" }),
       },
       {
         name: "region_city",
@@ -102,8 +92,7 @@ const useUserData = (user: Partial<UserType> = {}) => {
         type: "text",
         label: "Місто / Область",
         value: formData.region_city,
-        onChange: (value) =>
-          setUserFormData({ ...formData, region_city: value }),
+        onChange: (value) => setUserFormData({ ...formData, region_city: value }),
       },
       {
         name: "education",
@@ -114,10 +103,8 @@ const useUserData = (user: Partial<UserType> = {}) => {
         defaultValue: String(formData.education),
         items: [
           {
-            label:
-              "Неповна вища (молодший спеціаліст / фаховий молодший бакалавр / бакалавр)",
-            value:
-              "Неповна вища (молодший спеціаліст / фаховий молодший бакалавр / бакалавр)",
+            label: "Неповна вища (молодший спеціаліст / фаховий молодший бакалавр / бакалавр)",
+            value: "Неповна вища (молодший спеціаліст / фаховий молодший бакалавр / бакалавр)",
           },
           { label: "Вища фармацевтична", value: "Вища фармацевтична" },
           { label: "Вища медична", value: "Вища медична" },
@@ -150,9 +137,9 @@ const useUserData = (user: Partial<UserType> = {}) => {
       },
     ],
     [formData, userFormData],
-  );
+  )
 
-  return { formData, fields };
-};
+  return { formData, fields }
+}
 
-export default useUserData;
+export default useUserData

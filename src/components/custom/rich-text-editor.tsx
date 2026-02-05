@@ -1,16 +1,12 @@
-'use client'
+"use client"
 
-import { useEditor, EditorContent } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-import Underline from '@tiptap/extension-underline'
-import TextAlign from '@tiptap/extension-text-align'
-import { Table } from '@tiptap/extension-table'
-import TableRow from '@tiptap/extension-table-row'
-import TableCell from '@tiptap/extension-table-cell'
-import TableHeader from '@tiptap/extension-table-header'
-import { TextStyle } from '@tiptap/extension-text-style'
-import FontFamily from '@tiptap/extension-font-family'
-import Link from '@tiptap/extension-link'
+import { useEditor, EditorContent } from "@tiptap/react"
+import StarterKit from "@tiptap/starter-kit"
+import Underline from "@tiptap/extension-underline"
+import TextAlign from "@tiptap/extension-text-align"
+import { TextStyle } from "@tiptap/extension-text-style"
+import FontFamily from "@tiptap/extension-font-family"
+import Link from "@tiptap/extension-link"
 import {
   Bold,
   Italic,
@@ -21,14 +17,13 @@ import {
   AlignCenter,
   AlignRight,
   AlignJustify,
-  TableIcon,
   Heading1,
   Heading2,
   Heading3,
   Link as LinkIcon,
-} from 'lucide-react'
-import { Button } from '../ui/button'
-import { cn } from '@/lib/utils'
+} from "lucide-react"
+import { Button } from "../ui/button"
+import { cn } from "@/lib/utils"
 
 interface RichTextEditorProps {
   content: string
@@ -37,7 +32,7 @@ interface RichTextEditorProps {
   className?: string
 }
 
-export function RichTextEditor({ content, onChange, placeholder, className = '' }: RichTextEditorProps) {
+export function RichTextEditor({ content, onChange, placeholder, className = "" }: RichTextEditorProps) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -54,19 +49,13 @@ export function RichTextEditor({ content, onChange, placeholder, className = '' 
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
-          class: 'text-primary underline cursor-pointer',
+          class: "text-primary underline cursor-pointer",
         },
       }),
       TextAlign.configure({
-        types: ['heading', 'paragraph'],
-        alignments: ['left', 'center', 'right', 'justify'],
+        types: ["heading", "paragraph"],
+        alignments: ["left", "center", "right", "justify"],
       }),
-      Table.configure({
-        resizable: true,
-      }),
-      TableRow,
-      TableHeader,
-      TableCell,
       TextStyle,
       FontFamily,
     ],
@@ -74,7 +63,7 @@ export function RichTextEditor({ content, onChange, placeholder, className = '' 
     editorProps: {
       attributes: {
         class:
-          'prose prose-sm max-w-none focus:outline-none min-h-[300px] px-4 py-3 rounded-xl border border-border bg-input text-text-primary',
+          "prose prose-sm max-w-none focus:outline-none min-h-[300px] px-4 py-3 rounded-xl border border-border bg-input text-text-primary",
       },
     },
     onUpdate: ({ editor }) => {
@@ -90,8 +79,8 @@ export function RichTextEditor({ content, onChange, placeholder, className = '' 
   }
 
   const setLink = () => {
-    const previousUrl = editor.getAttributes('link').href
-    const url = window.prompt('URL', previousUrl)
+    const previousUrl = editor.getAttributes("link").href
+    const url = window.prompt("URL", previousUrl)
 
     // cancelled
     if (url === null) {
@@ -99,17 +88,17 @@ export function RichTextEditor({ content, onChange, placeholder, className = '' 
     }
 
     // empty
-    if (url === '') {
-      editor.chain().focus().extendMarkRange('link').unsetLink().run()
+    if (url === "") {
+      editor.chain().focus().extendMarkRange("link").unsetLink().run()
       return
     }
 
     // update
-    editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
+    editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run()
   }
 
   return (
-    <div className={cn('border border-border rounded-xl overflow-hidden bg-surface', className)}>
+    <div className={cn("border border-border rounded-xl overflow-hidden bg-surface", className)}>
       {/* Toolbar */}
       <div className="bg-surface-hover p-2 flex flex-wrap gap-1 sticky top-0 z-10">
         {/* Headings */}
@@ -118,7 +107,7 @@ export function RichTextEditor({ content, onChange, placeholder, className = '' 
           variant="ghost"
           size="sm"
           onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-          className={editor.isActive('heading', { level: 1 }) ? 'bg-primary/10 text-primary' : ''}
+          className={editor.isActive("heading", { level: 1 }) ? "bg-primary/10 text-primary" : ""}
           title="Heading 1"
         >
           <Heading1 className="h-4 w-4" />
@@ -128,7 +117,7 @@ export function RichTextEditor({ content, onChange, placeholder, className = '' 
           variant="ghost"
           size="sm"
           onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-          className={editor.isActive('heading', { level: 2 }) ? 'bg-primary/10 text-primary' : ''}
+          className={editor.isActive("heading", { level: 2 }) ? "bg-primary/10 text-primary" : ""}
           title="Heading 2"
         >
           <Heading2 className="h-4 w-4" />
@@ -138,7 +127,7 @@ export function RichTextEditor({ content, onChange, placeholder, className = '' 
           variant="ghost"
           size="sm"
           onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-          className={editor.isActive('heading', { level: 3 }) ? 'bg-primary/10 text-primary' : ''}
+          className={editor.isActive("heading", { level: 3 }) ? "bg-primary/10 text-primary" : ""}
           title="Heading 3"
         >
           <Heading3 className="h-4 w-4" />
@@ -152,7 +141,7 @@ export function RichTextEditor({ content, onChange, placeholder, className = '' 
           variant="ghost"
           size="sm"
           onClick={() => editor.chain().focus().toggleBold().run()}
-          className={editor.isActive('bold') ? 'bg-primary/10 text-primary' : ''}
+          className={editor.isActive("bold") ? "bg-primary/10 text-primary" : ""}
           title="Bold"
         >
           <Bold className="h-4 w-4" />
@@ -162,7 +151,7 @@ export function RichTextEditor({ content, onChange, placeholder, className = '' 
           variant="ghost"
           size="sm"
           onClick={() => editor.chain().focus().toggleItalic().run()}
-          className={editor.isActive('italic') ? 'bg-primary/10 text-primary' : ''}
+          className={editor.isActive("italic") ? "bg-primary/10 text-primary" : ""}
           title="Italic"
         >
           <Italic className="h-4 w-4" />
@@ -172,7 +161,7 @@ export function RichTextEditor({ content, onChange, placeholder, className = '' 
           variant="ghost"
           size="sm"
           onClick={() => editor.chain().focus().toggleUnderline().run()}
-          className={editor.isActive('underline') ? 'bg-primary/10 text-primary' : ''}
+          className={editor.isActive("underline") ? "bg-primary/10 text-primary" : ""}
           title="Underline"
         >
           <UnderlineIcon className="h-4 w-4" />
@@ -182,7 +171,7 @@ export function RichTextEditor({ content, onChange, placeholder, className = '' 
           variant="ghost"
           size="sm"
           onClick={setLink}
-          className={editor.isActive('link') ? 'bg-primary/10 text-primary' : ''}
+          className={editor.isActive("link") ? "bg-primary/10 text-primary" : ""}
           title="Link"
         >
           <LinkIcon className="h-4 w-4" />
@@ -196,7 +185,7 @@ export function RichTextEditor({ content, onChange, placeholder, className = '' 
           variant="ghost"
           size="sm"
           onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className={editor.isActive('bulletList') ? 'bg-primary/10 text-primary' : ''}
+          className={editor.isActive("bulletList") ? "bg-primary/10 text-primary" : ""}
           title="Bullet List"
         >
           <List className="h-4 w-4" />
@@ -206,7 +195,7 @@ export function RichTextEditor({ content, onChange, placeholder, className = '' 
           variant="ghost"
           size="sm"
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          className={editor.isActive('orderedList') ? 'bg-primary/10 text-primary' : ''}
+          className={editor.isActive("orderedList") ? "bg-primary/10 text-primary" : ""}
           title="Ordered List"
         >
           <ListOrdered className="h-4 w-4" />
@@ -219,8 +208,8 @@ export function RichTextEditor({ content, onChange, placeholder, className = '' 
           type="button"
           variant="ghost"
           size="sm"
-          onClick={() => editor.chain().focus().setTextAlign('left').run()}
-          className={editor.isActive({ textAlign: 'left' }) ? 'bg-primary/10 text-primary' : ''}
+          onClick={() => editor.chain().focus().setTextAlign("left").run()}
+          className={editor.isActive({ textAlign: "left" }) ? "bg-primary/10 text-primary" : ""}
           title="Align Left"
         >
           <AlignLeft className="h-4 w-4" />
@@ -229,8 +218,8 @@ export function RichTextEditor({ content, onChange, placeholder, className = '' 
           type="button"
           variant="ghost"
           size="sm"
-          onClick={() => editor.chain().focus().setTextAlign('center').run()}
-          className={editor.isActive({ textAlign: 'center' }) ? 'bg-primary/10 text-primary' : ''}
+          onClick={() => editor.chain().focus().setTextAlign("center").run()}
+          className={editor.isActive({ textAlign: "center" }) ? "bg-primary/10 text-primary" : ""}
           title="Align Center"
         >
           <AlignCenter className="h-4 w-4" />
@@ -239,8 +228,8 @@ export function RichTextEditor({ content, onChange, placeholder, className = '' 
           type="button"
           variant="ghost"
           size="sm"
-          onClick={() => editor.chain().focus().setTextAlign('right').run()}
-          className={editor.isActive({ textAlign: 'right' }) ? 'bg-primary/10 text-primary' : ''}
+          onClick={() => editor.chain().focus().setTextAlign("right").run()}
+          className={editor.isActive({ textAlign: "right" }) ? "bg-primary/10 text-primary" : ""}
           title="Align Right"
         >
           <AlignRight className="h-4 w-4" />
@@ -249,29 +238,16 @@ export function RichTextEditor({ content, onChange, placeholder, className = '' 
           type="button"
           variant="ghost"
           size="sm"
-          onClick={() => editor.chain().focus().setTextAlign('justify').run()}
-          className={editor.isActive({ textAlign: 'justify' }) ? 'bg-primary/10 text-primary' : ''}
+          onClick={() => editor.chain().focus().setTextAlign("justify").run()}
+          className={editor.isActive({ textAlign: "justify" }) ? "bg-primary/10 text-primary" : ""}
           title="Justify"
         >
           <AlignJustify className="h-4 w-4" />
         </Button>
-
-        <div className="w-px h-6 bg-border mx-1" />
-
-        {/* Table */}
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}
-          title="Insert Table"
-        >
-          <TableIcon className="h-4 w-4" />
-        </Button>
       </div>
 
       {/* Editor content */}
-      <EditorContent editor={editor} className="[&>div]:!rounded-none [&>div]:!border-0" />
+      <EditorContent editor={editor} className="[&>div]:!rounded-none [&>div]:!border-0" placeholder={placeholder} />
     </div>
   )
 }

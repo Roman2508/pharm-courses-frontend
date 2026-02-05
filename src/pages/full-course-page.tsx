@@ -11,6 +11,7 @@ import { PaymentModal } from "@/components/common/payment-modal"
 import { useCurrentRegistration } from "@/api/hooks/use-registration"
 import { FullCoursePageActions } from "@/components/features/full-course-page/full-course-page-actions"
 import { FullCoursePagePaymentStatus } from "@/components/features/full-course-page/full-course-page-payment-status"
+import { getTargetAudience } from "@/helpers/get-target-audience"
 
 const statusColors = {
   PLANNED: "bg-success/10 text-success border-success/20",
@@ -50,6 +51,13 @@ const FullCoursePage = () => {
     )
   }
 
+  const color =
+    course.targetAudience === "PHARMACISTS"
+      ? "primary"
+      : course.targetAudience === "LABORATORY_ASSISTANTS"
+        ? "success"
+        : "secondary"
+
   return (
     <>
       <PaymentModal open={isOpen} onOpenChange={setIsOpen} registration={registration} />
@@ -72,10 +80,12 @@ const FullCoursePage = () => {
               </div>
 
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                  <BookOpen className="w-5 h-5 text-primary" />
+                <div className={`w-10 h-10 rounded-full bg-${color}/10 flex items-center justify-center`}>
+                  <BookOpen className={`w-5 h-5 text-${color}`} />
                 </div>
-                <h2 className="text-2xl font-bold text-text-primary">Про захід</h2>
+                <h2 className={`text-xl font-bold text-${color}`}>
+                  Цільова аудиторія: {getTargetAudience(course.targetAudience)}
+                </h2>
               </div>
 
               {course.description ? (

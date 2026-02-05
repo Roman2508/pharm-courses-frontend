@@ -7,7 +7,12 @@ import RegistrationItem from "@/components/common/registration-item"
 import AdminActionCard from "@/components/features/admin-page/admin-action-card"
 
 const AdminPage = () => {
-  const { data: { data: lastRegistrations } = { data: [] }, isLoading } = useAllRegistrations({ limit: 20, page: 1 })
+  const { data: { data: lastRegistrations } = { data: [] }, isLoading } = useAllRegistrations({
+    limit: 20,
+    page: 1,
+    orderBy: "createdAt",
+    orderType: "desc",
+  })
 
   return (
     <div className="container mx-auto px-4 py-12 md:py-16">

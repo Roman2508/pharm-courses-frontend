@@ -15,7 +15,7 @@ const PermissionsLayout: FC<PropsWithChildren> = ({ children }) => {
     return <Navigate to="/" replace />
   }
 
-  if (location.pathname.includes("/profile")) {
+  if (location.pathname.includes("/profile") || location.pathname.includes("/my-courses")) {
     if (isPending) {
       return <PageLoader className="h-screen" />
     }
