@@ -19,7 +19,7 @@ const HomePage = () => {
 
   return (
     <main className="">
-      <section className="relative overflow-hidden min-h-[90vh] flex items-center">
+      <section className="relative overflow-hidden min-h-[90svh] flex items-center">
         <div className="absolute inset-0">
           <img src={bgImage} className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-br from-primary/95 via-primary/85 to-secondary/90" />
@@ -61,28 +61,30 @@ const HomePage = () => {
               Сертифіковані програми для фармацевтів та медичних працівників. Інвестуйте в майбутнє своєї кар'єри.
             </p>
 
-            <div className="flex flex-wrap gap-5">
+            <div className="flex justify-center sm:justify-start flex-wrap gap-5">
               <a
                 href="#events"
                 className={
-                  "inline-flex items-center justify-center gap-3 px-10 rounded-2xl bg-white " +
-                  "text-primary font-bold text-lg hover:bg-white/95 transition-all hover:scale-105 hover:shadow-2xl " +
-                  "w-full sm:w-auto py-3 min-[500px]:py-4 sm:py-5"
+                  "inline-flex items-center justify-center gap-3 rounded-2xl bg-white " +
+                  "text-primary font-bold hover:bg-white/95 transition-all hover:scale-105 hover:shadow-2xl " +
+                  // "w-full sm:w-auto py-3 min-[500px]:py-4 sm:py-5"
+                  "sm:w-auto py-2 min-[500px]:py-3 sm:py-5 px-6 min-[500px]:px-8 sm:px-10 text-base sm:text-lg"
                 }
               >
                 Переглянути заходи
-                <ArrowRight />
+                <ArrowRight className="w-5 min-[500px]:w-6 h-5 min-[500px]:h-6" />
               </a>
 
               <Link
                 to="/archive"
                 className={
-                  "inline-flex items-center justify-center gap-3 px-10 rounded-2xl bg-white/10 backdrop-blur-md " +
-                  "border-2 border-white/30 text-white font-bold text-lg hover:bg-white/20 transition-all hover:scale-105 " +
-                  "w-full sm:w-auto py-3 min-[500px]:py-4 sm:py-5"
+                  "inline-flex items-center justify-center gap-3 rounded-2xl bg-white/10 backdrop-blur-md " +
+                  "border-2 border-white/30 text-white font-bold hover:bg-white/20 transition-all hover:scale-105 " +
+                  // "w-full sm:w-auto py-3 min-[500px]:py-4 sm:py-5"
+                  "sm:w-auto py-2 min-[500px]:py-3 sm:py-5 px-6 min-[500px]:px-8 sm:px-10 text-base sm:text-lg"
                 }
               >
-                <Archive />
+                <Archive className="w-5 min-[500px]:w-6 h-5 min-[500px]:h-6" />
                 Архів заходів
               </Link>
             </div>

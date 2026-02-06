@@ -16,6 +16,8 @@ import AdminCertificatesPage from "./pages/admin-certificates-page"
 import AdminRegistrationsPage from "./pages/admin-registrations-page"
 import InternalServerErrorPage from "./pages/internal-server-error-page"
 import AdminFullCertificatePage from "./pages/admin-full-certificate-page"
+import TermsOfUsePage from "./pages/terms-of-use-page"
+import PrivacyPolicyPage from "./pages/privacy-policy-page"
 
 export const router = createBrowserRouter([
   {
@@ -73,6 +75,7 @@ export const router = createBrowserRouter([
         path: "/admin/users",
         element: <AdminUsersPage />,
       },
+
       {
         path: "/auth/login",
         element: <AuthPage defaultAuthType="login" />,
@@ -80,6 +83,15 @@ export const router = createBrowserRouter([
       {
         path: "/auth/register",
         element: <AuthPage defaultAuthType="register" />,
+      },
+
+      {
+        path: "/privacy-policy",
+        element: <PrivacyPolicyPage />,
+      },
+      {
+        path: "/terms-of-use",
+        element: <TermsOfUsePage />,
       },
     ],
   },

@@ -1,3 +1,4 @@
+import { Plus } from "lucide-react"
 import { useParams } from "react-router"
 import { useEffect, useState } from "react"
 
@@ -11,6 +12,7 @@ import type { RegistrationType } from "@/types/registration.type"
 import { useCourses, useFullCourse } from "@/api/hooks/use-courses"
 import PaymentReceiptDialog from "@/components/features/admin-registration-page/payment-receipt-dialog"
 import AdminRegistrationTable from "@/components/features/admin-registration-page/admin-registration-table"
+import CreateRegistrationDialog from "@/components/features/admin-registration-page/create-registration-dialog"
 import { useAllRegistrations, useUpdateRegistration, type GetRegistrationsQuery } from "@/api/hooks/use-registration"
 
 const initialParams = { page: 1, limit: 20, orderBy: "createdAt", orderType: "desc" } as const
@@ -18,7 +20,9 @@ const initialParams = { page: 1, limit: 20, orderBy: "createdAt", orderType: "de
 const AdminRegistrationsPage = () => {
   const pageParams = useParams()
 
-  const [isOpen, setIsOpen] = useState(false)
+  const [paymentDialogIsOpen, setPaymentDialogIsOpen] = useState(false)
+  const [createRegistrationDialogIsOpen, setCreateRegistrationDialogIsOpen] = useState(false)
+
   const [params, setParams] = useState<GetRegistrationsQuery>(initialParams)
   const [selectedRegistrations, setSelectedRegistrations] = useState<number[]>([])
   const [registrationPayment, setRegistrationPayment] = useState<RegistrationType | null>(null)
@@ -53,10 +57,15 @@ const AdminRegistrationsPage = () => {
   return (
     <>
       <PaymentReceiptDialog
-        open={isOpen}
-        onOpenChange={setIsOpen}
+        open={paymentDialogIsOpen}
+        onOpenChange={setPaymentDialogIsOpen}
         registrationPayment={registrationPayment}
         setRegistrationPayment={setRegistrationPayment}
+      />
+
+      <CreateRegistrationDialog
+        open={createRegistrationDialogIsOpen}
+        onOpenChange={setCreateRegistrationDialogIsOpen}
       />
 
       <div className="container mx-auto px-4 py-12 md:py-16">
@@ -94,6 +103,14 @@ const AdminRegistrationsPage = () => {
             </div>
 
             <div className="flex gap-2 items-center flex-col sm:flex-row">
+              <Button
+                size="sm"
+                title="Створити нову реєстрацію"
+                onClick={() => setCreateRegistrationDialogIsOpen(true)}
+              >
+                <Plus />
+              </Button>
+
               <Pagination
                 total={totalCount}
                 limit={params.limit}
@@ -135,8 +152,8 @@ const AdminRegistrationsPage = () => {
               <AdminRegistrationTable
                 params={params}
                 setParams={setParams}
-                setIsOpen={setIsOpen}
                 registrations={registrations}
+                setIsOpen={setPaymentDialogIsOpen}
                 selectedRegistrations={selectedRegistrations}
                 setRegistrationPayment={setRegistrationPayment}
                 setSelectedRegistrations={setSelectedRegistrations}

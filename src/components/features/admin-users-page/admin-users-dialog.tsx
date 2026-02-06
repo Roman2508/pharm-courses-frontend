@@ -87,7 +87,7 @@ const AdminUsersDialog: FC<Props> = ({ open, editedUser, onOpenChange, setEdited
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[500px] pl-2 pr-0 min-[500px]:px-6">
         <DialogHeader className="pb-4">
           <DialogTitle>{editedUser ? "Редагувати користувача" : "Створити користувача"}</DialogTitle>
         </DialogHeader>
@@ -135,12 +135,18 @@ const AdminUsersDialog: FC<Props> = ({ open, editedUser, onOpenChange, setEdited
           </form>
         </DialogDescription>
 
-        <DialogFooter className="w-full gap-2 pt-2">
+        <DialogFooter className="w-full flex-row gap-2 pt-4">
           <Button size="lg" className="flex-1" disabled={isPending} onClick={handleSubmit}>
             {isPending ? "Завантаження..." : "Зберегти"}
           </Button>
 
-          <Button size="lg" variant="ghost" className="w-40" disabled={isPending} onClick={onDialogClose}>
+          <Button
+            size="lg"
+            variant="ghost"
+            className="flex-1 min-[500px]:w-40"
+            disabled={isPending}
+            onClick={onDialogClose}
+          >
             Скасувати
           </Button>
         </DialogFooter>

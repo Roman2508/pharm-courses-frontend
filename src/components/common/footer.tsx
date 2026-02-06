@@ -81,11 +81,11 @@ export function Footer() {
         <div className="pt-8 border-t border-border flex flex-col-reverse md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-text-secondary">© {new Date().getFullYear()} ЖБФФК. Всі права захищені.</p>
           <div className="flex flex-col min-[500px]:flex-row items-center gap-1 min-[500px]:gap-6">
-            <Link to="#" className="text-sm text-text-secondary hover:text-primary transition-colors">
+            <Link to="/privacy-policy" className="text-sm text-text-secondary hover:text-primary transition-colors">
               Політика конфіденційності
             </Link>
 
-            <Link to="#" className="text-sm text-text-secondary hover:text-primary transition-colors">
+            <Link to="/terms-of-use" className="text-sm text-text-secondary hover:text-primary transition-colors">
               Умови використання
             </Link>
           </div>

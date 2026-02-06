@@ -109,3 +109,23 @@ export const useUpdateRegistrationPayment = (params?: GetRegistrationsQuery) => 
     },
   })
 }
+
+export const useDeleteRegistration = (userId?: string, courseId?: number) => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationKey: ["delete-registration"],
+    mutationFn: async (id: number) => {
+      const { data } = await axiosClient.delete(`/registration/${id}`)
+      return data
+    },
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ["all-registrations"] })
+      queryClient.invalidateQueries({ queryKey: ["user-registrations", { userId }] })
+      queryClient.invalidateQueries({ queryKey: ["registration", { userId, courseId }] })
+      toast.success("Реєстрацію на захід було скасовано!")
+    },
+    onError(error) {
+      toast.error(`Помилка видалення реєстрації. ${error?.message}`)
+    },
+  })
+}

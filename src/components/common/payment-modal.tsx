@@ -12,6 +12,8 @@ import {
 import { Button } from "../ui/button"
 import { usePayment } from "@/api/hooks/use-payment"
 import type { RegistrationType } from "@/types/registration.type"
+import { useDeleteRegistration } from "@/api/hooks/use-registration"
+import { useSession } from "@/api/auth-client"
 
 const bankAccountNumber = "UA528201720314271004202020020"
 
@@ -31,7 +33,10 @@ interface Props {
 export const PaymentModal = ({ open, onOpenChange, registration }: Props) => {
   const fileRef = useRef<HTMLInputElement | null>(null)
 
+  const { data: session } = useSession()
+
   const uploadPaymentReceipt = usePayment()
+  const deleteRegistration = useDeleteRegistration(session?.user?.id, registration?.courseId)
 
   const handleUploadPaymentReceipt = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -42,15 +47,22 @@ export const PaymentModal = ({ open, onOpenChange, registration }: Props) => {
     uploadPaymentReceipt.mutate({ id: registration.id, formData })
   }
 
+  const handleCancelRegistration = () => {
+    if (!registration) return
+    if (!window.confirm("Ви впевнені, що хочете відмінити реєстрацію (цю дію не можна відмінити)?")) return
+    deleteRegistration.mutate(registration.id)
+  }
+
   if (!registration) return
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="min-w-sm md:min-w-xl lg:min-w-2xl">
+      <DialogContent className="min-w-sm md:min-w-xl lg:min-w-2xl px-2 sm:px-6">
         <DialogHeader>
           <DialogTitle className="font-bold border-b border-border pb-4">Оплата заходу</DialogTitle>
         </DialogHeader>
-        <DialogDescription className="max-h-[calc(100vh-240px)] overflow-x-hidden overflow-y-auto pt-4 pb-8 text-base">
+
+        <DialogDescription className="max-h-[calc(100svh-240px)] overflow-x-hidden overflow-y-auto pt-4 pb-8 text-base">
           <div className="leading-normal">
             <p className="text-base">
               Дякуємо за реєстрацію на захід! Щоб завершити реєстрацію, будь ласка, здійсніть оплату.
@@ -59,12 +71,12 @@ export const PaymentModal = ({ open, onOpenChange, registration }: Props) => {
             <h3 className="text-base font-bold mt-4 mb-1 text-black">Реквізити для оплати:</h3>
             <div className="flex flex-col gap-2">
               {paymentDetails.map((detail) => (
-                <div key={detail.label} className="flex gap-2">
+                <div key={detail.label} className="flex flex-col sm:flex-row gap-0 sm:gap-2">
                   <span className="font-bold min-w-[200px]">{detail.label}:</span>
                   <span>{detail.value}</span>
                 </div>
               ))}
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-0 sm:gap-2">
                 <span className="font-bold min-w-[200px]">Сума:</span>
                 <span>{registration.amount} грн.</span>
               </div>
@@ -112,19 +124,31 @@ export const PaymentModal = ({ open, onOpenChange, registration }: Props) => {
             </p>
           )}
 
-          <input type="file" className="hidden" accept="image/*" ref={fileRef} onChange={handleUploadPaymentReceipt} />
-          <Button
-            className="mt-4 w-full"
-            onClick={() => fileRef?.current?.click()}
-            disabled={uploadPaymentReceipt.isPending || registration.paymentStatus === "PAID"}
-          >
-            <Upload />
-            {uploadPaymentReceipt.isPending
-              ? "Завантаження..."
-              : registration.paymentReceipt
-                ? "Завантажити іншу квитанцію"
-                : "Підтвердити оплату"}
-          </Button>
+          <div className="flex gap-2 w-full mt-4">
+            <input
+              type="file"
+              className="hidden"
+              accept="image/*"
+              ref={fileRef}
+              onChange={handleUploadPaymentReceipt}
+            />
+            <Button
+              className="flex-1"
+              onClick={() => fileRef?.current?.click()}
+              disabled={uploadPaymentReceipt.isPending || registration.paymentStatus === "PAID"}
+            >
+              <Upload />
+              {uploadPaymentReceipt.isPending
+                ? "Завантаження..."
+                : registration.paymentReceipt
+                  ? "Завантажити іншу квитанцію"
+                  : "Підтвердити оплату"}
+            </Button>
+
+            <Button variant="destructive" onClick={handleCancelRegistration}>
+              Відмінити реєстрацію
+            </Button>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>

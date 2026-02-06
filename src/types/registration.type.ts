@@ -1,6 +1,7 @@
 import type { CourseType } from "./course.type"
 
 export type PaymentStatus = "NONE" | "PENDING" | "PAID" | "FAILED" | "REFUNDED"
+export type RegistrationTypeType = "TRAINER" | "USER"
 
 export type RegistrationType = {
   id: number
@@ -8,6 +9,7 @@ export type RegistrationType = {
   paymentReceipt: string
   amount: number
   certificateEnabled: boolean
+  type: RegistrationTypeType
 
   course: CourseType
   courseId: number

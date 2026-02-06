@@ -3,16 +3,15 @@ import { useNavigate, useParams } from "react-router"
 
 import { Button } from "@/components/ui/button"
 import { findError } from "@/helpers/find-error"
-import { Spinner } from "@/components/ui/spinner"
+import { Title } from "@/components/custom/title"
 import useCourseData from "@/hooks/use-course-data"
 import type { CourseType } from "@/types/course.type"
 import FormField from "@/components/custom/form-field"
+import PageLoader from "@/components/custom/page-loader"
 import { getFormErrors } from "@/helpers/get-form-errors"
 import { useGetAllCertificateTemplates } from "@/api/hooks/use-certificate-template"
 import { useCreateCourse, useFullCourse, useUpdateCourse } from "@/api/hooks/use-courses"
 import { courseFormSchema } from "@/components/features/admin-full-course-page/admin-full-course-page-form-schema"
-import PageLoader from "@/components/custom/page-loader"
-import { Title } from "@/components/custom/title"
 
 const AdminFullCoursePage = () => {
   const params = useParams()
