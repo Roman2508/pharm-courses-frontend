@@ -3,12 +3,13 @@ import type { Dispatch, FC, SetStateAction } from "react"
 
 import { Button } from "../ui/button"
 import { Spinner } from "@/components/ui/spinner"
+import type { UserType } from "@/types/user.type"
 import type { CourseType } from "@/types/course.type"
 import { useCreateRegistration } from "@/api/hooks/use-registration"
 import { CertificateDownloadButton } from "../features/full-course-page/certificate-download-button"
 
 interface Props {
-  userId?: string
+  user?: UserType
   amount?: number
   courseId?: number
   isLoading: boolean
@@ -21,14 +22,13 @@ interface Props {
 }
 
 export const CourseActions: FC<Props> = ({
-  userId,
-  courseId,
-  registration,
-  isLoading,
+  user,
   amount,
+  courseId,
+  isLoading,
   setIsOpen,
+  registration,
   course,
-  userName,
   size = "lg",
   className = "w-full",
 }) => {
@@ -42,7 +42,7 @@ export const CourseActions: FC<Props> = ({
     )
   }
 
-  if (!userId) {
+  if (!user) {
     return (
       <Link to="/auth/login">
         <Button className={className} size={size}>
@@ -51,7 +51,6 @@ export const CourseActions: FC<Props> = ({
       </Link>
     )
   }
-
   // return (
   //   <>
   //     {course && userName && (
@@ -61,13 +60,25 @@ export const CourseActions: FC<Props> = ({
   // )
 
   if (!registration && courseId && amount) {
+    const requiredFields = ["region_city", "education", "specialty", "workplace", "jobTitle"] as const
+
+    const isSomeRequiredFildAreEmpty = requiredFields.every((field) => {
+      const value = user[field]
+      return value !== null && value !== undefined && value !== ""
+    })
+
+    // Якщо юзер хоче зареєструватись на захід, в нього мають бути заповненими всі обовязкові поля
+    if (isSomeRequiredFildAreEmpty) {
+      //
+    }
+
     // Немає реєстрації
     return (
       <Button
         size={size}
         className={className}
         disabled={isCreateRegistrationPending}
-        onClick={() => createRegistration({ userId, courseId, amount }, { onSuccess: () => setIsOpen(true) })}
+        onClick={() => createRegistration({ userId: user.id, courseId, amount }, { onSuccess: () => setIsOpen(true) })}
       >
         Зареєструватись
       </Button>
@@ -105,10 +116,10 @@ export const CourseActions: FC<Props> = ({
             Сертифікат доступний
           </div>
 
-          {course && userName && (
+          {course && user && (
             <CertificateDownloadButton
               course={course}
-              userName={userName}
+              userName={user.name}
               className={className}
               registration={registration}
             />

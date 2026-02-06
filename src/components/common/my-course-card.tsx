@@ -4,20 +4,19 @@ import { Calendar, Clock } from "lucide-react"
 
 import { Card } from "../ui/card"
 import { Badge } from "../ui/badge"
-import { Button } from "../ui/button"
 import { getDate } from "@/helpers/get-date"
 import { PaymentModal } from "./payment-modal"
-import type { RegistrationType } from "@/types/registration.type"
 import { CourseActions } from "./course-actions"
+import type { UserType } from "@/types/user.type"
+import type { RegistrationType } from "@/types/registration.type"
 import { getPaymentColor, getPaymentStatus } from "@/helpers/get-payment-status"
 
 type Props = {
-  userId: string
-  userName: string
+  user: UserType
   registration: RegistrationType
 }
 
-const MyCourseCard: FC<Props> = ({ registration, userId, userName }) => {
+const MyCourseCard: FC<Props> = ({ registration, user }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const color = getPaymentColor(registration.paymentStatus)
@@ -59,20 +58,17 @@ const MyCourseCard: FC<Props> = ({ registration, userId, userName }) => {
           </Badge>
         </div>
 
-        {/* <div>{registration.paymentStatus !== "PAID" && <Button>Оплатити зараз</Button>}</div> */}
-
         <div>
           <CourseActions
             size="sm"
             className=""
-            userId={userId}
-            courseId={registration.course.id}
-            registration={registration}
+            user={user}
             isLoading={false}
-            amount={registration.course.price}
             setIsOpen={setIsOpen}
+            registration={registration}
             course={registration.course}
-            userName={userName}
+            courseId={registration.course.id}
+            amount={registration.course.price}
           />
         </div>
       </Card>

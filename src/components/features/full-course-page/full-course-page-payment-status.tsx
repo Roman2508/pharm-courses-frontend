@@ -30,7 +30,10 @@ export const FullCoursePagePaymentStatus = ({ registration }: Props) => {
         </div>
         <div>
           <div
-            className={cn("font-medium", registration.paymentStatus === "PAID" ? "text-success" : "text-destructive")}
+            className={cn(
+              "text-sm xl:text-base font-medium",
+              registration.paymentStatus === "PAID" ? "text-success" : "text-destructive",
+            )}
           >
             Ви зареєстровані
           </div>

@@ -5,6 +5,7 @@ import { BookOpen, Calendar, ChevronLeft, Users } from "lucide-react"
 import { getDate } from "@/helpers/get-date"
 import { useSession } from "@/api/auth-client"
 import { Button } from "@/components/ui/button"
+import type { UserType } from "@/types/user.type"
 import { useFullCourse } from "@/api/hooks/use-courses"
 import PageLoader from "@/components/custom/page-loader"
 import { PaymentModal } from "@/components/common/payment-modal"
@@ -62,28 +63,35 @@ const FullCoursePage = () => {
     <>
       <PaymentModal open={isOpen} onOpenChange={setIsOpen} registration={registration} />
 
-      <div className="container mx-auto px-4 py-12 md:py-16">
+      <div className="container mx-auto px-0 sm:px-4 py-12 md:py-16">
         <Button variant="ghost" className="mb-8 gap-2" onClick={() => navigate(-1)}>
           <ChevronLeft className="h-4 w-4" />
           Повернутись назад
         </Button>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 xl:gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
             {/* Course description */}
-            <div className="bg-surface rounded-2xl border border-border p-8 md:p-8">
+            <div className="bg-surface rounded-2xl border border-border p-6 xl:p-8">
               <div>
-                <h1 className="text-xl md:text-3xl lg:text-4xl font-bold text-text-primary mb-6 text-balance leading-tight">
+                <h1
+                  className={
+                    "text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-text-primary mb-6 text-balance leading-tight " +
+                    "text-center lg:text-left"
+                  }
+                >
                   {course.name}
                 </h1>
               </div>
 
               <div className="flex items-center gap-3 mb-6">
-                <div className={`w-10 h-10 rounded-full bg-${color}/10 flex items-center justify-center`}>
-                  <BookOpen className={`w-5 h-5 text-${color}`} />
+                <div
+                  className={`min-w-9 sm:w-10 h-9 sm:h-10 rounded-full bg-${color}/10 flex items-center justify-center`}
+                >
+                  <BookOpen className={`w-4 sm:w-5 h-4 sm:h-5 text-${color}`} />
                 </div>
-                <h2 className={`text-xl font-bold text-${color}`}>
+                <h2 className={`text-sm sm:text-base lg:text-lg xl:text-xl leading-[1.3] font-bold text-${color}`}>
                   Цільова аудиторія: {getTargetAudience(course.targetAudience)}
                 </h2>
               </div>
@@ -91,7 +99,7 @@ const FullCoursePage = () => {
               {course.description ? (
                 <div
                   dangerouslySetInnerHTML={{ __html: course.description }}
-                  className="prose prose-lg max-w-none text-text-secondary leading-relaxed"
+                  className="prose prose-lg max-w-none text-text-secondary leading-relaxed max-[500px]:text-sm"
                 />
               ) : (
                 <p className="text-text-secondary italic">Опис відсутній</p>
@@ -101,18 +109,18 @@ const FullCoursePage = () => {
 
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <div className="bg-surface rounded-3xl border border-border p-6 md:p-8 sticky top-8 space-y-8">
+            <div className="bg-surface rounded-3xl border border-border p-6 xl:p-8 sticky top-8 space-y-8">
               <div className="flex items-center justify-between">
                 <div className="text-left">
-                  <p className="text-lg">Вартість участі:</p>
+                  <p className="text-base xl:text-lg">Вартість участі:</p>
                   <div className="flex gap-1 items-end">
-                    <div className="text-3xl font-bold text-primary">{course.price}</div>
+                    <div className="text-2xl xl:text-3xl font-bold text-primary">{course.price}</div>
                     <div className="text-lg text-text-muted">грн.</div>
                   </div>
                 </div>
 
                 <span
-                  className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium border ${
+                  className={`inline-flex items-center px-2 xl:px-4 py-1 xl:py-2 rounded-full text-[12px] xl:text-sm font-medium border ${
                     statusColors[course.status]
                   }`}
                 >
@@ -121,13 +129,13 @@ const FullCoursePage = () => {
               </div>
 
               <div className="space-y-4">
-                <div className="flex items-start gap-4 p-4 rounded-xl bg-background border border-border">
-                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Calendar className="w-5 h-5 text-primary" />
+                <div className="flex items-start gap-4 p-3 xl:p-4 rounded-xl bg-background border border-border">
+                  <div className="w-9 xl:w-10 h-9 xl:h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <Calendar className="w-4 xl:w-5 h-4 xl:h-5 text-primary" />
                   </div>
                   <div>
-                    <div className="text-xs text-text-muted mb-1">Дата проведення</div>
-                    <div className="font-medium text-text-primary">
+                    <div className="text-xs text-text-muted mb-0 xl:mb-1">Дата проведення</div>
+                    <div className="font-medium text-text-primary text-sm xl:text-base">
                       {getDate(course.startDate)}
                       {course.endDate && course.endDate !== course.startDate && <> - {getDate(course.endDate)}</>}
                     </div>
@@ -136,12 +144,12 @@ const FullCoursePage = () => {
 
                 {!!course.maxMembers && (
                   <div className="flex items-start gap-4 p-4 rounded-xl bg-background border border-border">
-                    <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center flex-shrink-0">
-                      <Users className="w-5 h-5 text-secondary" />
+                    <div className="w-9 xl:w-10 h-9 xl:h-10 rounded-full bg-secondary/10 flex items-center justify-center flex-shrink-0">
+                      <Users className="w-4 xl:w-5 h-4 xl:h-5 text-secondary" />
                     </div>
                     <div>
-                      <div className="text-xs text-text-muted mb-1">Макс. учасників</div>
-                      <div className="font-medium text-text-primary">{course.maxMembers}</div>
+                      <div className="text-xs text-text-muted mb-0 xl:mb-1">Макс. учасників</div>
+                      <div className="font-medium text-text-primary text-sm xl:text-base">{course.maxMembers}</div>
                     </div>
                   </div>
                 )}
@@ -156,10 +164,9 @@ const FullCoursePage = () => {
                 courseId={course.id}
                 setIsOpen={setIsOpen}
                 amount={course.price}
-                userId={session?.user.id}
                 registration={registration}
-                userName={session?.user.name}
                 isLoading={isRegistrationLoading}
+                user={session?.user as unknown as UserType}
               />
             </div>
           </div>

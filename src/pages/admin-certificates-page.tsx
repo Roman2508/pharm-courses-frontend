@@ -4,6 +4,7 @@ import { getDate } from "@/helpers/get-date"
 import { Button } from "@/components/ui/button"
 import PageLoader from "@/components/custom/page-loader"
 import { useDeleteCertificateTemplate, useGetAllCertificateTemplates } from "@/api/hooks/use-certificate-template"
+import { Title } from "@/components/custom/title"
 
 const AdminCertificatesPage = () => {
   const { data: certificateTemplates, isLoading } = useGetAllCertificateTemplates()
@@ -17,14 +18,12 @@ const AdminCertificatesPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-12 md:py-16">
-      <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-3">
-          <div className="h-1 w-12 bg-gradient-to-r from-primary to-secondary rounded-full" />
-          <h1 className="text-3xl font-bold text-text-primary">Шаблони сертифікатів</h1>
-        </div>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4 sm:gap-0">
+        <Title>Шаблони сертифікатів</Title>
+
         <Link
           to="/admin/certificates/new"
-          className="px-6 py-3 rounded-xl bg-primary text-white font-medium hover:bg-primary-hover transition-all hover:shadow-lg hover:shadow-primary/20"
+          className="px-6 py-2 sm:py-3 rounded-xl bg-primary text-white font-medium hover:bg-primary-hover transition-all hover:shadow-lg hover:shadow-primary/20"
         >
           Створити шаблон
         </Link>
@@ -33,7 +32,7 @@ const AdminCertificatesPage = () => {
       <div className="mb-6 p-4 rounded-xl bg-secondary/10 border border-secondary/20">
         <div className="flex gap-3">
           <svg
-            className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5"
+            className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5 hidden min-[450px]:inline-flex"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -63,11 +62,15 @@ const AdminCertificatesPage = () => {
         <div className="grid gap-6">
           {certificateTemplates.map((template) => (
             <div key={template.id} className="bg-surface rounded-2xl border border-border p-6">
-              <div className="flex flex-wrap items-start justify-between gap-4">
-                <div>
-                  <h3 className="text-xl font-bold text-text-primary mb-2">{template.name}</h3>
+              <div className="flex flex-col md:flex-row items-start justify-between gap-4">
+                <div className="flex-1">
+                  <h3 className="text-sm min-[500px]:text-base sm:text-xl font-bold text-text-primary mb-2">
+                    {template.name}
+                  </h3>
                   <div className="text-sm text-text-secondary space-y-1">
-                    <p>URL шаблону: {template.templateUrl}</p>
+                    <p className="truncate max-w-[200px] min-[420px]:max-w-[300px] min-[500px]:max-w-[400px] sm:max-w-[500px] md:max-w-[300px] min-[840px]:max-w-[400px]">
+                      URL шаблону: {template.templateUrl}
+                    </p>
                     <p>Створено: {getDate(template.createdAt)}</p>
                   </div>
                 </div>

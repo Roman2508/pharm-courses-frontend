@@ -3,6 +3,7 @@ import { Title } from "@/components/custom/title"
 import PageLoader from "@/components/custom/page-loader"
 import MyCourseCard from "@/components/common/my-course-card"
 import { useUserRegistrations } from "@/api/hooks/use-registration"
+import type { UserType } from "@/types/user.type"
 
 const MyCoursesPage = () => {
   const { data: session } = useSession()
@@ -20,9 +21,8 @@ const MyCoursesPage = () => {
           {registrations.map((registration) => (
             <MyCourseCard
               key={registration.id}
-              userId={session.user.id}
               registration={registration}
-              userName={session.user.name}
+              user={session?.user as unknown as UserType}
             />
           ))}
         </div>
