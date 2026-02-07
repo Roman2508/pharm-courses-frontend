@@ -1,4 +1,8 @@
-import { z } from "zod"
+// import { z } from "zod"
+
+import * as z from "zod"
+
+z.config(z.locales.uk())
 
 const phoneRegex = new RegExp(/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/)
 
@@ -12,13 +16,6 @@ export const userFormSchema = z.object({
   email: z.email({ message: "Не правильний формат пошти" }).max(120),
 
   phone: z.string().regex(phoneRegex, "Не правильний формат телефону"),
-
-  // password: z
-  //   .string()
-  //   .min(8, "Пароль має містити мінімум 8 символів")
-  //   .max(30, "Пароль занадто довгий")
-  //   .optional()
-  //   .or(z.literal("")),
 
   role: z.enum(["user", "admin"], "Оберіть роль користувача"),
 
@@ -52,12 +49,113 @@ const requiredPasswordSchema = z.object({
   password: z.string().min(8, "Пароль має містити мінімум 8 символів").max(30),
 })
 
-const optionalPasswordSchema = z.object({
-  password: z.string().min(8, "Пароль має містити мінімум 8 символів").max(30).optional().or(z.literal("")),
-})
+// const requiredPasswordSchema = z
+//   .object({
+//     password: z.string().min(8, "Пароль має містити мінімум 8 символів").max(30, "Пароль занадто довгий"),
+//     confirmPassword: z.string().min(8, "Пароль має містити мінімум 8 символів").max(30, "Пароль занадто довгий"),
+//   })
+//   .refine((data) => data.password === data.confirmPassword, {
+//     message: "Паролі не співпадають",
+//     path: ["confirmPassword"],
+//   })
+
+// const optionalPasswordSchema = z
+//   .object({
+//     password: z
+//       .string()
+//       .min(8, "Пароль має містити мінімум 8 символів")
+//       .max(30, "Пароль занадто довгий")
+//       .optional()
+//       .or(z.literal("")),
+//     confirmPassword: z.string().optional().or(z.literal("")),
+//   })
+//   .refine(
+//     (data) => {
+//       // Якщо пароль введено, confirmPassword також має бути введений
+//       if (data.password && data.password !== "") {
+//         return data.confirmPassword && data.confirmPassword !== ""
+//       }
+//       return true
+//     },
+//     {
+//       message: "Підтвердіть пароль",
+//       path: ["confirmPassword"],
+//     },
+//   )
+//   .refine(
+//     (data) => {
+//       // Якщо обидва паролі введені, вони мають співпадати
+//       if (data.password && data.password !== "" && data.confirmPassword && data.confirmPassword !== "") {
+//         return data.password === data.confirmPassword
+//       }
+//       return true
+//     },
+//     {
+//       message: "Паролі не співпадають",
+//       path: ["confirmPassword"],
+//     },
+//   )
 
 export const createUserSchema = userFormSchema.merge(requiredPasswordSchema)
 export type CreateUserFormData = z.infer<typeof createUserSchema>
 
-export const updateUserSchema = userFormSchema.merge(optionalPasswordSchema)
+// export const updateUserSchema = userFormSchema.merge(optionalPasswordSchema)
+export const updateUserSchema = userFormSchema
+  .extend({
+    password: z.string().optional().or(z.literal("")),
+    oldPassword: z.string().optional().or(z.literal("")),
+  })
+  .superRefine((data, ctx) => {
+    const hasNewPassword = !!data.password && data.password !== ""
+    const hasCurrentPassword = !!data.oldPassword && data.oldPassword !== ""
+
+    if (hasNewPassword && !hasCurrentPassword) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Введіть поточний пароль",
+        path: ["oldPassword"],
+      })
+    }
+
+    if (hasCurrentPassword && !hasNewPassword) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Введіть новий пароль",
+        path: ["password"],
+      })
+    }
+
+    if (hasNewPassword && data.password!.length < 8) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Новий пароль має містити мінімум 8 символів",
+        path: ["password"],
+      })
+    }
+
+    if (hasCurrentPassword && data.oldPassword!.length < 8) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Поточний пароль має містити мінімум 8 символів",
+        path: ["oldPassword"],
+      })
+    }
+
+    if (hasNewPassword && data.password!.length > 30) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Новий пароль занадто довгий",
+        path: ["password"],
+      })
+    }
+
+    if (hasCurrentPassword && hasNewPassword && data.oldPassword === data.password) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Новий пароль має відрізнятися від поточного",
+        path: ["password"],
+      })
+    }
+  })
+
 export type UpdateUserFormData = z.infer<typeof updateUserSchema>

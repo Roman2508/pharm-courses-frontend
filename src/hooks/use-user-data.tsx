@@ -3,7 +3,7 @@ import { useMemo, useState } from "react"
 import type { UserType } from "@/types/user.type"
 
 interface IFields {
-  name: keyof UserType
+  name: keyof (UserType & { oldPassword: string })
   required: boolean
   type: "text" | "email" | "password" | "number" | "date" | "tel" | "url" | "select" | "rich-text"
   label: string
@@ -30,11 +30,13 @@ const defaultFormData: Partial<UserType> = {
 }
 
 const useUserData = (user: UserType | null) => {
-  const [userFormData, setUserFormData] = useState<UserType>({} as UserType)
+  const [userFormData, setUserFormData] = useState<UserType & { oldPassword: string }>(
+    {} as UserType & { oldPassword: string },
+  )
 
   const formData = {
     ...defaultFormData,
-    ...(user ? user : {}),
+    ...(user ? { ...user, oldPassword: "" } : {}),
     ...userFormData,
   }
 
@@ -66,12 +68,21 @@ const useUserData = (user: UserType | null) => {
       },
       {
         name: "password",
-        required: true,
+        required: formData.password || formData.oldPassword ? true : false,
         type: "text",
-        label: "Пароль (необов'язково)",
-        placeholder: "Залиште поле пустим, щоб не змінювати",
+        label: `Новий пароль ${formData.password || formData.oldPassword ? "" : "(необов'язково)"}`,
+        placeholder: formData.password || formData.oldPassword ? "" : "Залиште поле пустим, щоб не змінювати",
         value: formData.password,
         onChange: (value) => setUserFormData({ ...formData, password: value }),
+      },
+      {
+        name: "oldPassword",
+        required: formData.password || formData.oldPassword ? true : false,
+        type: "text",
+        label: `Поточний пароль ${formData.password || formData.oldPassword ? "" : "(необов'язково)"}`,
+        placeholder: formData.password || formData.oldPassword ? "" : "Залиште поле пустим, щоб не змінювати",
+        value: formData.oldPassword,
+        onChange: (value) => setUserFormData({ ...formData, oldPassword: value }),
       },
       {
         name: "role",

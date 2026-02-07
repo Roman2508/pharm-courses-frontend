@@ -5,7 +5,7 @@ import { Button } from "../ui/button"
 import { Spinner } from "@/components/ui/spinner"
 import type { UserType } from "@/types/user.type"
 import type { CourseType } from "@/types/course.type"
-import { useCreateRegistration } from "@/api/hooks/use-registration"
+import { useCoursesCountRegistrations, useCreateRegistration } from "@/api/hooks/use-registration"
 import { CertificateDownloadButton } from "../features/full-course-page/certificate-download-button"
 
 interface Props {
@@ -32,6 +32,8 @@ export const CourseActions: FC<Props> = ({
   size = "lg",
   className = "w-full",
 }) => {
+  const { data: registrationCount } = useCoursesCountRegistrations(courseId)
+
   const { mutate: createRegistration, isPending: isCreateRegistrationPending } = useCreateRegistration()
 
   if (isLoading) {
@@ -43,6 +45,16 @@ export const CourseActions: FC<Props> = ({
   }
 
   if (!user) {
+    if (course && typeof course.maxMembers === "number" && registrationCount) {
+      if (course.maxMembers >= registrationCount) {
+        return (
+          <Button className={className} size={size} disabled>
+            Всі місця зайняті
+          </Button>
+        )
+      }
+    }
+
     return (
       <Link to="/auth/login">
         <Button className={className} size={size}>
@@ -60,6 +72,17 @@ export const CourseActions: FC<Props> = ({
   // )
 
   if (!registration && courseId && amount) {
+    // Закінчились доступні реєстрації
+    if (course && typeof course.maxMembers === "number" && registrationCount) {
+      if (course.maxMembers >= registrationCount) {
+        return (
+          <Button className={className} size={size} disabled>
+            Всі місця зайняті
+          </Button>
+        )
+      }
+    }
+
     const requiredFields = ["region_city", "education", "specialty", "workplace", "jobTitle"] as const
 
     const isSomeRequiredFildAreEmpty = requiredFields.every((field) => {

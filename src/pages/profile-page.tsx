@@ -11,18 +11,17 @@ import { useUpdateAvatar } from "@/api/hooks/use-user"
 import { getFormErrors } from "@/helpers/get-form-errors"
 import { authClient, useSession } from "@/api/auth-client"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { userFormSchema } from "@/components/features/admin-users-page/admin-users-form-schema"
+import { updateUserSchema } from "@/components/features/admin-users-page/admin-users-form-schema"
 
 const ProfilePage = () => {
   const { data } = useSession()
 
-  const { fields, formData } = useUserData(data?.user ? (data.user as Partial<UserType> | undefined) : {})
+  const { fields, formData } = useUserData(data?.user ? (data.user as unknown as UserType) : null)
 
   const availableFields = fields.filter((field) => field.name !== "role")
 
   const [isPending, setIsPending] = useState(false)
   const [showErrors, setShowErrors] = useState(false)
-
   const [preview, setPreview] = useState<string | null>(null)
 
   const updateAvatar = useUpdateAvatar()
@@ -41,7 +40,7 @@ const ProfilePage = () => {
   }
 
   const validate = () => {
-    const res = userFormSchema.safeParse(formData)
+    const res = updateUserSchema.safeParse(formData)
     if (res.success) return
     return res.error.format()
   }
@@ -62,8 +61,9 @@ const ProfilePage = () => {
         const isEmailChange = data.user.email === formData.email
 
         if (isEmailChange) {
-          const { email, role, ...rest } = formData
+          const { email, password, oldPassword, role, ...rest } = formData
           const { data } = await authClient.updateUser(rest)
+          await authClient.changeEmail({ newEmail: formData.email })
           if (data?.status) toast.success("Профіль оновлено")
           else toast.error("Сталась помилка під час оновлення профілю")
         } else {
@@ -71,6 +71,17 @@ const ProfilePage = () => {
           const { data } = await authClient.updateUser(rest)
           if (data?.status) toast.success("Профіль оновлено")
           else toast.error("Сталась помилка під час оновлення профілю")
+        }
+
+        const { password, oldPassword } = formData
+
+        if (password && password !== "" && oldPassword && oldPassword !== "") {
+          const data = await authClient.changePassword({ currentPassword: oldPassword, newPassword: password })
+
+          if (data?.error) {
+            if (data.error.code === "INVALID_PASSWORD") toast.error("Поточний пароль введено не вірно")
+            else toast.error("Сталась помилка під час зміни паролю")
+          } else toast.success("Пароль змінено")
         }
       } finally {
         setIsPending(false)

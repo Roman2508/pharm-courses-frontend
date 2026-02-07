@@ -46,6 +46,17 @@ export const useUserRegistrations = (userId?: string) => {
   })
 }
 
+export const useCoursesCountRegistrations = (courseId?: number) => {
+  return useQuery({
+    enabled: !!courseId,
+    queryKey: ["course-count-registrations", courseId],
+    queryFn: async () => {
+      const { data } = await axiosClient.get<number>(`/registration/course/count/${courseId}`)
+      return data
+    },
+  })
+}
+
 export const useCreateRegistration = () => {
   const queryClient = useQueryClient()
   return useMutation({

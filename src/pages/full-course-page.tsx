@@ -147,6 +147,7 @@ const FullCoursePage = () => {
                     <div className="w-9 xl:w-10 h-9 xl:h-10 rounded-full bg-secondary/10 flex items-center justify-center flex-shrink-0">
                       <Users className="w-4 xl:w-5 h-4 xl:h-5 text-secondary" />
                     </div>
+
                     <div>
                       <div className="text-xs text-text-muted mb-0 xl:mb-1">Макс. учасників</div>
                       <div className="font-medium text-text-primary text-sm xl:text-base">{course.maxMembers}</div>
