@@ -1,18 +1,21 @@
 import { useMemo, useState } from "react"
 
+import { authClient } from "@/api/auth-client"
 import type { UserType } from "@/types/user.type"
 import type { CourseType } from "@/types/course.type"
+import type { FormFieldTypes } from "@/components/custom/form-field"
 import type { RegistrationType, RegistrationTypeType } from "@/types/registration.type"
 
 interface IFields {
   name: keyof RegistrationType
   required: boolean
-  type: "text" | "email" | "password" | "number" | "date" | "tel" | "url" | "select" | "rich-text"
+  type: FormFieldTypes
   label: string
   value: any
   defaultValue?: string
   placeholder?: string
   className?: string
+  fetcher?: (query?: string | undefined) => Promise<any[]>
   items?: { label: string; value: string }[]
   onChange: (value: string) => void
 }
@@ -36,16 +39,30 @@ const useRegistrationData = (users: UserType[] = [], courses: CourseType[] = [])
 
   const coursesList = courses ? courses.map((el) => ({ label: el.name, value: String(el.id) })) : []
 
+  const fetchUsers = async (query?: string) => {
+    try {
+      const responce = await authClient.admin.listUsers({
+        query: { searchValue: query, searchField: "name", searchOperator: "contains" },
+      })
+      const users = responce.data ? (responce.data.users as UserType[]) : []
+      return users
+    } catch (error) {
+      console.log(error)
+      return []
+    }
+  }
+
   const fields: IFields[] = useMemo(
     () => [
       {
         name: "userId",
         required: false,
-        type: "select",
+        type: "async-select",
         label: "Користувач",
         value: formData.userId,
         defaultValue: String(formData.userId),
         items: usersList,
+        fetcher: fetchUsers,
         onChange: (value) => setUserFormData({ ...formData, userId: value }),
       },
 

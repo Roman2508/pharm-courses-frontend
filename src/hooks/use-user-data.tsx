@@ -1,11 +1,12 @@
 import { useMemo, useState } from "react"
 
 import type { UserType } from "@/types/user.type"
+import type { FormFieldTypes } from "@/components/custom/form-field"
 
 interface IFields {
   name: keyof (UserType & { oldPassword: string })
   required: boolean
-  type: "text" | "email" | "password" | "number" | "date" | "tel" | "url" | "select" | "rich-text"
+  type: FormFieldTypes
   label: string
   value: any
   defaultValue?: string

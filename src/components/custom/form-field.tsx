@@ -2,14 +2,28 @@ import type { FC } from "react"
 
 import { cn } from "@/lib/utils"
 import { Input } from "../ui/input"
+import { AsyncSelect } from "../ui/async-select"
+import type { UserType } from "@/types/user.type"
 import { RichTextEditor } from "./rich-text-editor"
 import { DateTimePicker } from "../ui/datetime-picker"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
+export type FormFieldTypes =
+  | "text"
+  | "email"
+  | "password"
+  | "number"
+  | "date"
+  | "tel"
+  | "url"
+  | "select"
+  | "async-select"
+  | "rich-text"
+
 interface Props {
   label?: string
   name: string
-  type: "text" | "email" | "password" | "number" | "date" | "tel" | "url" | "select" | "rich-text"
+  type: FormFieldTypes
   placeholder?: string
   value: string
   required?: boolean
@@ -17,6 +31,7 @@ interface Props {
   items?: { label: string; value: string }[]
   error?: string[]
   onChange: (value: string) => void
+  fetcher?: (query?: string | undefined) => Promise<any[]>
   className?: string
   [props: string]: any
 }
@@ -33,6 +48,7 @@ const FormField: FC<Props> = ({
   defaultValue = "",
   items = [],
   className,
+  fetcher = async (query?: string | undefined): Promise<any> => {},
   ...props
 }) => {
   if (type === "select") {
@@ -58,6 +74,47 @@ const FormField: FC<Props> = ({
             ))}
           </SelectContent>
         </Select>
+      </div>
+    )
+  }
+
+  if (type === "async-select") {
+    return (
+      <div>
+        {label && (
+          <label
+            htmlFor={name}
+            className={cn("block text-sm font-medium text-text-primary mb-2", { "text-destructive": error })}
+          >
+            {label}
+            {required ? " *" : ""}
+          </label>
+        )}
+        <AsyncSelect<UserType>
+          fetcher={fetcher}
+          renderOption={(user) => (
+            <div className="flex items-center gap-2">
+              <div className="flex flex-col">
+                <div className="font-medium">{user.name}</div>
+                <div className="text-xs text-muted-foreground">{user.role}</div>
+              </div>
+            </div>
+          )}
+          getOptionValue={(user) => user.id}
+          getDisplayValue={(user) => (
+            <div className="flex items-center gap-2 text-left">
+              <div className="flex flex-col leading-tight">
+                <div className="font-medium">{user.name}</div>
+                <div className="text-xxs text-muted-foreground">{user.role}</div>
+              </div>
+            </div>
+          )}
+          notFound={<div className="py-6 text-center text-sm">Нічого не знайдено</div>}
+          label="Пошук"
+          placeholder="Пошук..."
+          value={defaultValue || value}
+          onChange={onChange}
+        />
       </div>
     )
   }

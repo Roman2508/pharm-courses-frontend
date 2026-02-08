@@ -1,15 +1,17 @@
-import type { FC } from 'react'
-import { Link } from 'react-router'
-import { Archive, Clock4 } from 'lucide-react'
+import type { FC } from "react"
+import { Link } from "react-router"
+import { Archive, Clock4 } from "lucide-react"
 
-import { Badge } from '../ui/badge'
-import { Button } from '../ui/button'
-import { getDate } from '@/helpers/get-date'
-import type { CourseType } from '@/types/course.type'
+import { Badge } from "../ui/badge"
+import { Button } from "../ui/button"
+import { getDate } from "@/helpers/get-date"
+import type { CourseType } from "@/types/course.type"
 
 type Props = CourseType
 
 const CourseCard: FC<Props> = ({ id, name, price, description, startDate, endDate, status }) => {
+  const isEndDate = endDate && endDate !== startDate
+
   return (
     <article className="group relative h-full">
       <div className="absolute -inset-1 bg-gradient-to-r from-primary/0 via-primary/20 to-secondary/0 rounded-[2rem] opacity-0 group-hover:opacity-30 blur-xl transition-all duration-700" />
@@ -21,13 +23,13 @@ const CourseCard: FC<Props> = ({ id, name, price, description, startDate, endDat
 
         <div className="relative p-6 lg:p-8 flex flex-col h-full">
           <div className="flex items-center justify-between mb-6">
-            {status === 'PLANNED' && (
+            {status === "PLANNED" && (
               <Badge className="border-2 px-3.5 py-2 rounded-xl text-xs font-bold bg-success/10 text-success border-success/30">
                 <Clock4 />
                 Відкрито
               </Badge>
             )}
-            {status === 'ARCHIVED' && (
+            {status === "ARCHIVED" && (
               <Badge className="border-2 px-3.5 py-2 rounded-xl text-xs font-bold bg-secondary/10 text-secondary border-secondary/30">
                 <Archive />
                 Архів
@@ -39,20 +41,19 @@ const CourseCard: FC<Props> = ({ id, name, price, description, startDate, endDat
           <Link to={`/courses/${id}`}>
             <h2
               className={
-                'text-xl lg:text-2xl font-black text-text-primary mb-4 text-balance leading-tight tracking-tight ' +
-                'group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-primary ' +
-                'group-hover:to-secondary transition-all duration-300 truncate text-ellipsis line-clamp-3'
+                "text-xl lg:text-2xl font-black text-text-primary mb-4 text-balance leading-tight tracking-tight " +
+                "group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-primary " +
+                "group-hover:to-secondary transition-all duration-300 truncate text-ellipsis line-clamp-3"
               }
             >
               {name}
             </h2>
           </Link>
 
-          <p className="text-sm text-muted-foreground line-clamp-3 mb-6 leading-relaxed min-h-[4.5rem] font-medium">
-            Житомирський базовий фармацевтичний фаховий коледж 30 жовтня 2024 року як Провайдер БПР провів фахову
-            (тематичну) школу «Відповідальне самолікування як запорука надання належної фармацевтичної допомоги та
-            збереження здоров`я».
-          </p>
+          <p
+            dangerouslySetInnerHTML={{ __html: description }}
+            className="text-sm text-muted-foreground line-clamp-3 mb-6 leading-relaxed min-h-[4.5rem]"
+          />
 
           <div className="relative mb-6 p-4 rounded-2xl bg-gradient-to-br from-primary/[0.04] to-secondary/[0.02] border border-primary/10 overflow-hidden">
             <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-primary/10 to-transparent rounded-bl-[3rem]" />
@@ -71,7 +72,17 @@ const CourseCard: FC<Props> = ({ id, name, price, description, startDate, endDat
 
               <div className="flex-1 min-w-0">
                 <div className="text-xs font-bold text-primary/70 mb-1 tracking-wider uppercase">Дата заходу</div>
-                <div className="text-base font-black text-text-primary truncate">{getDate(startDate)}</div>
+                <div className={`${isEndDate ? "text-sm" : "text-base"} font-black text-text-primary truncate`}>
+                  {isEndDate && <span className="pr-3">з</span>}
+
+                  {getDate(startDate)}
+                  {isEndDate && (
+                    <>
+                      <br />
+                      <span>по</span> {getDate(endDate)}
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           </div>

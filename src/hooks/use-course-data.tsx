@@ -7,11 +7,12 @@ import type {
   CourseRegistrationStatusType,
 } from "@/types/course.type"
 import type { CertificateTemplateType } from "@/types/certificate-template.type"
+import type { FormFieldTypes } from "@/components/custom/form-field"
 
 interface IFields {
   name: keyof CourseType
   required: boolean
-  type: "text" | "email" | "password" | "number" | "date" | "tel" | "url" | "select" | "rich-text"
+  type: FormFieldTypes
   label: string
   value: any
   defaultValue?: string

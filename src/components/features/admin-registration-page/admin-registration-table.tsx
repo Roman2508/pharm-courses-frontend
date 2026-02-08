@@ -8,6 +8,16 @@ import type { RegistrationType } from "@/types/registration.type"
 import type { GetRegistrationsQuery } from "@/api/hooks/use-registration"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
+const tableColumns = [
+  { label: "Студент", key: "user.name" },
+  { label: "Захід", key: "course.name" },
+  { label: "Вартість", key: "amount" },
+  { label: "Статус оплати", key: "paymentStatus" },
+  { label: "Сертифікат", key: "certificateEnabled" },
+  { label: "Квитанція", key: "paymentReceipt" },
+  { label: "Дата реєстрації", key: "createdAt" },
+] as const
+
 interface Props {
   params: GetRegistrationsQuery
   selectedRegistrations: number[]
@@ -46,14 +56,19 @@ const AdminRegistrationTable: FC<Props> = ({
     return !!selectedRegistrations.find((el) => el === id)
   }
 
-  const onChangeSort = (key: GetRegistrationsQuery["orderBy"]) => {
+  const onSortChange = (key: GetRegistrationsQuery["orderBy"]) => {
     setParams((prev) => {
-      if (key === prev.orderBy) {
-        const orderType = prev.orderType === "asc" ? "desc" : "asc"
-        return { ...prev, orderType }
-      } else {
-        return { ...prev, orderBy: key }
+      if (prev.orderBy === key) {
+        switch (prev.orderType) {
+          case undefined:
+            return { ...prev, orderBy: key, orderType: "desc" }
+          case "desc":
+            return { ...prev, orderBy: key, orderType: "asc" }
+          case "asc":
+            return { ...prev, orderBy: undefined, orderType: undefined }
+        }
       }
+      return { ...prev, orderBy: key, orderType: "desc" }
     })
   }
 
@@ -69,52 +84,19 @@ const AdminRegistrationTable: FC<Props> = ({
               className="rounded border-border bg-input text-primary focus:ring-primary cursor-pointer"
             />
           </TableHead>
-          <TableHead className="text-left px-6 py-4 text-sm font-semibold text-text-primary">
-            <span className="flex items-center inline-flex cursor-pointer" onClick={() => onChangeSort("user.name")}>
-              Студент
-              {params.orderBy === "user.name" && (
-                <ArrowUp
-                  className={cn("h-4 transition-all duration-300 ", { "rotate-180": params.orderType === "desc" })}
-                />
-              )}
-            </span>
-          </TableHead>
 
-          <TableHead
-            className="text-left px-6 py-4 text-sm font-semibold text-text-primary"
-            onClick={() => onChangeSort("course.name")}
-          >
-            Захід
-          </TableHead>
-
-          <TableHead
-            className="text-left px-6 py-4 text-sm font-semibold text-text-primary"
-            onClick={() => onChangeSort("amount")}
-          >
-            Вартість
-          </TableHead>
-          <TableHead className="text-left px-6 py-4 text-sm font-semibold text-text-primary">Статус оплати</TableHead>
-
-          <TableHead
-            className="text-left px-6 py-4 text-sm font-semibold text-text-primary"
-            onClick={() => onChangeSort("certificateEnabled")}
-          >
-            Сертифікат
-          </TableHead>
-
-          <TableHead
-            className="text-left px-6 py-4 text-sm font-semibold text-text-primary"
-            onClick={() => onChangeSort("certificateEnabled")}
-          >
-            Квитанція
-          </TableHead>
-
-          <TableHead
-            className="text-left px-6 py-4 text-sm font-semibold text-text-primary"
-            onClick={() => onChangeSort("createdAt")}
-          >
-            Дата реєстрації
-          </TableHead>
+          {tableColumns.map((col) => (
+            <TableHead className="text-left px-6 py-4 text-sm font-semibold text-text-primary" key={col.key}>
+              <span className="flex items-center inline-flex cursor-pointer" onClick={() => onSortChange(col.key)}>
+                {col.label}
+                {params.orderBy === col.key && (
+                  <ArrowUp
+                    className={cn("h-4 transition-all duration-300 ", { "rotate-180": params.orderType === "desc" })}
+                  />
+                )}
+              </span>
+            </TableHead>
+          ))}
         </TableRow>
       </TableHeader>
 

@@ -1,86 +1,70 @@
-import type { FC } from "react";
+import { ArrowUp } from "lucide-react"
+import type { Dispatch, FC, SetStateAction } from "react"
 
-import {
-  Table,
-  TableRow,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-} from "@/components/ui/table";
-import { getDate } from "@/helpers/get-date";
-import type { UserType } from "@/types/user.type";
+import { cn } from "@/lib/utils"
+import { getDate } from "@/helpers/get-date"
+import type { UserType } from "@/types/user.type"
+import type { GetUsersQuery } from "@/pages/admin-users-page"
+import { Table, TableRow, TableBody, TableCell, TableHead, TableHeader } from "@/components/ui/table"
+
+const tableColumns = [
+  { label: "ПІБ", key: "name" },
+  { label: "Email", key: "email" },
+  { label: "Телефон", key: "phone" },
+  { label: "Дата реєстрації", key: "createdAt" },
+  { label: "Роль", key: "role" },
+] as const
 
 interface Props {
-  users: UserType[];
-  onEditUser: (user: UserType) => void;
+  users: UserType[]
+  params: GetUsersQuery
+  onEditUser: (user: UserType) => void
+  setParams: Dispatch<SetStateAction<GetUsersQuery>>
 }
 
-const AdminUserPageTable: FC<Props> = ({ users, onEditUser }) => {
+const AdminUserPageTable: FC<Props> = ({ users, onEditUser, params, setParams }) => {
+  const onSortChange = (key: GetUsersQuery["orderBy"]) => {
+    setParams((prev) => {
+      if (prev.orderBy === key) {
+        switch (prev.orderType) {
+          case undefined:
+            return { ...prev, orderBy: key, orderType: "desc" }
+          case "desc":
+            return { ...prev, orderBy: key, orderType: "asc" }
+          case "asc":
+            return { ...prev, orderBy: undefined, orderType: undefined }
+        }
+      }
+      return { ...prev, orderBy: key, orderType: "desc" }
+    })
+  }
+
   return (
     <Table className="w-full">
       <TableHeader>
         <TableRow className="bg-surface-hover border-b border-border">
-          <TableHead className="text-left px-6 py-4 text-sm font-semibold text-text-primary">
-            <span
-              className="flex items-center inline-flex cursor-pointer" /* onClick={() => onChangeSort('user.name')} */
-            >
-              ПІБ
-              {/* {params.orderBy === 'user.name' && (
-                <ArrowUp
-                  className={cn('h-4 transition-all duration-300 ', { 'rotate-180': params.orderType === 'desc' })}
-                />
-              )} */}
-            </span>
-          </TableHead>
+          {tableColumns.map((col) => (
+            <TableHead className="text-left px-6 py-4 text-sm font-semibold text-text-primary" key={col.key}>
+              <span className="flex items-center inline-flex cursor-pointer" onClick={() => onSortChange(col.key)}>
+                {col.label}
+                {params.orderBy === col.key && (
+                  <ArrowUp
+                    className={cn("h-4 transition-all duration-300 ", { "rotate-180": params.orderType === "desc" })}
+                  />
+                )}
+              </span>
+            </TableHead>
+          ))}
 
-          <TableHead
-            className="text-left px-6 py-4 text-sm font-semibold text-text-primary"
-            /* onClick={() => onChangeSort('course.name')} */
-          >
-            Email
-          </TableHead>
-
-          <TableHead
-            className="text-left px-6 py-4 text-sm font-semibold text-text-primary"
-            /* onClick={() => onChangeSort('amount')} */
-          >
-            Телефон
-          </TableHead>
-
-          <TableHead
-            className="text-left px-6 py-4 text-sm font-semibold text-text-primary"
-            /* onClick={() => onChangeSort('certificateEnabled')} */
-          >
-            Дата реєстрації
-          </TableHead>
-
-          <TableHead
-            className="text-left px-6 py-4 text-sm font-semibold text-text-primary"
-            /* onClick={() => onChangeSort('certificateEnabled')} */
-          >
-            Роль
-          </TableHead>
-
-          <TableHead
-            className="text-left px-6 py-4 text-sm font-semibold text-text-primary"
-            /* onClick={() => onChangeSort('createdAt')} */
-          >
-            Дії
-          </TableHead>
+          <TableHead className="text-left px-6 py-4 text-sm font-semibold text-text-primary">Дії</TableHead>
         </TableRow>
       </TableHeader>
 
       <TableBody>
         {users.map((user) => (
-          <TableRow
-            key={user.id}
-            className="border-b border-border last:border-0 hover:bg-surface-hover/50"
-          >
+          <TableRow key={user.id} className="border-b border-border last:border-0 hover:bg-surface-hover/50">
             <TableCell className="px-6 py-2">
-              <div className="text-sm font-medium text-text-primary">
-                {user.name}
-              </div>
+              <div className="text-sm font-medium text-text-primary">{user.name}</div>
             </TableCell>
 
             <TableCell className="px-6 py-4 text-text-primary max-w-xs break-words whitespace-normal">
@@ -88,15 +72,11 @@ const AdminUserPageTable: FC<Props> = ({ users, onEditUser }) => {
             </TableCell>
 
             <TableCell className="px-6 py-2">
-              <div className="text-sm text-text-secondary">
-                {user.phone || "-"}
-              </div>
+              <div className="text-sm text-text-secondary">{user.phone || "-"}</div>
             </TableCell>
 
             <TableCell className="px-6 py-2">
-              <span className="text-sm text-text-secondary truncate">
-                {getDate(user.createdAt)}
-              </span>
+              <span className="text-sm text-text-secondary truncate">{getDate(user.createdAt)}</span>
             </TableCell>
 
             <TableCell className="px-6 py-2">
@@ -123,7 +103,7 @@ const AdminUserPageTable: FC<Props> = ({ users, onEditUser }) => {
         ))}
       </TableBody>
     </Table>
-  );
-};
+  )
+}
 
-export default AdminUserPageTable;
+export default AdminUserPageTable

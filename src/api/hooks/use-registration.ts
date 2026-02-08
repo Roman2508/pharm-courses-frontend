@@ -9,7 +9,14 @@ export type GetRegistrationsQuery = {
   limit: number
   courseId?: number
   orderType?: "asc" | "desc"
-  orderBy?: "createdAt" | "course.name" | "user.name" | "amount" | "certificateEnabled"
+  orderBy?:
+    | "createdAt"
+    | "course.name"
+    | "user.name"
+    | "amount"
+    | "certificateEnabled"
+    | "paymentReceipt"
+    | "paymentStatus"
 }
 
 export const useAllRegistrations = (params?: GetRegistrationsQuery) => {

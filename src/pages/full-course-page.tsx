@@ -51,13 +51,14 @@ const FullCoursePage = () => {
       </div>
     )
   }
-
   const color =
     course.targetAudience === "PHARMACISTS"
       ? "primary"
       : course.targetAudience === "LABORATORY_ASSISTANTS"
         ? "success"
         : "secondary"
+
+  const isEndDate = course.endDate && course.endDate !== course.startDate
 
   return (
     <>
@@ -136,8 +137,15 @@ const FullCoursePage = () => {
                   <div>
                     <div className="text-xs text-text-muted mb-0 xl:mb-1">Дата проведення</div>
                     <div className="font-medium text-text-primary text-sm xl:text-base">
+                      {isEndDate && <span className="pr-3">з</span>}
+
                       {getDate(course.startDate)}
-                      {course.endDate && course.endDate !== course.startDate && <> - {getDate(course.endDate)}</>}
+                      {isEndDate && (
+                        <>
+                          <br />
+                          <span>по</span> {getDate(course.endDate)}
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>

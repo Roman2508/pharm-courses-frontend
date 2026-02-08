@@ -37,7 +37,9 @@ const CreateRegistrationDialog: FC<Props> = ({ open, onOpenChange }) => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const responce = await authClient.admin.listUsers({ query: { searchValue: "", searchField: "name" } })
+        const responce = await authClient.admin.listUsers({
+          query: { searchValue: "", searchField: "name", searchOperator: "contains" },
+        })
         const users = responce.data ? (responce.data.users as UserType[]) : []
         setUsers(users)
       } catch (error) {
@@ -64,6 +66,7 @@ const CreateRegistrationDialog: FC<Props> = ({ open, onOpenChange }) => {
                 label={field.label}
                 items={field.items}
                 value={field.value}
+                fetcher={field.fetcher}
                 onChange={field.onChange}
                 required={field.required}
                 className={field.className}

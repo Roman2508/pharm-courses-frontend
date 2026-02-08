@@ -1,6 +1,8 @@
+import { Plus } from "lucide-react"
 import { useEffect, useState } from "react"
 
 import { authClient } from "@/api/auth-client"
+import { Button } from "@/components/ui/button"
 import type { UserType } from "@/types/user.type"
 import { Title } from "@/components/custom/title"
 import FormField from "@/components/custom/form-field"
@@ -8,10 +10,8 @@ import PageLoader from "@/components/custom/page-loader"
 import { Pagination } from "@/components/custom/pagination"
 import AdminUsersDialog from "@/components/features/admin-users-page/admin-users-dialog"
 import AdminUserPageTable from "@/components/features/admin-users-page/admin-user-page-table"
-import { Button } from "@/components/ui/button"
-import { Plus } from "lucide-react"
 
-type GetUsersQuery = {
+export type GetUsersQuery = {
   page: number
   limit: number
   search?: string
@@ -54,6 +54,8 @@ const AdminUsersPage = () => {
             offset: (params.page - 1) * params.limit,
             searchValue: params.search,
             searchField: "name",
+            sortBy: params.orderBy,
+            sortDirection: params.orderType,
           },
         })
         const users = responce.data ? (responce.data.users as UserType[]) : []
@@ -118,7 +120,12 @@ const AdminUsersPage = () => {
         ) : users && !!users.length ? (
           <div className="bg-surface rounded-2xl border border-border overflow-hidden">
             <div className="overflow-x-auto">
-              <AdminUserPageTable users={users} onEditUser={onEditUser} />
+              <AdminUserPageTable
+                users={users}
+                params={params}
+                setParams={setParams}
+                onEditUser={onEditUser}
+              />
             </div>
           </div>
         ) : (
