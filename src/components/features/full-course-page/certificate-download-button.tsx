@@ -126,6 +126,7 @@ export const CertificateDownloadButton = ({ course, registration, userName, size
 
       // Save and download the PDF
       const pdfBytes = await pdfDoc.save()
+      // @ts-ignore
       const blob = new Blob([pdfBytes], { type: "application/pdf" })
       const url = URL.createObjectURL(blob)
 

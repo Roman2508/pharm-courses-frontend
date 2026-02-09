@@ -16,7 +16,7 @@ const AuthPage: FC<Props> = ({ defaultAuthType }) => {
   }, [defaultAuthType])
 
   return (
-    <div className="min-h-[calc(100vh-100px)] bg-gradient-to-br from-primary/5 via-background to-secondary/5 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="bg-surface rounded-2xl border border-border shadow-xl py-8 px-6 min-[500px]:p-8">
           <div className="mb-8 text-center">

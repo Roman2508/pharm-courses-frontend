@@ -48,7 +48,9 @@ const FormField: FC<Props> = ({
   defaultValue = "",
   items = [],
   className,
-  fetcher = async (query?: string | undefined): Promise<any> => {},
+  fetcher = async (query?: string | undefined): Promise<any> => {
+    query
+  },
   ...props
 }) => {
   if (type === "select") {

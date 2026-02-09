@@ -77,15 +77,6 @@ export const router = createBrowserRouter([
       },
 
       {
-        path: "/auth/login",
-        element: <AuthPage defaultAuthType="login" />,
-      },
-      {
-        path: "/auth/register",
-        element: <AuthPage defaultAuthType="register" />,
-      },
-
-      {
         path: "/privacy-policy",
         element: <PrivacyPolicyPage />,
       },
@@ -94,6 +85,15 @@ export const router = createBrowserRouter([
         element: <TermsOfUsePage />,
       },
     ],
+  },
+
+  {
+    path: "/auth/login",
+    element: <AuthPage defaultAuthType="login" />,
+  },
+  {
+    path: "/auth/register",
+    element: <AuthPage defaultAuthType="register" />,
   },
 
   {

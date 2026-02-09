@@ -1,31 +1,31 @@
-import z from 'zod'
-import { toast } from 'sonner'
-import { Link, useNavigate } from 'react-router'
-import { useState, type Dispatch, type FC, type MouseEvent, type SetStateAction } from 'react'
+import z from "zod"
+import { toast } from "sonner"
+import { Link, useNavigate } from "react-router"
+import { useState, type Dispatch, type FC, type MouseEvent, type SetStateAction } from "react"
 
-import { Button } from '../ui/button'
-import { signUp } from '@/api/auth-client'
-import FormField from '../custom/form-field'
-import { getFormErrors } from '@/helpers/get-form-errors'
+import { Button } from "../ui/button"
+import { signUp } from "@/api/auth-client"
+import FormField from "../custom/form-field"
+import { getFormErrors } from "@/helpers/get-form-errors"
 
-const initialFormData = { name: '', email: '', phone: '', password: '' }
+const initialFormData = { name: "", email: "", phone: "", password: "" }
 
 const phoneRegex = new RegExp(/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/)
 
 const formSchema = z.object({
-  name: z.string().min(8, { message: 'Занадто короткий ПІБ' }).max(100, { message: 'Занадто довгий ПІБ' }),
-  email: z.email({ message: 'Не правильний формат пошти' }),
-  phone: z.string().regex(phoneRegex, 'Не правильний формат телефону'),
+  name: z.string().min(8, { message: "Занадто короткий ПІБ" }).max(100, { message: "Занадто довгий ПІБ" }),
+  email: z.email({ message: "Не правильний формат пошти" }),
+  phone: z.string().regex(phoneRegex, "Не правильний формат телефону"),
   password: z
     .string()
-    .min(8, { message: 'Мінімальна довжина пароля - 8 символів' })
-    .max(30, { message: 'Максимальна довжина пароля - 30 символів' }),
+    .min(8, { message: "Мінімальна довжина пароля - 8 символів" })
+    .max(30, { message: "Максимальна довжина пароля - 30 символів" }),
 })
 
 export type FormData = z.infer<typeof formSchema>
 
 interface Props {
-  setAuthType: Dispatch<SetStateAction<'login' | 'register'>>
+  setAuthType: Dispatch<SetStateAction<"login" | "register">>
 }
 
 const RegisterForm: FC<Props> = ({ setAuthType }) => {
@@ -58,14 +58,14 @@ const RegisterForm: FC<Props> = ({ setAuthType }) => {
       return
     }
     await signUp.email(
-      { ...formData, callbackURL: '/' },
+      { ...formData, callbackURL: "/" },
       {
-        onRequest: (ctx) => {
+        onRequest: () => {
           setIsPanding(true)
         },
-        onSuccess: (ctx) => {
+        onSuccess: () => {
           setIsPanding(false)
-          navigate('/', { replace: true })
+          navigate("/", { replace: true })
         },
         onError: (ctx) => {
           setIsPanding(false)
@@ -88,7 +88,7 @@ const RegisterForm: FC<Props> = ({ setAuthType }) => {
         type="text"
         placeholder="Прізвище Ім'я Побатькові"
         value={formData.name}
-        onChange={(value) => changeUserFormData('name', value)}
+        onChange={(value) => changeUserFormData("name", value)}
         className="mb-4"
       />
 
@@ -98,7 +98,7 @@ const RegisterForm: FC<Props> = ({ setAuthType }) => {
         type="email"
         placeholder="Введіть свій email"
         value={formData.email}
-        onChange={(value) => changeUserFormData('email', value)}
+        onChange={(value) => changeUserFormData("email", value)}
         className="mb-4"
       />
 
@@ -108,7 +108,7 @@ const RegisterForm: FC<Props> = ({ setAuthType }) => {
         type="tel"
         placeholder="Введіть номер телефону"
         value={formData.phone}
-        onChange={(value) => changeUserFormData('phone', value)}
+        onChange={(value) => changeUserFormData("phone", value)}
         className="mb-4"
       />
 
@@ -118,7 +118,7 @@ const RegisterForm: FC<Props> = ({ setAuthType }) => {
         type="password"
         placeholder="Введіть пароль"
         value={formData.password}
-        onChange={(value) => changeUserFormData('password', value)}
+        onChange={(value) => changeUserFormData("password", value)}
         className="mb-4"
       />
 
@@ -131,7 +131,7 @@ const RegisterForm: FC<Props> = ({ setAuthType }) => {
       )}
 
       <Button type="button" className="w-full mt-4" size="lg" onClick={handleRegister} disabled={isPending}>
-        {isPending ? 'Завантаження...' : 'Зареєструватись'}
+        {isPending ? "Завантаження..." : "Зареєструватись"}
       </Button>
 
       <div className="mt-6 text-center">
@@ -139,7 +139,7 @@ const RegisterForm: FC<Props> = ({ setAuthType }) => {
           Вже маєте акаунт?
           <Link
             to="/auth/login"
-            onClick={() => setAuthType('login')}
+            onClick={() => setAuthType("login")}
             className="text-primary font-medium hover:text-primary-hover transition-colors cursor-pointer"
           >
             Увійти

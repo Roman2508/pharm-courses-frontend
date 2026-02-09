@@ -1,23 +1,23 @@
-import { useState, useRef, useEffect } from "react"
-import { useNavigate, useParams } from "react-router"
+import { toast } from "sonner"
 import { Loader2, Move } from "lucide-react"
 import { Document, Page, pdfjs } from "react-pdf"
+import { useState, useRef, useEffect } from "react"
+import { useNavigate, useParams } from "react-router"
 import { DndContext, useDroppable, type DragEndEvent } from "@dnd-kit/core"
-import { toast } from "sonner"
 
-import { Button } from "@/components/ui/button"
-import { PositionInputGroup } from "@/components/features/admin-full-certificate-page/position-input-group"
-import DraggableBlock from "@/components/features/admin-full-certificate-page/draggable-block"
 import {
-  DRAGGABLE_INITIAL_BLOCKS,
   type TextBlock,
+  DRAGGABLE_INITIAL_BLOCKS,
 } from "@/components/features/admin-full-certificate-page/draggable-initial-blocks"
-import FormField from "@/components/custom/form-field"
 import {
+  useGetCertificateTemplate,
   useCreateCertificateTemplate,
   useUpdateCertificateTemplate,
-  useGetCertificateTemplate,
 } from "@/api/hooks/use-certificate-template"
+import { Button } from "@/components/ui/button"
+import FormField from "@/components/custom/form-field"
+import DraggableBlock from "@/components/features/admin-full-certificate-page/draggable-block"
+import { PositionInputGroup } from "@/components/features/admin-full-certificate-page/position-input-group"
 
 // Configure PDF worker
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`
@@ -42,8 +42,6 @@ const AdminFullCertificatePage = () => {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null)
   const [blocks, setBlocks] = useState<TextBlock[]>(DRAGGABLE_INITIAL_BLOCKS)
   const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null)
-
-  const selectedBlock = blocks.find((b) => b.id === selectedBlockId)
 
   const { setNodeRef } = useDroppable({ id: "canvas" })
 

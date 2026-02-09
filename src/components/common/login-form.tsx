@@ -1,11 +1,11 @@
 import z from "zod"
+import { toast } from "sonner"
+import { Link, useNavigate } from "react-router"
 import { useState, type Dispatch, type FC, type MouseEvent, type SetStateAction } from "react"
 
 import { Button } from "../ui/button"
-import FormField from "../custom/form-field"
-import { Link, useNavigate } from "react-router"
 import { signIn } from "@/api/auth-client"
-import { toast } from "sonner"
+import FormField from "../custom/form-field"
 import { getFormErrors } from "@/helpers/get-form-errors"
 
 const initialFormData = { email: "", password: "" }
@@ -56,10 +56,10 @@ const LoginForm: FC<Props> = ({ setAuthType }) => {
     await signIn.email(
       { ...formData, callbackURL: "/" },
       {
-        onRequest: (ctx) => {
+        onRequest: () => {
           setIsPanding(true)
         },
-        onSuccess: (ctx) => {
+        onSuccess: () => {
           setIsPanding(false)
           navigate("/", { replace: true })
         },
