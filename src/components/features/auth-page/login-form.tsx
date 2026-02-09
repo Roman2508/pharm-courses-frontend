@@ -3,10 +3,12 @@ import { toast } from "sonner"
 import { Link, useNavigate } from "react-router"
 import { useState, type Dispatch, type FC, type MouseEvent, type SetStateAction } from "react"
 
-import { Button } from "../ui/button"
-import { signIn } from "@/api/auth-client"
-import FormField from "../custom/form-field"
+import { Button } from "@/components/ui/button"
+import { authClient, signIn } from "@/api/auth-client"
+import FormField from "@/components/custom/form-field"
+import type { AuthPageVariants } from "@/pages/auth-page"
 import { getFormErrors } from "@/helpers/get-form-errors"
+import { startCooldown } from "@/helpers/email-verification-cooldown"
 
 const initialFormData = { email: "", password: "" }
 
@@ -21,13 +23,14 @@ const formSchema = z.object({
 export type FormData = z.infer<typeof formSchema>
 
 interface Props {
-  setAuthType: Dispatch<SetStateAction<"login" | "register" | "confirm-email">>
+  setEmail: Dispatch<SetStateAction<string>>
+  setAuthType: Dispatch<SetStateAction<AuthPageVariants>>
 }
 
-const LoginForm: FC<Props> = ({ setAuthType }) => {
+const LoginForm: FC<Props> = ({ setAuthType, setEmail }) => {
   const navigate = useNavigate()
 
-  const [isPending, setIsPanding] = useState(false)
+  const [isPending, setIsPending] = useState(false)
   const [showErrors, setShowErrors] = useState(false)
   const [userFormData, setUserFormData] = useState(initialFormData)
 
@@ -46,30 +49,48 @@ const LoginForm: FC<Props> = ({ setAuthType }) => {
 
   const handleLogin = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    setIsPanding(true)
+    setIsPending(true)
     const errors = validate()
     if (errors) {
       setShowErrors(true)
-      setIsPanding(false)
+      setIsPending(false)
       return
     }
     await signIn.email(
       { ...formData, callbackURL: "/" },
       {
         onRequest: () => {
-          setIsPanding(true)
+          setIsPending(true)
         },
         onSuccess: () => {
-          setIsPanding(false)
+          setIsPending(false)
           navigate("/", { replace: true })
         },
-        onError: (ctx) => {
-          setIsPanding(false)
-          if (ctx.error.code === "EMAIL_NOT_VERIFIED") {
+        onError: async (ctx) => {
+          setIsPending(false)
+
+          const { error, request } = ctx
+
+          if (error.code !== "EMAIL_NOT_VERIFIED") {
+            toast.error(error.message)
+            return
+          }
+
+          const email = JSON.parse(request?.body)?.email
+
+          if (!email) {
+            toast.error(error.message)
+            return
+          }
+
+          try {
+            await authClient.sendVerificationEmail({ email, callbackURL: "/" })
+            setEmail(email)
+            startCooldown()
             navigate("/auth/confirm-email", { replace: true })
             toast.error("Підтвердіть свою електронну пошту")
-          } else {
-            toast.error(ctx.error.message)
+          } catch {
+            toast.error("Не вдалося надіслати лист для підтвердження")
           }
         },
       },

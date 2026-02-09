@@ -1,16 +1,18 @@
 import z from "zod"
 import { toast } from "sonner"
-import { Link, useNavigate } from "react-router"
+import { Link } from "react-router"
 import { useState, type Dispatch, type FC, type MouseEvent, type SetStateAction } from "react"
 
-import { Button } from "../ui/button"
+import { Button } from "../../ui/button"
+import FormField from "../../custom/form-field"
 import { authClient, signUp } from "@/api/auth-client"
-import FormField from "../custom/form-field"
 import { getFormErrors } from "@/helpers/get-form-errors"
+import type { AuthPageVariants } from "@/pages/auth-page"
 
 const initialFormData = { name: "", email: "", phone: "", password: "" }
 
-const phoneRegex = new RegExp(/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/)
+// const phoneRegex = new RegExp(/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/)
+const phoneRegex = new RegExp(/^(\+380|380|0)(39|50|63|66|67|68|73|91|92|93|94|95|96|97|98|99)\d{7}$/)
 
 const formSchema = z.object({
   name: z.string().min(8, { message: "Занадто короткий ПІБ" }).max(100, { message: "Занадто довгий ПІБ" }),
@@ -25,12 +27,11 @@ const formSchema = z.object({
 export type FormData = z.infer<typeof formSchema>
 
 interface Props {
-  setAuthType: Dispatch<SetStateAction<"login" | "register" | "confirm-email">>
+  setEmail: Dispatch<SetStateAction<string>>
+  setAuthType: Dispatch<SetStateAction<AuthPageVariants>>
 }
 
-const RegisterForm: FC<Props> = ({ setAuthType }) => {
-  const navigate = useNavigate()
-
+const RegisterForm: FC<Props> = ({ setAuthType, setEmail }) => {
   const [isPending, setIsPending] = useState(false)
   const [showErrors, setShowErrors] = useState(false)
   const [userFormData, setUserFormData] = useState(initialFormData)
@@ -58,23 +59,20 @@ const RegisterForm: FC<Props> = ({ setAuthType }) => {
       return
     }
     await signUp.email(
-      { ...formData, callbackURL: "/auth/confirm-email" },
+      { ...formData, callbackURL: "/auth/verify-email" },
       {
         onRequest: () => {
           setIsPending(true)
         },
-        onSuccess: (data) => {
-          // @ts-ignore
-          if (data?.user?.email) {
-            authClient.sendVerificationEmail({
-              email: "ptashnyk.roman@pharm.zt.ua",
-              callbackURL: "/",
-            })
-          }
-          console.log("data", data)
+        onSuccess: ({ data }) => {
           setIsPending(false)
-          setAuthType("confirm-email")
-          // navigate("/auth/confirm-email", { replace: true })
+          if (data?.user?.email) {
+            setEmail(data.user.email)
+            authClient.sendVerificationEmail({ email: data.user.email, callbackURL: "/auth/verify-email" })
+            setAuthType("verify-email")
+          } else {
+            toast.error("Помилка реєстрації")
+          }
         },
         onError: (ctx) => {
           setIsPending(false)

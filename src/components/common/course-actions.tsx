@@ -46,7 +46,7 @@ export const CourseActions: FC<Props> = ({
 
   if (!user) {
     if (course && typeof course.maxMembers === "number" && registrationCount) {
-      if (course.maxMembers >= registrationCount) {
+      if (course.maxMembers <= registrationCount) {
         return (
           <Button className={className} size={size} disabled>
             Всі місця зайняті
@@ -74,7 +74,7 @@ export const CourseActions: FC<Props> = ({
   if (!registration && courseId && amount) {
     // Закінчились доступні реєстрації
     if (course && typeof course.maxMembers === "number" && registrationCount) {
-      if (course.maxMembers >= registrationCount) {
+      if (course.maxMembers <= registrationCount) {
         return (
           <Button className={className} size={size} disabled>
             Всі місця зайняті

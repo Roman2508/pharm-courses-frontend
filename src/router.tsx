@@ -98,8 +98,12 @@ export const router = createBrowserRouter([
         element: <AuthPage defaultAuthType="register" />,
       },
       {
-        path: "/auth/confirm-email",
-        element: <AuthPage defaultAuthType="confirm-email" />,
+        path: "/auth/verify-email",
+        element: <AuthPage defaultAuthType="verify-email" />,
+      },
+      {
+        path: "/auth/verified",
+        element: <AuthPage defaultAuthType="verified" />,
       },
     ],
   },

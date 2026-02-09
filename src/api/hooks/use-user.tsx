@@ -1,5 +1,5 @@
 import { toast } from "sonner"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
 import { axiosClient } from "../client"
 
@@ -21,5 +21,17 @@ export const useUpdateAvatar = () => {
     onError: (error: any) => {
       toast.error(`Помилка оновлення аватара. ${error?.response?.data?.message || error?.message}`)
     },
+  })
+}
+
+export const useEmailVerificationStatus = (email?: string) => {
+  return useQuery({
+    enabled: !!email,
+    queryKey: ["email-verification", email],
+    queryFn: async () => {
+      const { data } = await axiosClient.get<boolean>("/auth/verification-status", { params: { email } })
+      return data
+    },
+    staleTime: 0,
   })
 }
