@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router"
 import { useState, type Dispatch, type FC, type MouseEvent, type SetStateAction } from "react"
 
 import { Button } from "../ui/button"
-import { signUp } from "@/api/auth-client"
+import { authClient, signUp } from "@/api/auth-client"
 import FormField from "../custom/form-field"
 import { getFormErrors } from "@/helpers/get-form-errors"
 
@@ -25,13 +25,13 @@ const formSchema = z.object({
 export type FormData = z.infer<typeof formSchema>
 
 interface Props {
-  setAuthType: Dispatch<SetStateAction<"login" | "register">>
+  setAuthType: Dispatch<SetStateAction<"login" | "register" | "confirm-email">>
 }
 
 const RegisterForm: FC<Props> = ({ setAuthType }) => {
   const navigate = useNavigate()
 
-  const [isPending, setIsPanding] = useState(false)
+  const [isPending, setIsPending] = useState(false)
   const [showErrors, setShowErrors] = useState(false)
   const [userFormData, setUserFormData] = useState(initialFormData)
 
@@ -50,25 +50,34 @@ const RegisterForm: FC<Props> = ({ setAuthType }) => {
 
   const handleRegister = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    setIsPanding(true)
+    setIsPending(true)
     const errors = validate()
     if (errors) {
       setShowErrors(true)
-      setIsPanding(false)
+      setIsPending(false)
       return
     }
     await signUp.email(
-      { ...formData, callbackURL: "/" },
+      { ...formData, callbackURL: "/auth/confirm-email" },
       {
         onRequest: () => {
-          setIsPanding(true)
+          setIsPending(true)
         },
-        onSuccess: () => {
-          setIsPanding(false)
-          navigate("/", { replace: true })
+        onSuccess: (data) => {
+          // @ts-ignore
+          if (data?.user?.email) {
+            authClient.sendVerificationEmail({
+              email: "ptashnyk.roman@pharm.zt.ua",
+              callbackURL: "/",
+            })
+          }
+          console.log("data", data)
+          setIsPending(false)
+          setAuthType("confirm-email")
+          // navigate("/auth/confirm-email", { replace: true })
         },
         onError: (ctx) => {
-          setIsPanding(false)
+          setIsPending(false)
           toast.error(ctx.error.message)
         },
       },

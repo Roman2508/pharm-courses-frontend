@@ -21,7 +21,7 @@ const formSchema = z.object({
 export type FormData = z.infer<typeof formSchema>
 
 interface Props {
-  setAuthType: Dispatch<SetStateAction<"login" | "register">>
+  setAuthType: Dispatch<SetStateAction<"login" | "register" | "confirm-email">>
 }
 
 const LoginForm: FC<Props> = ({ setAuthType }) => {
@@ -65,7 +65,12 @@ const LoginForm: FC<Props> = ({ setAuthType }) => {
         },
         onError: (ctx) => {
           setIsPanding(false)
-          toast.error(ctx.error.message)
+          if (ctx.error.code === "EMAIL_NOT_VERIFIED") {
+            navigate("/auth/confirm-email", { replace: true })
+            toast.error("Підтвердіть свою електронну пошту")
+          } else {
+            toast.error(ctx.error.message)
+          }
         },
       },
     )

@@ -13,7 +13,7 @@ export const RootLayout = () => {
     <TanstackLayout>
       <PermissionsLayout>
         <div className="min-h-screen">
-          {location.pathname !== "/auth" && <Header />}
+          {!location.pathname.includes("/auth") && <Header />}
           <Outlet />
           {location.pathname === "/" && <Footer />}
 

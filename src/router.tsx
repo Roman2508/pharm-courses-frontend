@@ -43,6 +43,8 @@ export const router = createBrowserRouter([
         path: "/courses/:id",
         element: <FullCoursePage />,
       },
+
+      //
       {
         path: "/admin",
         element: <AdminPage />,
@@ -76,6 +78,7 @@ export const router = createBrowserRouter([
         element: <AdminUsersPage />,
       },
 
+      //
       {
         path: "/privacy-policy",
         element: <PrivacyPolicyPage />,
@@ -84,16 +87,21 @@ export const router = createBrowserRouter([
         path: "/terms-of-use",
         element: <TermsOfUsePage />,
       },
-    ],
-  },
 
-  {
-    path: "/auth/login",
-    element: <AuthPage defaultAuthType="login" />,
-  },
-  {
-    path: "/auth/register",
-    element: <AuthPage defaultAuthType="register" />,
+      // auth
+      {
+        path: "/auth/login",
+        element: <AuthPage defaultAuthType="login" />,
+      },
+      {
+        path: "/auth/register",
+        element: <AuthPage defaultAuthType="register" />,
+      },
+      {
+        path: "/auth/confirm-email",
+        element: <AuthPage defaultAuthType="confirm-email" />,
+      },
+    ],
   },
 
   {
