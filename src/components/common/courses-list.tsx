@@ -1,10 +1,20 @@
-import type { CourseType } from "@/types/course.type"
-import CourseCard from "./course-card"
+import type { FC } from "react"
 
-export const CoursesList = ({ courses }: { courses?: CourseType[] }) => {
+import CourseCard from "./course-card"
+import PageLoader from "../custom/page-loader"
+import type { CourseType } from "@/types/course.type"
+
+interface Props {
+  isLoading?: boolean
+  courses?: CourseType[]
+}
+
+export const CoursesList: FC<Props> = ({ courses, isLoading }) => {
   return (
     <>
-      {courses && !!courses.length ? (
+      {isLoading ? (
+        <PageLoader />
+      ) : courses && !!courses.length ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-0 max-w-7xl mx-auto px-4">
           {courses.map((course) => (
             <CourseCard {...course} />

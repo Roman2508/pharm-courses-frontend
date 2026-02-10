@@ -1,5 +1,5 @@
 import { toast } from "sonner"
-import { useMutation  } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 
 import { axiosClient } from "../client"
 
@@ -23,3 +23,20 @@ export const usePayment = () => {
     },
   })
 }
+
+// type QrCodeResponse = {
+//   response: { status: boolean }
+//   resultData: { qr: string; link: string; pagePaymentLink: string }
+// }
+
+// export const useGetQrCode = (amount?: number) => {
+//   return useQuery({
+//     enabled: !!amount,
+//     queryKey: ["qr-code", amount],
+//     queryFn: async () => {
+//       const { data } = await axiosClient.get<QrCodeResponse>("/auth/qr-code", { params: { amount } })
+//       return data
+//     },
+//     refetchOnWindowFocus: false,
+//   })
+// }

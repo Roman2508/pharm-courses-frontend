@@ -14,8 +14,8 @@ const stats = [
 ]
 
 const HomePage = () => {
-  const { data: plannedCourses } = useCourses("PLANNED")
-  const { data: archivedCourses } = useCourses("ARCHIVED", { limit: 3 })
+  const { data: plannedCourses, isLoading: isPlannedLoading } = useCourses("PLANNED")
+  const { data: archivedCourses, isLoading: isArchivedLoading } = useCourses("ARCHIVED", { limit: 3 })
 
   return (
     <main className="">
@@ -147,7 +147,7 @@ const HomePage = () => {
       />
 
       <div className="mb-20">
-        <CoursesList courses={plannedCourses} />
+        <CoursesList courses={plannedCourses} isLoading={isPlannedLoading} />
       </div>
 
       <SectionHeader
@@ -158,7 +158,7 @@ const HomePage = () => {
         description="Ознайомтеся з нашими попередніми програмами"
       />
 
-      <CoursesList courses={archivedCourses} />
+      <CoursesList courses={archivedCourses} isLoading={isArchivedLoading} />
     </main>
   )
 }

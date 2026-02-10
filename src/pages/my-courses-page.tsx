@@ -1,14 +1,14 @@
 import { useSession } from "@/api/auth-client"
 import { Title } from "@/components/custom/title"
+import type { UserType } from "@/types/user.type"
 import PageLoader from "@/components/custom/page-loader"
 import MyCourseCard from "@/components/common/my-course-card"
 import { useUserRegistrations } from "@/api/hooks/use-registration"
-import type { UserType } from "@/types/user.type"
 
 const MyCoursesPage = () => {
   const { data: session } = useSession()
 
-  const { data: registrations, isLoading } = useUserRegistrations(session?.user?.id)
+  const { data: registrations, isLoading } = useUserRegistrations()
 
   return (
     <div className="my-16">

@@ -47,10 +47,8 @@ const AdminFullCoursePage = () => {
 
     if (isUpdate) {
       if (!params.id) return
-      updateCourse.mutate(
-        { ...(formData as CourseType), id: +params.id },
-        { onSuccess: () => navigate("/admin/courses") },
-      )
+      const { paymentQrCode, ...data } = formData
+      updateCourse.mutate({ ...(data as CourseType), id: +params.id }, { onSuccess: () => navigate("/admin/courses") })
     } else {
       createCourse.mutate(formData as CourseType, {
         onSuccess: () => navigate("/admin/courses"),

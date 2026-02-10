@@ -31,23 +31,22 @@ export const useAllRegistrations = (params?: GetRegistrationsQuery) => {
   })
 }
 
-export const useCurrentRegistration = (userId?: string, courseId?: number) => {
+export const useCurrentRegistration = (courseId?: number) => {
   return useQuery({
-    enabled: !!userId && !!courseId,
-    queryKey: ["registration", { userId, courseId }],
+    enabled: !!courseId,
+    queryKey: ["registration", courseId],
     queryFn: async () => {
-      const { data } = await axiosClient.get<RegistrationType>(`/registration/current/${userId}/${courseId}`)
+      const { data } = await axiosClient.get<RegistrationType>(`/registration/course/current/${courseId}`)
       return data
     },
   })
 }
 
-export const useUserRegistrations = (userId?: string) => {
+export const useUserRegistrations = () => {
   return useQuery({
-    enabled: !!userId,
-    queryKey: ["user-registrations", { userId }],
+    queryKey: ["user-registrations"],
     queryFn: async () => {
-      const { data } = await axiosClient.get<RegistrationType[]>(`/registration/user/${userId}`)
+      const { data } = await axiosClient.get<RegistrationType[]>(`/registration/user`)
       return data
     },
   })
@@ -128,7 +127,7 @@ export const useUpdateRegistrationPayment = (params?: GetRegistrationsQuery) => 
   })
 }
 
-export const useDeleteRegistration = (userId?: string, courseId?: number) => {
+export const useDeleteRegistration = (courseId?: number) => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationKey: ["delete-registration"],
@@ -138,8 +137,8 @@ export const useDeleteRegistration = (userId?: string, courseId?: number) => {
     },
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: ["all-registrations"] })
-      queryClient.invalidateQueries({ queryKey: ["user-registrations", { userId }] })
-      queryClient.invalidateQueries({ queryKey: ["registration", { userId, courseId }] })
+      queryClient.invalidateQueries({ queryKey: ["user-registrations"] })
+      queryClient.invalidateQueries({ queryKey: ["registration", courseId] })
       toast.success("Реєстрацію на захід було скасовано!")
     },
     onError(error) {

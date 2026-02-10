@@ -13,7 +13,6 @@ import { Button } from "../ui/button"
 import { usePayment } from "@/api/hooks/use-payment"
 import type { RegistrationType } from "@/types/registration.type"
 import { useDeleteRegistration } from "@/api/hooks/use-registration"
-import { useSession } from "@/api/auth-client"
 
 const bankAccountNumber = "UA528201720314271004202020020"
 
@@ -33,10 +32,8 @@ interface Props {
 export const PaymentModal = ({ open, onOpenChange, registration }: Props) => {
   const fileRef = useRef<HTMLInputElement | null>(null)
 
-  const { data: session } = useSession()
-
   const uploadPaymentReceipt = usePayment()
-  const deleteRegistration = useDeleteRegistration(session?.user?.id, registration?.courseId)
+  const deleteRegistration = useDeleteRegistration(registration?.courseId)
 
   const handleUploadPaymentReceipt = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -100,14 +97,19 @@ export const PaymentModal = ({ open, onOpenChange, registration }: Props) => {
               Платежі → за реквізитами → {bankAccountNumber} → обрати послугу <b>ЗА МЕТОДИЧНУ ПРОДУКЦІЮ</b>
             </p>
 
-            <h3 className="mt-4 mb-1 text-base font-bold text-black">Оплата через QR-код:</h3>
-            <p>Скануйте QR-код у вашому банківському додатку для швидкої оплати:</p>
-            <div className="flex justify-center my-4">
-              <img
-                src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=UA1234567800000000000000000000;1000;Оплата+заходу+БПР+-+Тестовий"
-                alt="QR Code для оплати"
-              />
-            </div>
+            {true && (
+              <>
+                <h3 className="mt-4 mb-1 text-base font-bold text-black">Оплата через QR-код:</h3>
+                <p>Скануйте QR-код у вашому банківському додатку для швидкої оплати:</p>
+                <div className="flex justify-center my-4">
+                  <img
+                    className="max-w-80"
+                    alt="QR Code для оплати"
+                    src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=UA1234567800000000000000000000;1000;Оплата+заходу+БПР+-+Тестовий"
+                  />
+                </div>
+              </>
+            )}
 
             <p>
               Після сплати ваш захід буде підтверджено, і ви отримаєте доступ до матеріалів. Підтвердження оплати може

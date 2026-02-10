@@ -33,7 +33,7 @@ const FullCoursePage = () => {
 
   const { data: session } = useSession()
 
-  const { data: registration, isLoading: isRegistrationLoading } = useCurrentRegistration(session?.user.id, course?.id)
+  const { data: registration, isLoading: isRegistrationLoading } = useCurrentRegistration(course?.id)
 
   const [isOpen, setIsOpen] = useState(false)
 

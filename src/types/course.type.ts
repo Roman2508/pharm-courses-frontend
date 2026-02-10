@@ -20,6 +20,8 @@ export type CourseType = {
   certificateTemplateId: number
   registrations: RegistrationType[]
 
+  paymentQrCode?: string
+
   duration: number
   pointsBpr: number
   yearOfInclusionToBpr: number
