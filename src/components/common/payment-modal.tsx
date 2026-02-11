@@ -97,7 +97,7 @@ export const PaymentModal = ({ open, onOpenChange, registration }: Props) => {
               Платежі → за реквізитами → {bankAccountNumber} → обрати послугу <b>ЗА МЕТОДИЧНУ ПРОДУКЦІЮ</b>
             </p>
 
-            {true && (
+            {registration.course.paymentQrCode && (
               <>
                 <h3 className="mt-4 mb-1 text-base font-bold text-black">Оплата через QR-код:</h3>
                 <p>Скануйте QR-код у вашому банківському додатку для швидкої оплати:</p>
@@ -105,7 +105,8 @@ export const PaymentModal = ({ open, onOpenChange, registration }: Props) => {
                   <img
                     className="max-w-80"
                     alt="QR Code для оплати"
-                    src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=UA1234567800000000000000000000;1000;Оплата+заходу+БПР+-+Тестовий"
+                    src={`${import.meta.env.VITE_BASE_URL}/${registration.course.paymentQrCode}`}
+                    // src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=UA1234567800000000000000000000;1000;Оплата+заходу+БПР+-+Тестовий"
                   />
                 </div>
               </>

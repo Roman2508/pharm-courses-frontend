@@ -19,21 +19,31 @@ import { createUserSchema, updateUserSchema } from "./admin-users-form-schema"
 
 interface Props {
   open: boolean
+  isAdminPage?: boolean
+  disabledFields?: string[]
   editedUser: UserType | null
   onOpenChange: Dispatch<SetStateAction<boolean>>
   setEditedUser: Dispatch<SetStateAction<UserType | null>>
 }
 
-const AdminUsersDialog: FC<Props> = ({ open, editedUser, onOpenChange, setEditedUser }) => {
+const AdminUsersDialog: FC<Props> = ({
+  open,
+  editedUser,
+  onOpenChange,
+  setEditedUser,
+  disabledFields,
+  isAdminPage = false,
+}) => {
   const { data } = useSession()
 
   const { fields, formData } = useUserData(editedUser)
 
   const availableFields = fields.filter((field) => {
     if (data?.user.id === editedUser?.id) {
-      if (field.name === "role") {
-        return false
-      }
+      if (field.name)
+        if (disabledFields && disabledFields.includes(field.name)) {
+          return false
+        }
     }
     return field
   })
@@ -89,7 +99,20 @@ const AdminUsersDialog: FC<Props> = ({ open, editedUser, onOpenChange, setEdited
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px] pl-2 pr-0 min-[500px]:px-6">
         <DialogHeader className="pb-4">
-          <DialogTitle>{editedUser ? "Редагувати користувача" : "Створити користувача"}</DialogTitle>
+          {
+            <DialogTitle>
+              {isAdminPage
+                ? editedUser
+                  ? "Редагувати користувача"
+                  : "Створити користувача"
+                : "Заповніть свій профіль"}
+            </DialogTitle>
+          }
+          {!isAdminPage && (
+            <DialogDescription className="mt-2">
+              Для реєстрації в заході вам потрібно заповнити додаткову інформацію в полях нижче
+            </DialogDescription>
+          )}
         </DialogHeader>
 
         <DialogDescription className="max-h-[calc(100vh-240px)] overflow-x-hidden overflow-y-auto pt-4 pb-8 px-2 border-y">

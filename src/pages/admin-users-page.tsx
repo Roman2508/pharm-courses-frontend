@@ -72,8 +72,10 @@ const AdminUsersPage = () => {
   return (
     <>
       <AdminUsersDialog
+        isAdminPage={true}
         open={isDialogOpen}
         editedUser={editedUser}
+        disabledFields={["role"]}
         setEditedUser={setEditedUser}
         onOpenChange={setIsDialogOpen}
       />
@@ -120,12 +122,7 @@ const AdminUsersPage = () => {
         ) : users && !!users.length ? (
           <div className="bg-surface rounded-2xl border border-border overflow-hidden">
             <div className="overflow-x-auto">
-              <AdminUserPageTable
-                users={users}
-                params={params}
-                setParams={setParams}
-                onEditUser={onEditUser}
-              />
+              <AdminUserPageTable users={users} params={params} setParams={setParams} onEditUser={onEditUser} />
             </div>
           </div>
         ) : (

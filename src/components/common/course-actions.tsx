@@ -1,10 +1,11 @@
 import { Link } from "react-router"
-import type { Dispatch, FC, SetStateAction } from "react"
+import { useState, type Dispatch, type FC, type SetStateAction } from "react"
 
 import { Button } from "../ui/button"
 import { Spinner } from "@/components/ui/spinner"
 import type { UserType } from "@/types/user.type"
 import type { CourseType } from "@/types/course.type"
+import AdminUsersDialog from "../features/admin-users-page/admin-users-dialog"
 import { useCoursesCountRegistrations, useCreateRegistration } from "@/api/hooks/use-registration"
 import { CertificateDownloadButton } from "../features/full-course-page/certificate-download-button"
 
@@ -24,17 +25,19 @@ interface Props {
 export const CourseActions: FC<Props> = ({
   user,
   amount,
+  course,
   courseId,
   isLoading,
   setIsOpen,
   registration,
-  course,
   size = "lg",
   className = "w-full",
 }) => {
   const { data: registrationCount } = useCoursesCountRegistrations(courseId)
 
   const { mutate: createRegistration, isPending: isCreateRegistrationPending } = useCreateRegistration()
+
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   if (isLoading) {
     return (
@@ -85,26 +88,41 @@ export const CourseActions: FC<Props> = ({
 
     const requiredFields = ["region_city", "education", "specialty", "workplace", "jobTitle"] as const
 
-    const isSomeRequiredFildAreEmpty = requiredFields.every((field) => {
+    const isAllRequiredFieldsFilled = requiredFields.every((field) => {
       const value = user[field]
-      return value !== null && value !== undefined && value !== ""
+      if (typeof value === "string") return value.trim().length > 0
+      return value !== null && value !== undefined
     })
-
-    // Якщо юзер хоче зареєструватись на захід, в нього мають бути заповненими всі обовязкові поля
-    if (isSomeRequiredFildAreEmpty) {
-      //
-    }
 
     // Немає реєстрації
     return (
-      <Button
-        size={size}
-        className={className}
-        disabled={isCreateRegistrationPending}
-        onClick={() => createRegistration({ userId: user.id, courseId, amount }, { onSuccess: () => setIsOpen(true) })}
-      >
-        Зареєструватись
-      </Button>
+      <>
+        <AdminUsersDialog
+          editedUser={user}
+          open={isModalOpen}
+          setEditedUser={() => {}}
+          onOpenChange={setIsModalOpen}
+          disabledFields={["role", "name", "email", "phone", "password", "oldPassword"]}
+        />
+
+        <Button
+          size={size}
+          className={className}
+          disabled={isCreateRegistrationPending}
+          onClick={() => {
+            console.log("isAllRequiredFieldsFilled", isAllRequiredFieldsFilled)
+            if (isAllRequiredFieldsFilled) {
+              // Немає реєстрації
+              createRegistration({ userId: user.id, courseId, amount }, { onSuccess: () => setIsOpen(true) })
+            } else {
+              setIsModalOpen(true)
+              // Якщо юзер хоче зареєструватись на захід, в нього мають бути заповненими всі обовязкові поля
+            }
+          }}
+        >
+          Зареєструватись
+        </Button>
+      </>
     )
   }
 

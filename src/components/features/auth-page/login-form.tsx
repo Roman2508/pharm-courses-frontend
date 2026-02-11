@@ -87,7 +87,7 @@ const LoginForm: FC<Props> = ({ setAuthType, setEmail }) => {
             await authClient.sendVerificationEmail({ email, callbackURL: "/" })
             setEmail(email)
             startCooldown()
-            navigate("/auth/confirm-email", { replace: true })
+            navigate("/auth/verify-email", { replace: true })
             toast.error("Підтвердіть свою електронну пошту")
           } catch {
             toast.error("Не вдалося надіслати лист для підтвердження")

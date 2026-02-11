@@ -73,7 +73,7 @@ export const useCreateRegistration = () => {
     },
     onSuccess(_, payload) {
       queryClient.invalidateQueries({
-        queryKey: ["registration", { userId: payload.userId, courseId: payload.courseId }],
+        queryKey: ["registration", payload.courseId],
       })
       toast.success("Ви успішно зареєструвалися на захід!")
     },
