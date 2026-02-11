@@ -8,12 +8,13 @@ import {
   DialogContent,
   DialogDescription,
 } from "@/components/ui/dialog"
+import { authClient } from "@/api/auth-client"
 import { Button } from "@/components/ui/button"
+import type { UserType } from "@/types/user.type"
 import { useCourses } from "@/api/hooks/use-courses"
 import FormField from "@/components/custom/form-field"
 import useRegistrationData from "@/hooks/use-registration-data"
-import type { UserType } from "@/types/user.type"
-import { authClient } from "@/api/auth-client"
+import { useCreateRegistration } from "@/api/hooks/use-registration"
 
 interface Props {
   open: boolean
@@ -27,11 +28,12 @@ const CreateRegistrationDialog: FC<Props> = ({ open, onOpenChange }) => {
 
   const { formData, fields } = useRegistrationData(users, courses)
 
+  const createRegistration = useCreateRegistration()
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     console.log(formData)
-    //   createCourse.mutate(formData as CourseType, {
-    //     onSuccess: () => navigate("/admin/courses"),
+    createRegistration.mutate(formData as any)
   }
 
   useEffect(() => {
@@ -77,8 +79,8 @@ const CreateRegistrationDialog: FC<Props> = ({ open, onOpenChange }) => {
         </DialogDescription>
 
         <DialogFooter className="w-full gap-2 pt-2">
-          <Button size="lg" className="flex-1" onClick={handleSubmit}>
-            Створити
+          <Button size="lg" className="flex-1" onClick={handleSubmit} disabled={createRegistration.isPending}>
+            {createRegistration.isPending ? "Завантаження..." : "Створити"}
           </Button>
 
           <Button size="lg" variant="ghost" className="w-40" onClick={() => onOpenChange(false)}>

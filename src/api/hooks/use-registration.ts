@@ -67,7 +67,7 @@ export const useCreateRegistration = () => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationKey: ["create-registration"],
-    mutationFn: async (payload: { userId: string; courseId: number; amount: number }) => {
+    mutationFn: async (payload: { userId: string; courseId: number; amount: number; type?: RegistrationType }) => {
       const { data } = await axiosClient.post(`/registration`, payload)
       return data
     },
@@ -75,7 +75,7 @@ export const useCreateRegistration = () => {
       queryClient.invalidateQueries({
         queryKey: ["registration", payload.courseId],
       })
-      toast.success("Ви успішно зареєструвалися на захід!")
+      toast.success("Реєстрація успішно виконана")
     },
     onError(error) {
       toast.error(`Помилка реєстрації. ${error?.message}`)

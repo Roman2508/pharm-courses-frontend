@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react"
+import { Plus, Upload } from "lucide-react"
 import { useParams } from "react-router"
 import { useEffect, useState } from "react"
 
@@ -105,6 +105,17 @@ const AdminRegistrationsPage = () => {
             <div className="flex gap-2 items-center flex-col sm:flex-row">
               <Button
                 size="sm"
+                variant="primary"
+                className="rounded-lg"
+                title="Завантажити реєстрації в xlsx"
+                onClick={() => setCreateRegistrationDialogIsOpen(true)}
+              >
+                <Upload />
+              </Button>
+
+              <Button
+                size="sm"
+                className="rounded-lg"
                 title="Створити нову реєстрацію"
                 onClick={() => setCreateRegistrationDialogIsOpen(true)}
               >
