@@ -1,4 +1,4 @@
-import { Plus, Upload } from "lucide-react"
+import { Plus, Trash, Upload } from "lucide-react"
 import { useParams } from "react-router"
 import { useEffect, useState } from "react"
 
@@ -83,7 +83,7 @@ const AdminRegistrationsPage = () => {
                 <>
                   <Button
                     variant="success"
-                    className="rounded-xl"
+                    className="rounded-xl h-9"
                     disabled={updateEnabled.isPending}
                     onClick={() => updateEnabled.mutate({ id: selectedRegistrations[0], certificateEnabled: true })}
                   >
@@ -92,7 +92,7 @@ const AdminRegistrationsPage = () => {
 
                   <Button
                     variant="destructive"
-                    className="rounded-xl"
+                    className="rounded-xl h-9"
                     disabled={updateEnabled.isPending}
                     onClick={() => updateEnabled.mutate({ id: selectedRegistrations[0], certificateEnabled: false })}
                   >
@@ -103,24 +103,36 @@ const AdminRegistrationsPage = () => {
             </div>
 
             <div className="flex gap-2 items-center flex-col sm:flex-row">
-              <Button
-                size="sm"
-                variant="primary"
-                className="rounded-lg"
-                title="Завантажити реєстрації в xlsx"
-                onClick={() => setCreateRegistrationDialogIsOpen(true)}
-              >
-                <Upload />
-              </Button>
+              <div className="flex gap-2 items-center">
+                <Button
+                  size="sm"
+                  variant="destructive"
+                  className="rounded-lg"
+                  title="Видалити реєстрацію"
+                  onClick={() => setCreateRegistrationDialogIsOpen(true)}
+                >
+                  <Trash />
+                </Button>
 
-              <Button
-                size="sm"
-                className="rounded-lg"
-                title="Створити нову реєстрацію"
-                onClick={() => setCreateRegistrationDialogIsOpen(true)}
-              >
-                <Plus />
-              </Button>
+                <Button
+                  size="sm"
+                  variant="primary"
+                  className="rounded-lg"
+                  title="Завантажити реєстрації в xlsx"
+                  onClick={() => setCreateRegistrationDialogIsOpen(true)}
+                >
+                  <Upload />
+                </Button>
+
+                <Button
+                  size="sm"
+                  className="rounded-lg"
+                  title="Створити нову реєстрацію"
+                  onClick={() => setCreateRegistrationDialogIsOpen(true)}
+                >
+                  <Plus />
+                </Button>
+              </div>
 
               <Pagination
                 total={totalCount}
