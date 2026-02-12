@@ -23,6 +23,7 @@ createRoot(document.getElementById("root")!).render(<RouterProvider router={rout
 // Зробити редірект на /500 тільки для GET запитів
 // Видалити реєстрацію через адмінку
 // Замінити кольори на hex або rgb
+// Rich text протестувати кнопки
 
 // Безкоштовна участь у заході
 

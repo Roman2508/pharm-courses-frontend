@@ -127,7 +127,7 @@ export const PaymentModal = ({ open, onOpenChange, registration }: Props) => {
             </p>
           )}
 
-          <div className="flex gap-2 w-full mt-4">
+          <div className="flex max-[500px]:flex-col flex-row gap-2 w-full mt-4">
             <input
               type="file"
               className="hidden"
@@ -136,7 +136,7 @@ export const PaymentModal = ({ open, onOpenChange, registration }: Props) => {
               onChange={handleUploadPaymentReceipt}
             />
             <Button
-              className="flex-1"
+              className="flex-1 min-h-10"
               onClick={() => fileRef?.current?.click()}
               disabled={uploadPaymentReceipt.isPending || registration.paymentStatus === "PAID"}
             >
