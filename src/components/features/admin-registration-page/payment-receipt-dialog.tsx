@@ -9,14 +9,13 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import type { RegistrationType } from "@/types/registration.type"
 import { useUpdateRegistrationPayment } from "@/api/hooks/use-registration"
 
 interface Props {
   open: boolean
-  registrationPayment: RegistrationType | null
+  registrationPayment: { id: number; paymentReceipt: string } | null
   onOpenChange: Dispatch<SetStateAction<boolean>>
-  setRegistrationPayment: Dispatch<SetStateAction<RegistrationType | null>>
+  setRegistrationPayment: Dispatch<SetStateAction<{ id: number; paymentReceipt: string } | null>>
 }
 
 const PaymentReceiptDialog: FC<Props> = ({ open, onOpenChange, registrationPayment, setRegistrationPayment }) => {
@@ -44,7 +43,11 @@ const PaymentReceiptDialog: FC<Props> = ({ open, onOpenChange, registrationPayme
         </DialogHeader>
 
         <DialogDescription className="max-h-[calc(100vh-240px)] overflow-x-hidden overflow-y-auto pt-4 pb-8 px-2 border-y">
-          <img src={`${import.meta.env.VITE_BASE_URL}${registrationPayment.paymentReceipt}`} />
+          {registrationPayment.paymentReceipt ? (
+            <img src={`${import.meta.env.VITE_BASE_URL}${registrationPayment.paymentReceipt}`} />
+          ) : (
+            <p className="text-center text-base pt-4">Квитанція не завантажена</p>
+          )}
         </DialogDescription>
 
         <DialogFooter className="w-full gap-2 pt-2">

@@ -1,3 +1,4 @@
+import type { UserType } from "./user.type"
 import type { CourseType } from "./course.type"
 
 export type PaymentStatus = "NONE" | "PENDING" | "PAID" | "FAILED" | "REFUNDED"
@@ -14,7 +15,7 @@ export type RegistrationType = {
   course: CourseType
   courseId: number
 
-  user: any
+  user: UserType
   userId: string
 
   createdAt: Date

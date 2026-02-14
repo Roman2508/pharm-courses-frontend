@@ -52,6 +52,30 @@ export const useUserRegistrations = () => {
   })
 }
 
+export const useManyRegistrations = () => {
+  return useMutation({
+    mutationKey: ["many-registrations"],
+    mutationFn: async (ids: number[]) => {
+      const { data } = await axiosClient.post<RegistrationType[]>(`/registration/many`, { ids })
+      return data
+    },
+  })
+}
+
+export const useRemoveManyRegistrations = (params?: GetRegistrationsQuery) => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationKey: ["remove-many-registrations"],
+    mutationFn: async (ids: number[]) => {
+      const { data } = await axiosClient.post<number[]>(`/registration/remove/many`, { ids })
+      return data
+    },
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ["all-registrations", params] })
+    },
+  })
+}
+
 export const useCoursesCountRegistrations = (courseId?: number) => {
   return useQuery({
     enabled: !!courseId,
@@ -87,10 +111,8 @@ export const useUpdateRegistration = (params?: GetRegistrationsQuery) => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationKey: ["update-registration"],
-    mutationFn: async (payload: { id: number; certificateEnabled: boolean }) => {
-      const { data } = await axiosClient.patch(`/registration/${payload.id}`, {
-        certificateEnabled: payload.certificateEnabled,
-      })
+    mutationFn: async (payload: { ids: number[]; certificateEnabled: boolean }) => {
+      const { data } = await axiosClient.patch(`/registration`, payload)
       return data
     },
     onSuccess() {

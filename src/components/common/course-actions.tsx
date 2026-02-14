@@ -66,10 +66,13 @@ export const CourseActions: FC<Props> = ({
       </Link>
     )
   }
+
   // return (
   //   <>
-  //     {course && userName && (
-  //       <CertificateDownloadButton course={course} registration={registration} userName={userName} />
+  //     {course && user.name && (
+  //       <div className="max-w-[260px]">
+  //         <CertificateDownloadButton course={course} registration={registration} userName={user.name} />
+  //       </div>
   //     )}
   //   </>
   // )

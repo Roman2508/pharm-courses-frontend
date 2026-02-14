@@ -25,7 +25,7 @@ interface Props {
   setIsOpen: Dispatch<SetStateAction<boolean>>
   setParams: Dispatch<SetStateAction<GetRegistrationsQuery>>
   setSelectedRegistrations: Dispatch<SetStateAction<number[]>>
-  setRegistrationPayment: Dispatch<SetStateAction<RegistrationType | null>>
+  setRegistrationPayment: Dispatch<SetStateAction<{ id: number; paymentReceipt: string } | null>>
 }
 
 const AdminRegistrationTable: FC<Props> = ({
@@ -154,7 +154,7 @@ const AdminRegistrationTable: FC<Props> = ({
               <button
                 onClick={() => {
                   setIsOpen(true)
-                  setRegistrationPayment(reg)
+                  setRegistrationPayment({ id: reg.id, paymentReceipt: reg.paymentReceipt })
                 }}
                 className={`truncate cursor-pointer inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-colors ${
                   reg.paymentReceipt

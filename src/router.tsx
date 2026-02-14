@@ -8,7 +8,9 @@ import { ArchivePage } from "./pages/archive-page"
 import MyCoursesPage from "./pages/my-courses-page"
 import AdminUsersPage from "./pages/admin-users-page"
 import FullCoursePage from "./pages/full-course-page"
+import TermsOfUsePage from "./pages/terms-of-use-page"
 import AdminCoursesPage from "./pages/admin-courses-page"
+import PrivacyPolicyPage from "./pages/privacy-policy-page"
 import NotFoundErrorPage from "./pages/not-found-error-page"
 import { RootLayout } from "./components/layouts/root-layout"
 import AdminFullCoursePage from "./pages/admin-full-course-page"
@@ -16,8 +18,6 @@ import AdminCertificatesPage from "./pages/admin-certificates-page"
 import AdminRegistrationsPage from "./pages/admin-registrations-page"
 import InternalServerErrorPage from "./pages/internal-server-error-page"
 import AdminFullCertificatePage from "./pages/admin-full-certificate-page"
-import TermsOfUsePage from "./pages/terms-of-use-page"
-import PrivacyPolicyPage from "./pages/privacy-policy-page"
 
 export const router = createBrowserRouter([
   {

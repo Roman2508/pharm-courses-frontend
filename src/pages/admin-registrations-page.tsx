@@ -1,19 +1,25 @@
-import { Plus, Trash, Upload } from "lucide-react"
+import { toast } from "sonner"
 import { useParams } from "react-router"
+import { Plus, Trash } from "lucide-react"
 import { useEffect, useState } from "react"
 
+import {
+  useAllRegistrations,
+  useUpdateRegistration,
+  useRemoveManyRegistrations,
+  type GetRegistrationsQuery,
+} from "@/api/hooks/use-registration"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Title } from "@/components/custom/title"
 import FormField from "@/components/custom/form-field"
 import PageLoader from "@/components/custom/page-loader"
 import { Pagination } from "@/components/custom/pagination"
-import type { RegistrationType } from "@/types/registration.type"
 import { useCourses, useFullCourse } from "@/api/hooks/use-courses"
 import PaymentReceiptDialog from "@/components/features/admin-registration-page/payment-receipt-dialog"
 import AdminRegistrationTable from "@/components/features/admin-registration-page/admin-registration-table"
 import CreateRegistrationDialog from "@/components/features/admin-registration-page/create-registration-dialog"
-import { useAllRegistrations, useUpdateRegistration, type GetRegistrationsQuery } from "@/api/hooks/use-registration"
+import DownloadRegistrationsButton from "@/components/features/admin-registration-page/download-registrations-button"
 
 const initialParams = { page: 1, limit: 20, orderBy: "createdAt", orderType: "desc" } as const
 
@@ -25,7 +31,7 @@ const AdminRegistrationsPage = () => {
 
   const [params, setParams] = useState<GetRegistrationsQuery>(initialParams)
   const [selectedRegistrations, setSelectedRegistrations] = useState<number[]>([])
-  const [registrationPayment, setRegistrationPayment] = useState<RegistrationType | null>(null)
+  const [registrationPayment, setRegistrationPayment] = useState<{ id: number; paymentReceipt: string } | null>(null)
 
   // В фільтрі реєстрацій можна вибрати лише заходи, які є запланованими
   const { data: courses } = useCourses("PLANNED")
@@ -34,7 +40,9 @@ const AdminRegistrationsPage = () => {
   const { data: fullCourse } = useFullCourse(pageParams.id)
   const { data: { data: registrations, totalCount } = { data: [], totalCount: 0 }, isLoading } =
     useAllRegistrations(params)
+
   const updateEnabled = useUpdateRegistration(params)
+  const removeRegistrations = useRemoveManyRegistrations(params)
 
   const handleChangeParams = (key: keyof GetRegistrationsQuery, value: any) => {
     setParams((prev) => ({ ...prev, [key]: value }))
@@ -46,6 +54,15 @@ const AdminRegistrationsPage = () => {
     } else {
       handleChangeParams("courseId", undefined)
     }
+  }
+
+  const onRemoveRegistrations = () => {
+    if (!selectedRegistrations || !selectedRegistrations.length) {
+      toast.warning("Реєстрації не вибрано")
+      return
+    }
+    if (!window.confirm("Видалити обрані реєстрації?")) return
+    removeRegistrations.mutate(selectedRegistrations)
   }
 
   useEffect(() => {
@@ -85,7 +102,7 @@ const AdminRegistrationsPage = () => {
                     variant="success"
                     className="rounded-xl h-9"
                     disabled={updateEnabled.isPending}
-                    onClick={() => updateEnabled.mutate({ id: selectedRegistrations[0], certificateEnabled: true })}
+                    onClick={() => updateEnabled.mutate({ ids: selectedRegistrations, certificateEnabled: true })}
                   >
                     Відкрити доступ ({selectedRegistrations.length})
                   </Button>
@@ -94,7 +111,7 @@ const AdminRegistrationsPage = () => {
                     variant="destructive"
                     className="rounded-xl h-9"
                     disabled={updateEnabled.isPending}
-                    onClick={() => updateEnabled.mutate({ id: selectedRegistrations[0], certificateEnabled: false })}
+                    onClick={() => updateEnabled.mutate({ ids: selectedRegistrations, certificateEnabled: false })}
                   >
                     Закрити доступ
                   </Button>
@@ -109,20 +126,13 @@ const AdminRegistrationsPage = () => {
                   variant="destructive"
                   className="rounded-lg"
                   title="Видалити реєстрацію"
-                  onClick={() => setCreateRegistrationDialogIsOpen(true)}
+                  onClick={onRemoveRegistrations}
+                  disabled={removeRegistrations.isPending}
                 >
                   <Trash />
                 </Button>
 
-                <Button
-                  size="sm"
-                  variant="primary"
-                  className="rounded-lg"
-                  title="Завантажити реєстрації в xlsx"
-                  onClick={() => setCreateRegistrationDialogIsOpen(true)}
-                >
-                  <Upload />
-                </Button>
+                <DownloadRegistrationsButton registrations={selectedRegistrations} />
 
                 <Button
                   size="sm"
@@ -161,17 +171,15 @@ const AdminRegistrationsPage = () => {
           </div>
         </div>
 
-        {fullCourse ? (
+        {!!fullCourse && (
           <h2 className="font-bold text-lg mb-4 text-center">{`Реєстрації на захід: ${fullCourse?.name}`}</h2>
-        ) : (
-          ""
         )}
 
         {isLoading ? (
           <PageLoader />
         ) : registrations?.length ? (
           <div className="bg-surface rounded-2xl border border-border overflow-hidden">
-            <div className="overflow-x-auto">
+            <div className={cn("overflow-x-auto", { "opacity-[0.5]": removeRegistrations.isPending })}>
               <AdminRegistrationTable
                 params={params}
                 setParams={setParams}

@@ -16,7 +16,13 @@ interface CertificateDownloadButtonProps {
   className?: string
 }
 
-export const CertificateDownloadButton = ({ course, registration, userName, size = "lg", className = "w-full" }: CertificateDownloadButtonProps) => {
+export const CertificateDownloadButton = ({
+  course,
+  registration,
+  userName,
+  size = "lg",
+  className = "w-full",
+}: CertificateDownloadButtonProps) => {
   const [isGenerating, setIsGenerating] = useState(false)
 
   const generateCertificate = async () => {
@@ -31,7 +37,6 @@ export const CertificateDownloadButton = ({ course, registration, userName, size
       // Fetch the PDF template
       const templateUrl = course.certificateTemplate.templateUrl
       const templateResponse = await fetch(templateUrl)
-      // const templateResponse = await fetch(`${import.meta.env.VITE_BASE_URL}${templateUrl}`, { credentials: "include" })
 
       if (!templateResponse.ok) {
         throw new Error("Не вдалося завантажити шаблон сертифіката")
@@ -103,6 +108,9 @@ export const CertificateDownloadButton = ({ course, registration, userName, size
 
         // Calculate text width for alignment using the custom font
         const textWidth = customFont.widthOfTextAtSize(block.text, fontSize || 12)
+
+        // let customX = x + 25
+
         let xPosition = x
         if (textAlign === "center") {
           xPosition = x - textWidth / 2
@@ -113,6 +121,7 @@ export const CertificateDownloadButton = ({ course, registration, userName, size
         // Draw text on page
         // Note: PDF coordinates start from bottom-left, so we need to invert Y
         const pageHeight = firstPage.getHeight()
+        // const yPosition = pageHeight - y - fontSize - 8
         const yPosition = pageHeight - y - fontSize
 
         firstPage.drawText(block.text, {
@@ -152,7 +161,7 @@ export const CertificateDownloadButton = ({ course, registration, userName, size
       size={size}
       className={className}
       onClick={generateCertificate}
-      disabled={isGenerating || !course.certificateTemplate}
+      // disabled={isGenerating || !course.certificateTemplate}
     >
       {isGenerating ? (
         "Генерація сертифіката..."

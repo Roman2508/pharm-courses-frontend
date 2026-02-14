@@ -1,29 +1,30 @@
 "use client"
 
-import { useEditor, EditorContent } from "@tiptap/react"
+import {
+  Bold,
+  List,
+  Italic,
+  AlignLeft,
+  AlignRight,
+  ListOrdered,
+  AlignCenter,
+  AlignJustify,
+  UnderlineIcon,
+  // Heading1,
+  // Heading2,
+  // Heading3,
+  Link as LinkIcon,
+} from "lucide-react"
+import Link from "@tiptap/extension-link"
 import StarterKit from "@tiptap/starter-kit"
 import Underline from "@tiptap/extension-underline"
 import TextAlign from "@tiptap/extension-text-align"
-import { TextStyle } from "@tiptap/extension-text-style"
 import FontFamily from "@tiptap/extension-font-family"
-import Link from "@tiptap/extension-link"
-import {
-  Bold,
-  Italic,
-  UnderlineIcon,
-  List,
-  ListOrdered,
-  AlignLeft,
-  AlignCenter,
-  AlignRight,
-  AlignJustify,
-  Heading1,
-  Heading2,
-  Heading3,
-  Link as LinkIcon,
-} from "lucide-react"
-import { Button } from "../ui/button"
+import { useEditor, EditorContent } from "@tiptap/react"
+import { TextStyle } from "@tiptap/extension-text-style"
+
 import { cn } from "@/lib/utils"
+import { Button } from "../ui/button"
 
 interface RichTextEditorProps {
   content: string
@@ -102,7 +103,7 @@ export function RichTextEditor({ content, onChange, placeholder, className = "" 
       {/* Toolbar */}
       <div className="bg-surface-hover p-2 flex flex-wrap gap-1 sticky top-0 z-10">
         {/* Headings */}
-        <Button
+        {/* <Button
           type="button"
           variant="ghost"
           size="sm"
@@ -131,7 +132,7 @@ export function RichTextEditor({ content, onChange, placeholder, className = "" 
           title="Heading 3"
         >
           <Heading3 className="h-4 w-4" />
-        </Button>
+        </Button> */}
 
         <div className="w-px h-6 bg-border mx-1" />
 

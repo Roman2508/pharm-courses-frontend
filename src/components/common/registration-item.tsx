@@ -1,10 +1,18 @@
-import { type FC } from "react"
+import { type Dispatch, type FC, type SetStateAction } from "react"
 
 import { getDate } from "@/helpers/get-date"
 import type { RegistrationType } from "@/types/registration.type"
 import { getPaymentColor, getPaymentStatus } from "@/helpers/get-payment-status"
 
-const RegistrationItem: FC<RegistrationType> = ({ user, course, createdAt, paymentStatus }) => {
+interface Props {
+  registration: RegistrationType
+  setIsOpen: Dispatch<SetStateAction<boolean>>
+  setRegistrationPayment: Dispatch<SetStateAction<{ id: number; paymentReceipt: string } | null>>
+}
+
+const RegistrationItem: FC<Props> = ({ registration, setIsOpen, setRegistrationPayment }) => {
+  const { user, course, createdAt, paymentStatus, paymentReceipt } = registration
+
   const color = getPaymentColor(paymentStatus)
 
   return (
@@ -31,12 +39,26 @@ const RegistrationItem: FC<RegistrationType> = ({ user, course, createdAt, payme
         </div>
       </div>
 
-      <div className="text-right">
+      <div className="flex flex-col gap-2 items-end">
         <span
           className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-${color}/10 text-${color}`}
         >
           {getPaymentStatus(paymentStatus)}
         </span>
+
+        <button
+          onClick={() => {
+            setIsOpen(true)
+            setRegistrationPayment({ id: registration.id, paymentReceipt: registration.paymentReceipt })
+          }}
+          className={`truncate cursor-pointer inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-colors ${
+            paymentReceipt
+              ? "bg-primary/10 text-primary hover:bg-primary/20"
+              : "bg-destructive/10 text-destructive hover:bg-destructive/20"
+          }`}
+        >
+          {paymentReceipt ? "Переглянути" : "Не завантажена"}
+        </button>
       </div>
     </div>
   )

@@ -9,10 +9,9 @@ axiosClient.interceptors.response.use(
   (response) => response,
   (error) => {
     const status = error.response?.status
+    const method = error.config?.method?.toLowerCase()
 
-    /* if (status === 404) {
-      window.location.href = "/404"
-    } else */ if (status >= 500) {
+    if (status >= 500 && method === "get") {
       window.location.href = "/500"
     }
 
