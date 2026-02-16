@@ -1,4 +1,4 @@
-import { Toaster } from "sonner"
+import { toast, Toaster } from "sonner"
 import { Outlet, useLocation } from "react-router"
 
 import Header from "../common/header"
@@ -9,6 +9,10 @@ import PermissionsLayout from "./permissions-layout"
 
 export const RootLayout = () => {
   const location = useLocation()
+
+  window.addEventListener("offline", () => {
+    toast.error("Ви втратили інтернет-зʼєднання")
+  })
 
   return (
     <TanstackLayout>

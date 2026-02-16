@@ -8,13 +8,26 @@ export const axiosClient = axios.create({
 axiosClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    const status = error.response?.status
-    const method = error.config?.method?.toLowerCase()
-
-    if (status >= 500 && method === "get") {
-      window.location.href = "/500"
+    if (!error.response || error.code === "ERR_NETWORK") {
+      return Promise.reject({
+        type: "NETWORK_ERROR",
+        message: "Спробуйте пізніше або перевірте підключення до Інтернету",
+        // message: "Сервер недоступний",
+      })
     }
 
-    return Promise.reject(error)
+    // const status = error.response?.status
+    // const method = error.config?.method?.toLowerCase()
+
+    // if (status >= 500 && method === "get") {
+    //   window.location.href = "/500"
+    // }
+
+    return Promise.reject({
+      type: "HTTP_ERROR",
+      status,
+      message: error.response?.data?.message || "Помилка сервера",
+    })
+    // return Promise.reject(error)
   },
 )
