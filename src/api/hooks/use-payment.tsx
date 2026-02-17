@@ -1,5 +1,5 @@
 import { toast } from "sonner"
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query"
 
 import { axiosClient } from "../client"
 
