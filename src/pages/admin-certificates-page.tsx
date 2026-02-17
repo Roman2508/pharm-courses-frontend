@@ -69,7 +69,7 @@ const AdminCertificatesPage = () => {
                   </h3>
                   <div className="text-sm text-text-secondary space-y-1">
                     <p className="truncate max-w-[200px] min-[420px]:max-w-[300px] min-[500px]:max-w-[400px] sm:max-w-[500px] md:max-w-[300px] min-[840px]:max-w-[400px]">
-                      URL шаблону: {template.templateUrl}
+                      Назва PDF шаблону: {template.templateUrl.split("/").slice(-1)[0]}
                     </p>
                     <p>Створено: {getDate(template.createdAt)}</p>
                   </div>

@@ -7,6 +7,9 @@ import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import type { CourseType } from "@/types/course.type"
 import type { RegistrationType } from "@/types/registration.type"
+import { splitTextIntoLines } from "@/helpers/split-text-into-lines"
+
+const BLOCK_PADDING = 8
 
 interface CertificateDownloadButtonProps {
   course: CourseType
@@ -50,6 +53,14 @@ export const CertificateDownloadButton = ({
 
       const pages = pdfDoc.getPages()
       const firstPage = pages[0]
+
+      // Додай одразу після:
+      // Додай одразу після:
+      // Додай одразу після:
+      const pdfWidth = firstPage.getWidth()
+      const pdfHeight = firstPage.getHeight()
+      const displayWidth = 900
+      const scale = pdfWidth / displayWidth
 
       // Embed a font that supports Cyrillic characters
       // Using Roboto font stored locally
@@ -100,38 +111,94 @@ export const CertificateDownloadButton = ({
 
         const { x, y, fontSize, color, textAlign } = block.position
 
-        // Parse color (expecting hex format like "#000000")
         const colorHex = color || "#000000"
         const r = parseInt(colorHex.slice(1, 3), 16) / 255
         const g = parseInt(colorHex.slice(3, 5), 16) / 255
         const b = parseInt(colorHex.slice(5, 7), 16) / 255
 
-        // Calculate text width for alignment using the custom font
-        const textWidth = customFont.widthOfTextAtSize(block.text, fontSize || 12)
+        const scaledX = x * scale
+        const scaledY = y * scale
+        const scaledFontSize = (fontSize || 12) * scale
+        const scaledPadding = BLOCK_PADDING * scale
+        const scaledWidth = (block.position.width || 200) * scale
+        const scaledHeight = (block.position.height || 40) * scale
 
-        // let customX = x + 25
+        const maxTextWidth = scaledWidth - scaledPadding * 2
+        const lineHeight = scaledFontSize * 1.2 // відстань між рядками
 
-        let xPosition = x
-        if (textAlign === "center") {
-          xPosition = x - textWidth / 2
-        } else if (textAlign === "right") {
-          xPosition = x - textWidth
-        }
+        // Розбиваємо текст на рядки
+        const lines = splitTextIntoLines(block.text, customFont, scaledFontSize, maxTextWidth)
 
-        // Draw text on page
-        // Note: PDF coordinates start from bottom-left, so we need to invert Y
-        const pageHeight = firstPage.getHeight()
-        // const yPosition = pageHeight - y - fontSize - 8
-        const yPosition = pageHeight - y - fontSize
+        // Загальна висота всього тексту
+        const totalTextHeight = lines.length * lineHeight
 
-        firstPage.drawText(block.text, {
-          x: xPosition,
-          y: yPosition,
-          size: fontSize || 12,
-          font: customFont,
-          color: rgb(r, g, b),
+        // Починаємо з вертикального центру блоку
+        const blockCenterY = scaledY + scaledHeight / 2
+        const startY = blockCenterY - totalTextHeight / 2
+
+        lines.forEach((line, index) => {
+          const lineWidth = customFont.widthOfTextAtSize(line, scaledFontSize)
+          const lineY = startY + index * lineHeight
+
+          let xPosition = scaledX + scaledPadding
+          if (textAlign === "center") {
+            xPosition = scaledX + scaledWidth / 2 - lineWidth / 2
+          } else if (textAlign === "right") {
+            xPosition = scaledX + scaledWidth - scaledPadding - lineWidth
+          }
+
+          // Конвертація Y з екранної в PDF систему координат
+          const yPosition = pdfHeight - lineY - scaledFontSize
+
+          firstPage.drawText(line, {
+            x: xPosition,
+            y: yPosition,
+            size: scaledFontSize,
+            font: customFont,
+            color: rgb(r, g, b),
+          })
         })
       })
+
+      // blocks.forEach((block) => {
+      //   if (!block.position || !block.text) return
+
+      //   const { x, y, fontSize, color, textAlign } = block.position
+
+      //   const colorHex = color || "#000000"
+      //   const r = parseInt(colorHex.slice(1, 3), 16) / 255
+      //   const g = parseInt(colorHex.slice(3, 5), 16) / 255
+      //   const b = parseInt(colorHex.slice(5, 7), 16) / 255
+
+      //   const scaledX = x * scale
+      //   const scaledY = y * scale
+      //   const scaledFontSize = (fontSize || 12) * scale
+      //   const scaledPadding = BLOCK_PADDING * scale
+      //   const scaledHeight = (block.position.height || 40) * scale
+
+      //   // Горизонтальна позиція тексту з урахуванням padding
+      //   const scaledWidth = (block.position.width || 200) * scale
+      //   const textWidth = customFont.widthOfTextAtSize(block.text, scaledFontSize)
+
+      //   let xPosition = scaledX + scaledPadding // лівий край + padding
+
+      //   if (textAlign === "center") {
+      //     xPosition = scaledX + scaledWidth / 2 - textWidth / 2
+      //   } else if (textAlign === "right") {
+      //     xPosition = scaledX + scaledWidth - scaledPadding - textWidth
+      //   }
+
+      //   // Вертикальна позиція: центр блоку мінус половина шрифту
+      //   const yPosition = pdfHeight - scaledY - scaledHeight / 2 - scaledFontSize / 2
+
+      //   firstPage.drawText(block.text, {
+      //     x: xPosition,
+      //     y: yPosition,
+      //     size: scaledFontSize,
+      //     font: customFont,
+      //     color: rgb(r, g, b),
+      //   })
+      // })
 
       // Save and download the PDF
       const pdfBytes = await pdfDoc.save()

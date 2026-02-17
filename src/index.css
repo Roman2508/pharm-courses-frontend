@@ -49,7 +49,52 @@
 }
 
 :root {
-  --background: oklch(0.99 0 0);
+  /* Fallback для старих браузерів */
+  --background: #fcfcfc;
+  --foreground: #0b0b0b;
+
+  --surface: #ffffff;
+  --surface-hover: #f5f5f5;
+
+  --primary: #0f74c5;
+  --primary-hover: #005fad;
+  --primary-foreground: #ffffff;
+
+  --secondary: #00afa7;
+  --secondary-foreground: #ffffff;
+
+  --success: #3a9742;
+  --success-foreground: #ffffff;
+
+  --text-primary: #0b0b0b;
+  --text-secondary: #555555;
+  --text-muted: #808080;
+
+  --border: #dedede;
+  --input: #eeeeee;
+  --ring: #0f74c5;
+
+  --card: #ffffff;
+  --card-foreground: #0b0b0b;
+  --popover: #ffffff;
+  --popover-foreground: #0b0b0b;
+
+  --muted: #f5f5f5;
+  --muted-foreground: #737373;
+  --accent: #f5f5f5;
+  --accent-foreground: #171717;
+  --destructive: #e7000b;
+  --destructive-foreground: #ffffff;
+  --warning: #ffb900;
+
+  --chart-1: #f54900;
+  --chart-2: #009689;
+  --chart-3: #104e64;
+  --chart-4: #ffb900;
+  --chart-5: #fe9a00;
+
+  /* Основне значення для сучасних */
+  /* --background: oklch(0.99 0 0);
   --foreground: oklch(0.15 0 0);
 
   --surface: oklch(1 0 0);
@@ -90,7 +135,7 @@
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+  --chart-5: oklch(0.769 0.188 70.08); */
   --radius: 0.75rem;
 }
 
