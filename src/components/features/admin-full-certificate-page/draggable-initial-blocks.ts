@@ -20,6 +20,7 @@ export interface TextBlock {
   fontSize: number
   fontFamily: string
   textAlign: "left" | "center" | "right" | "justify"
+  fontWeight: "regular" | "bold"
   color: string
 }
 
@@ -36,6 +37,7 @@ export const DRAGGABLE_INITIAL_BLOCKS: TextBlock[] = [
     fontSize: 22,
     fontFamily: "Arial",
     textAlign: "center",
+    fontWeight: "regular",
     color: "#000000",
   },
   {
@@ -50,6 +52,7 @@ export const DRAGGABLE_INITIAL_BLOCKS: TextBlock[] = [
     fontSize: 18,
     fontFamily: "Arial",
     textAlign: "center",
+    fontWeight: "regular",
     color: "#000000",
   },
   {
@@ -64,6 +67,8 @@ export const DRAGGABLE_INITIAL_BLOCKS: TextBlock[] = [
     fontSize: 14,
     fontFamily: "Arial",
     textAlign: "left",
+
+    fontWeight: "regular",
     color: "#000000",
   },
   {
@@ -78,6 +83,8 @@ export const DRAGGABLE_INITIAL_BLOCKS: TextBlock[] = [
     fontSize: 14,
     fontFamily: "Arial",
     textAlign: "left",
+
+    fontWeight: "regular",
     color: "#000000",
   },
   {
@@ -92,6 +99,8 @@ export const DRAGGABLE_INITIAL_BLOCKS: TextBlock[] = [
     fontSize: 14,
     fontFamily: "Arial",
     textAlign: "left",
+
+    fontWeight: "regular",
     color: "#000000",
   },
   {
@@ -106,6 +115,8 @@ export const DRAGGABLE_INITIAL_BLOCKS: TextBlock[] = [
     fontSize: 14,
     fontFamily: "Arial",
     textAlign: "left",
+
+    fontWeight: "regular",
     color: "#000000",
   },
   {
@@ -120,6 +131,8 @@ export const DRAGGABLE_INITIAL_BLOCKS: TextBlock[] = [
     fontSize: 14,
     fontFamily: "Arial",
     textAlign: "left",
+
+    fontWeight: "regular",
     color: "#000000",
   },
   {
@@ -134,6 +147,8 @@ export const DRAGGABLE_INITIAL_BLOCKS: TextBlock[] = [
     fontSize: 14,
     fontFamily: "Arial",
     textAlign: "left",
+
+    fontWeight: "regular",
     color: "#000000",
   },
   {
@@ -148,6 +163,8 @@ export const DRAGGABLE_INITIAL_BLOCKS: TextBlock[] = [
     fontSize: 14,
     fontFamily: "Arial",
     textAlign: "left",
+
+    fontWeight: "regular",
     color: "#000000",
   },
   {
@@ -162,6 +179,8 @@ export const DRAGGABLE_INITIAL_BLOCKS: TextBlock[] = [
     fontSize: 14,
     fontFamily: "Arial",
     textAlign: "left",
+
+    fontWeight: "regular",
     color: "#000000",
   },
 ]

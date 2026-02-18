@@ -35,6 +35,7 @@ function DraggableBlock({
     textAlign: block.textAlign,
     boxShadow: isSelected ? "0 4px 6px -1px rgba(0, 0, 0, 0.1)" : "none",
     transition: "box-shadow 0.2s",
+    fontWeight: block.fontWeight === "bold" ? 700 : 400,
   }
 
   return (

@@ -64,9 +64,17 @@ export const CertificateDownloadButton = ({
 
       // Embed a font that supports Cyrillic characters
       // Using Roboto font stored locally
-      const fontUrl = "/fonts/Roboto-Regular.ttf"
-      const fontBytes = await fetch(fontUrl).then((res) => res.arrayBuffer())
-      const customFont = await pdfDoc.embedFont(fontBytes)
+      const regularFontUrl = "/fonts/Roboto-Regular.ttf"
+      const boldFontUrl = "/fonts/Roboto-Bold.ttf"
+
+      const regularFontBytes = await fetch(regularFontUrl).then((res) => res.arrayBuffer())
+      const boldFontBytes = await fetch(boldFontUrl).then((res) => res.arrayBuffer())
+
+      // const fontBytes = await fetch(fontUrl).then((res) => res.arrayBuffer())
+      // const customFont = await pdfDoc.embedFont(fontBytes)
+
+      const regularFont = await pdfDoc.embedFont(regularFontBytes)
+      const boldFont = await pdfDoc.embedFont(boldFontBytes)
 
       // Prepare data for text blocks
       const certificateNumber = `${course.yearOfInclusionToBpr}-${course.numberOfInclusionToBpr}-${registration.id}`
@@ -109,7 +117,10 @@ export const CertificateDownloadButton = ({
       blocks.forEach((block) => {
         if (!block.position || !block.text) return
 
-        const { x, y, fontSize, color, textAlign } = block.position
+        const { x, y, fontSize, color, textAlign, fontWeight } = block.position
+
+        // Вибираємо шрифт в залежності від жирності
+        const selectedFont = fontWeight === "bold" ? boldFont : regularFont
 
         const colorHex = color || "#000000"
         const r = parseInt(colorHex.slice(1, 3), 16) / 255
@@ -127,7 +138,7 @@ export const CertificateDownloadButton = ({
         const lineHeight = scaledFontSize * 1.2 // відстань між рядками
 
         // Розбиваємо текст на рядки
-        const lines = splitTextIntoLines(block.text, customFont, scaledFontSize, maxTextWidth)
+        const lines = splitTextIntoLines(block.text, selectedFont, scaledFontSize, maxTextWidth)
 
         // Загальна висота всього тексту
         const totalTextHeight = lines.length * lineHeight
@@ -137,7 +148,7 @@ export const CertificateDownloadButton = ({
         const startY = blockCenterY - totalTextHeight / 2
 
         lines.forEach((line, index) => {
-          const lineWidth = customFont.widthOfTextAtSize(line, scaledFontSize)
+          const lineWidth = selectedFont.widthOfTextAtSize(line, scaledFontSize)
           const lineY = startY + index * lineHeight
 
           let xPosition = scaledX + scaledPadding
@@ -154,7 +165,7 @@ export const CertificateDownloadButton = ({
             x: xPosition,
             y: yPosition,
             size: scaledFontSize,
-            font: customFont,
+            font: selectedFont,
             color: rgb(r, g, b),
           })
         })

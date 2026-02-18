@@ -91,6 +91,18 @@ const PositionInputGroup: FC<Props> = ({ label, block, updateBlock, isSelected, 
         </div>
 
         <div className="lg:col-span-1 flex items-center">
+          <label className="block text-sm w-20 text-text-secondary mb-1">Жирність</label>
+          <select
+            value={block.fontWeight || "regular"}
+            onChange={(e) => updateBlock(block.id, "fontWeight", e.target.value)}
+            className="w-full px-2 py-1.5 rounded-lg border border-border bg-input text-text-primary text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            <option value="regular">Regular</option>
+            <option value="bold">Bold</option>
+          </select>
+        </div>
+
+        <div className="lg:col-span-1 flex items-center">
           <label className="block text-sm w-15.5 text-text-secondary mb-1">Колір</label>
           <div className="flex items-center gap-2">
             <input

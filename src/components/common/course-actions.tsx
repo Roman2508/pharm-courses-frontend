@@ -47,17 +47,18 @@ export const CourseActions: FC<Props> = ({
     )
   }
 
-  if (!user) {
-    if (course && typeof course.maxMembers === "number" && registrationCount) {
-      if (course.maxMembers <= registrationCount) {
-        return (
-          <Button className={className} size={size} disabled>
-            Всі місця зайняті
-          </Button>
-        )
-      }
+  // Закінчились доступні реєстрації
+  if (course && typeof course.maxMembers === "number" && registrationCount) {
+    if (!!course.maxMembers && course.maxMembers <= registrationCount) {
+      return (
+        <Button className={className} size={size} disabled>
+          Всі місця зайняті
+        </Button>
+      )
     }
+  }
 
+  if (!user) {
     return (
       <Link to="/auth/login">
         <Button className={className} size={size}>
@@ -79,15 +80,15 @@ export const CourseActions: FC<Props> = ({
 
   if (!registration && courseId && amount) {
     // Закінчились доступні реєстрації
-    if (course && typeof course.maxMembers === "number" && registrationCount) {
-      if (course.maxMembers <= registrationCount) {
-        return (
-          <Button className={className} size={size} disabled>
-            Всі місця зайняті
-          </Button>
-        )
-      }
-    }
+    // if (course && typeof course.maxMembers === "number" && registrationCount) {
+    //   if (course.maxMembers <= registrationCount) {
+    //     return (
+    //       <Button className={className} size={size} disabled>
+    //         Всі місця зайняті
+    //       </Button>
+    //     )
+    //   }
+    // }
 
     const requiredFields = ["region_city", "education", "specialty", "workplace", "jobTitle"] as const
 
