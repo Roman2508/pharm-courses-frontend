@@ -1,94 +1,221 @@
 import { Title } from "@/components/custom/title"
 
+const institution = "Житомирський базовий фармацевтичний фаховий коледж Житомирської обласної ради"
+const email = "collage@pharm.zt.ua"
+const phone = "+380 67 123 45 67"
+
 const TermsOfUsePage = () => {
   return (
     <div className="container mx-auto px-4 py-12 max-w-4xl">
       <Title className="mb-8">Умови використання</Title>
 
-      <p className="mb-4">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tristique orci nec nisl rutrum blandit. Mauris
-        mauris libero, iaculis vel enim a, blandit egestas lorem. Vestibulum hendrerit purus urna, nec dignissim sem
-        mattis nec. Donec interdum id metus ac fringilla. Maecenas elementum neque metus, ac elementum augue rutrum
-        vitae. Nullam sem elit, vulputate eget porta eget, hendrerit et ligula. Nam tincidunt sapien nec tortor interdum
-        sagittis. Proin consectetur massa mauris, in volutpat diam ultricies a. Fusce at blandit velit, at sollicitudin
-        diam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec ut euismod
-        tellus. Nullam mattis imperdiet leo, vel sagittis ipsum congue non. Vestibulum tincidunt sapien et sem aliquet,
-        id aliquet turpis rutrum. Suspendisse mollis justo mi, et feugiat lectus convallis nec. Suspendisse facilisis
-        urna at pharetra molestie.
-      </p>
+      <div className="space-y-8 leading-relaxed mb-8-10">
+        <section className="space-y-3">
+          <p>Останнє оновлення: дд.мм.2026</p>
 
-      <p className="mb-4">
-        Curabitur ac cursus nibh, et pellentesque nunc. Vestibulum porta at purus ac tempor. Phasellus iaculis nunc sit
-        amet libero condimentum, id faucibus tellus sagittis. Mauris eget nisi nisi. Nam finibus posuere erat, eget
-        consequat velit lobortis a. Morbi lobortis ornare mi. Praesent aliquam, mauris ut bibendum tincidunt, nunc massa
-        rutrum diam, feugiat mollis ligula tortor eget mauris. Integer laoreet, metus a iaculis vehicula, purus ex
-        laoreet sapien, ut euismod eros libero et erat.
-      </p>
+          <p>
+            Власником та розпорядником даного вебсайту є <b>{institution}</b> (далі — Сайт). Будь ласка, уважно
+            прочитайте ці Умови використання, оскільки вони регулюють ваші права та обов’язки під час доступу,
+            реєстрації та використання сервісів Сайту.
+          </p>
+          <p>
+            Зареєструвавшись або використовуючи Сайт, ви погоджуєтесь з усіма умовами цього документа. Якщо ви не
+            погоджуєтесь — будь ласка, не використовуйте Сайт.
+          </p>
+        </section>
 
-      <p className="mb-4">
-        Suspendisse sagittis est eget condimentum luctus. Praesent sem turpis, congue non velit eu, viverra varius quam.
-        Sed nisl dolor, rhoncus vitae luctus nec, ultricies vel nibh. Phasellus rhoncus condimentum condimentum. Sed nec
-        eros interdum, iaculis urna sit amet, consequat purus. Vestibulum at risus quis est convallis rhoncus sit amet
-        ac dolor. Sed sem nisl, rutrum quis gravida eget, efficitur sed quam. Nulla non tristique mi. Nam nisi erat,
-        ultricies vel cursus sed, porttitor sit amet lacus. Ut lobortis egestas sagittis. Phasellus ut tortor a metus
-        porta vehicula pulvinar vel felis. Donec et sollicitudin sem. Integer consequat, ipsum at sodales ultrices, urna
-        sapien pharetra mauris, in varius eros nibh varius libero. Donec dapibus arcu a nulla vehicula, vel congue
-        lectus vehicula. Sed felis diam, pulvinar sit amet dui et, dapibus facilisis velit.
-      </p>
+        {/* 1 */}
+        <section className="space-y-3 mb-8">
+          <h2 className="text-xl font-semibold">1. Загальні положення</h2>
+          <ul className="list-none space-y-2">
+            <li>
+              Ці Умови визначають правила доступу, використання та взаємодії з Сайтом, сервісами та функціями,
+              доступними на ньому.
+            </li>
 
-      <p className="mb-4">
-        Donec id ornare felis. Nulla pellentesque euismod nisi fringilla congue. Interdum et malesuada fames ac ante
-        ipsum primis in faucibus. Curabitur non feugiat ex. Pellentesque hendrerit tempor sapien at egestas. Vestibulum
-        sit amet sem risus. Nulla tincidunt lacus vitae erat tristique hendrerit. Maecenas vitae urna id est laoreet
-        tincidunt. Pellentesque fermentum nunc mauris, sed posuere lorem laoreet eu. Morbi aliquam sed tellus a
-        efficitur. Maecenas consectetur feugiat massa at fermentum. Aliquam vitae est id urna consequat varius vel eget
-        lectus. Phasellus id metus sit amet quam congue auctor. Nullam et velit vel tellus pharetra fermentum vitae at
-        nisi. Curabitur porta vitae augue et lacinia. Integer rhoncus ut massa eget semper.
-      </p>
+            <li>
+              Сайт має право змінювати або доповнювати ці Умови в будь-який час. Зміни набирають чинності з моменту їх
+              опублікування на Сайті.
+            </li>
+          </ul>
+        </section>
 
-      <p className="mb-4">
-        Maecenas elementum magna sed enim mattis consectetur. Phasellus ac eleifend dui, vel lobortis arcu. Morbi
-        viverra, velit vel sodales vestibulum, felis libero blandit est, ut commodo enim elit sed risus. Nulla
-        pellentesque consequat ex sed volutpat. Quisque venenatis vitae felis eu finibus. Vestibulum pharetra volutpat
-        turpis vel tempor. Donec ut enim dignissim velit ultricies pulvinar id at ante.
-      </p>
+        {/* 2 */}
+        <section className="space-y-3 mb-8">
+          <h2 className="text-xl font-semibold">2. Визначення термінів</h2>
+          <p>У цьому документі:</p>
 
-      <p className="mb-4">
-        Duis tempor justo at metus condimentum tempus. Nulla maximus interdum feugiat. Proin vitae tempor metus, a
-        euismod dui. Etiam ut nulla ullamcorper, porta ex quis, fermentum dolor. Fusce lorem enim, tincidunt vel luctus
-        nec, vehicula quis diam. Proin gravida dolor elit, eu scelerisque diam rhoncus ut. Donec consectetur ipsum id
-        purus molestie, et consequat sem malesuada. Fusce commodo odio id rhoncus consectetur. Donec elit libero,
-        dignissim nec ante eget, pharetra volutpat lorem. Aliquam vitae lacinia eros. Nam ac elit ante. Suspendisse
-        porttitor quam sed leo vehicula varius. Vivamus gravida quam id mattis bibendum. Quisque a dolor a tortor varius
-        pulvinar.
-      </p>
+          <ul className="list-disc ml-6 space-y-1">
+            <li>Користувач — фізична особа, що використовує або відвідує Сайт.</li>
 
-      <p className="mb-4">
-        Praesent et tortor at nunc pulvinar convallis eget sed nibh. Integer fermentum eget mauris id feugiat. Aliquam
-        pulvinar a magna at viverra. Ut non ex imperdiet, sodales turpis id, aliquet tellus. Curabitur hendrerit
-        porttitor est, a maximus ligula vehicula ut. Praesent pulvinar faucibus erat. Nam a dui vitae diam porttitor
-        pretium ut at purus. Sed eget facilisis dui. Cras at interdum odio, eu ullamcorper urna. Donec fringilla
-        eleifend viverra. Nulla facilisi. Ut ut mollis urna, sed sagittis magna. Nullam posuere euismod ante.
-      </p>
+            <li>Зареєстрований користувач — той, хто пройшов реєстрацію та погодився з цими Умовами.</li>
 
-      <p className="mb-4">
-        Mauris nisi augue, consequat quis maximus a, porttitor vel velit. Etiam euismod commodo ipsum, vitae laoreet sem
-        commodo id. Mauris ac hendrerit ex, eget varius ex. Nunc quis aliquam magna. Fusce egestas lorem non commodo
-        elementum. Pellentesque tempor iaculis lacus vitae ullamcorper. Morbi vel fringilla lectus. Aenean feugiat odio
-        et felis commodo, rutrum euismod dui egestas. Nullam consequat, neque sed auctor fermentum, odio sapien
-        sollicitudin ipsum, in aliquet urna nibh sagittis libero. Duis non varius nulla. Praesent euismod laoreet nisl,
-        blandit vulputate ligula tempus in.
-      </p>
+            <li>Адміністратор — особа, яка має права на керування Сайтом та вмістом.</li>
 
-      <p className="mb-4">
-        Pellentesque sed risus a odio posuere cursus at ut risus. Interdum et malesuada fames ac ante ipsum primis in
-        faucibus. Nulla facilisi. Sed fringilla bibendum dui sed aliquam. In quis lectus posuere, congue mi sed, varius
-        nisi. Pellentesque nec volutpat dolor. Aliquam eget leo sed ex venenatis imperdiet. Praesent ac ipsum arcu.
-        Vestibulum a urna ac nulla bibendum malesuada quis ac tellus. Aliquam dignissim a dolor et tincidunt. Nullam
-        maximus nulla in condimentum imperdiet. Etiam ut pulvinar enim. Nunc fermentum ante in velit placerat aliquet.
-        Aenean rutrum, neque interdum mollis sollicitudin, enim enim ultrices mi, eu tempus eros ante nec nibh. Nullam
-        faucibus sed ipsum non tristique.
-      </p>
+            <li>
+              Послуги — функції, доступ до яких надається через Сайт: реєстрація на заходи, перегляд курсів, отримання
+              сертифікатів тощо.
+            </li>
+
+            <li>Контент — текстова, графічна та інша інформація, розміщена на Сайті.</li>
+          </ul>
+        </section>
+
+        {/* 3 */}
+        <section className="space-y-3 mb-8">
+          <h2 className="text-xl font-semibold">3. Правила користування</h2>
+          <ul className="list-none space-y-1">
+            <li>3.1. Реєстрація</li>
+
+            <li>3.1.1. Для доступу до деяких сервісів Сайту необхідно пройти реєстрацію.</li>
+
+            <li>
+              3.1.2. Ви підтверджуєте, що надаєте достовірну інформацію під час реєстрації і будете підтримувати її
+              актуальною.
+            </li>
+
+            <li>
+              3.1.3. Обліковий запис призначений лише для особистого використання. Заборонено передавати логін/пароль
+              третім особам.
+            </li>
+
+            <li className="mt-4">3.2. Реєстрація на заходи та оплата</li>
+
+            <li>3.2.1. Ви можете реєструватись на доступні заходи через функціонал Сайту.</li>
+
+            <li>
+              3.2.2. Частина заходів може бути платною. Оплата здійснюється за реквізитами або через QR-коди, генеровані
+              Сайтом.
+            </li>
+
+            <li>
+              3.2.3. Адміністратор не несе відповідальності за технічні проблеми на стороні платіжного застосунку
+              Користувача, що використовує QR-код.
+            </li>
+
+            <li>
+              3.2.4. Безкоштовна участь доступна для працівників сфери охорони здоров’я, які перебувають на службі у
+              Збройних Силах України та інших законних військових формуваннях. Для цього Користувач має надати
+              підтверджуючі документи відповідно до вимог Сайту.
+            </li>
+
+            <li className="mt-4">3.3. Сертифікати</li>
+
+            <li>
+              3.3.1. Сертифікати участі видаються після успішної реєстрації, оплати (якщо передбачено), завершення
+              заходу та проходження тестування.
+            </li>
+
+            <li>3.3.2. Сертифікати можуть бути завантажені зі свого облікового запису в електронному форматі.</li>
+
+            <li>
+              3.3.3. Сертифікати не можуть бути передані іншій особі за винятком випадків, передбачених законодавством
+              України або необхідних для організації заходів (Державне некомерційне товариство «Центр якості освіти
+              Міністерства охорони здоров`я України»).
+            </li>
+
+            <li className="mt-4">3.4. Обмеження</li>
+
+            <li>3.4.1. Заборонено:</li>
+            <ul className="list-disc ml-6 space-y-1">
+              <li>використовувати Сайт із порушенням законодавства;</li>
+
+              <li>вводити недостовірні дані;</li>
+
+              <li>здійснювати атаки, сканування захисту чи інші дії, що шкодять роботі Сайту;</li>
+
+              <li>копіювати контент без письмової згоди Адміністратора.</li>
+            </ul>
+          </ul>
+        </section>
+
+        {/* 4 */}
+        <section className="space-y-3 mb-8">
+          <h2 className="text-xl font-semibold">4. Персональні дані та конфіденційність</h2>
+          <ul className="list-none space-y-1">
+            <li>4.1. Під час використання Сайту ми можемо збирати персональні дані, такі як:</li>
+            <ul className="list-disc ml-6 space-y-1 mb-4">
+              <li>прізвище, ім’я, по батькові (ПІБ);</li>
+              <li>контактний номер телефону;</li>
+              <li>адреса електронної пошти (email);</li>
+              <li>місце роботи та спеціальність;</li>
+              <li>інші дані, необхідні для участі у заходах БПР та оформлення сертифікатів.</li>
+            </ul>
+            <li>
+              4.2. Обробка персональних даних здійснюється відповідно до <b>Політики конфіденційності</b>, яка є
+              невід’ємною частиною цих Умов.
+            </li>
+            <li>
+              4.3. Ви погоджуєтесь з обробкою ваших даних для реалізації функціональних сервісів Сайту (реєстрація,
+              сертифікація, розсилка тощо).
+            </li>
+          </ul>
+        </section>
+
+        {/* 5 */}
+        <section className="space-y-3 mb-8">
+          <h2 className="text-xl font-semibold">5. Інтелектуальна власність</h2>
+          <ul className="list-none space-y-1">
+            <li>5.1. Усі авторські та суміжні права на контент Сайту належать Адміністратору або ліцензірам.</li>
+            <li>
+              5.2. Ви можете переглядати та використовувати контент лише для особистих, некомерційних цілей, якщо інше
+              не передбачено цими Умовами або окремою угодою.
+            </li>
+          </ul>
+        </section>
+
+        {/* 6 */}
+        <section className="space-y-3 mb-8">
+          <h2 className="text-xl font-semibold">6. Відповідальність</h2>
+          <ul className="list-none space-y-1">
+            <li>6.1. Адміністратор не несе відповідальності за:</li>
+
+            <ul className="list-disc ml-6 space-y-1 mb-4">
+              <li>збій у роботі сторонніх сервісів (оплата, електронна пошта тощо);</li>
+              <li>втрату доступу до облікового запису через недотримання правил безпеки;</li>
+              <li>технічні помилки або перерви в роботі Сайту.</li>
+            </ul>
+            <li>6.2. Ви несете відповідальність за:</li>
+            <ul className="list-disc ml-6 space-y-1">
+              <li>дотримання цих Умов;</li>
+              <li>достовірність наданих даних.</li>
+            </ul>
+          </ul>
+        </section>
+
+        {/* 7 */}
+        <section className="space-y-3 mb-8">
+          <h2 className="text-xl font-semibold">7. Припинення доступу</h2>
+          <ul className="list-none space-y-1">
+            <li>
+              7.1. Адміністратор залишає за собою право призупинити або заблокувати ваш доступ до Сайту без
+              попередження, якщо ви порушуєте ці Умови або чинне законодавство.
+            </li>
+          </ul>
+        </section>
+
+        {/* 8 */}
+        <section className="space-y-3 mb-8">
+          <h2 className="text-xl font-semibold">8. Застосовне право</h2>
+          <ul className="list-none space-y-1">
+            <li>8.1. Ці Умови регулюються та тлумачаться відповідно до законодавства України.</li>
+          </ul>
+        </section>
+
+        {/* 9 */}
+        <section className="space-y-3 mb-8">
+          <h2 className="text-xl font-semibold">9. Зворотній зв’язок</h2>
+          <ul className="list-none space-y-1">
+            <li>
+              9.1. Якщо у вас є запитання або зауваження щодо цих Умов — звертайтесь:
+              <br />
+              на електронну пошту: <b>{email}</b>
+              <br />
+              або за телефоном: <b>{phone}</b>
+            </li>
+          </ul>
+        </section>
+      </div>
     </div>
   )
 }

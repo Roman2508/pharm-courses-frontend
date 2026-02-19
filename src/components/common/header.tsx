@@ -27,7 +27,10 @@ const Header = () => {
 
         <Link to="/" className="flex items-center gap-2">
           <img src={logo} className="w-10" />
-          <h3 className="font-bold text-xl">ЖБФФК</h3>
+          <div className="hidden sm:block mt-1">
+            <h3 className="font-bold text-lg leading-none">ЖБФФК</h3>
+            <h3 className="text-sm text-muted-foreground">Заходи БПР</h3>
+          </div>
         </Link>
 
         <div className="flex items-center gap-6">
