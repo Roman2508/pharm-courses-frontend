@@ -3,9 +3,10 @@ import type { Dispatch, FC, SetStateAction } from "react"
 
 import { cn } from "@/lib/utils"
 import { getDate } from "@/helpers/get-date"
-import { getPaymentColor, getPaymentStatus } from "@/helpers/get-payment-status"
+import type { RegistrationDataType } from "@/pages/admin-page"
 import type { RegistrationType } from "@/types/registration.type"
 import type { GetRegistrationsQuery } from "@/api/hooks/use-registration"
+import { getPaymentColor, getPaymentStatus } from "@/helpers/get-payment-status"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
 const tableColumns = [
@@ -22,20 +23,22 @@ interface Props {
   params: GetRegistrationsQuery
   selectedRegistrations: number[]
   registrations: RegistrationType[]
-  setIsOpen: Dispatch<SetStateAction<boolean>>
+  setPaymentDialogIsOpen: Dispatch<SetStateAction<boolean>>
   setParams: Dispatch<SetStateAction<GetRegistrationsQuery>>
   setSelectedRegistrations: Dispatch<SetStateAction<number[]>>
-  setRegistrationPayment: Dispatch<SetStateAction<{ id: number; paymentReceipt: string } | null>>
+  setParticipationDialogIsOpen: Dispatch<SetStateAction<boolean>>
+  setRegistrationPayment: Dispatch<SetStateAction<RegistrationDataType>>
 }
 
 const AdminRegistrationTable: FC<Props> = ({
   params,
   setParams,
-  setIsOpen,
   registrations,
   selectedRegistrations,
+  setPaymentDialogIsOpen,
   setRegistrationPayment,
   setSelectedRegistrations,
+  setParticipationDialogIsOpen,
 }) => {
   const handleSelectAll = () => {
     setSelectedRegistrations((prev) => {
@@ -69,6 +72,16 @@ const AdminRegistrationTable: FC<Props> = ({
         }
       }
       return { ...prev, orderBy: key, orderType: "desc" }
+    })
+  }
+
+  const onOpenModal = (reg: RegistrationType, type: "payment" | "free") => {
+    if (type === "payment") setPaymentDialogIsOpen(true)
+    if (type === "free") setParticipationDialogIsOpen(true)
+    setRegistrationPayment({
+      id: reg.id,
+      paymentReceipt: reg.paymentReceipt,
+      freeParticipation: reg.freeParticipation,
     })
   }
 
@@ -151,19 +164,30 @@ const AdminRegistrationTable: FC<Props> = ({
             </TableCell>
 
             <TableCell className="px-2 xl:px-6 py-2 xl:py-2">
-              <button
-                onClick={() => {
-                  setIsOpen(true)
-                  setRegistrationPayment({ id: reg.id, paymentReceipt: reg.paymentReceipt })
-                }}
-                className={`truncate cursor-pointer inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-colors ${
-                  reg.paymentReceipt
-                    ? "bg-primary/10 text-primary hover:bg-primary/20"
-                    : "bg-destructive/10 text-destructive hover:bg-destructive/20"
-                }`}
-              >
-                {reg.paymentReceipt ? "Переглянути" : "Не завантажена"}
-              </button>
+              <div className={cn({ "flex flex-col items-start gap-1": reg.freeParticipation })}>
+                <button
+                  onClick={() => onOpenModal(reg, "payment")}
+                  className={`truncate cursor-pointer inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-colors ${
+                    reg.paymentReceipt
+                      ? "bg-primary/10 text-primary hover:bg-primary/20"
+                      : "bg-destructive/10 text-destructive hover:bg-destructive/20"
+                  }`}
+                >
+                  {reg.paymentReceipt ? "Переглянути" : "Не завантажена"}
+                </button>
+
+                {reg.freeParticipation && (
+                  <button
+                    onClick={() => onOpenModal(reg, "free")}
+                    className={
+                      "truncate cursor-pointer inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium " +
+                      "transition-colors bg-primary/10 text-primary hover:bg-primary/20"
+                    }
+                  >
+                    Безкоштовна участь
+                  </button>
+                )}
+              </div>
             </TableCell>
 
             <TableCell className="px-2 xl:px-6 py-2 xl:py-2">

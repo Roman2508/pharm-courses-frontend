@@ -7,10 +7,18 @@ import { useAllRegistrations } from "@/api/hooks/use-registration"
 import RegistrationItem from "@/components/common/registration-item"
 import AdminActionCard from "@/components/features/admin-page/admin-action-card"
 import PaymentReceiptDialog from "@/components/features/admin-registration-page/payment-receipt-dialog"
+import FreeParticipationDialog from "@/components/features/admin-registration-page/free-participation-dialog"
+
+export type RegistrationDataType = {
+  id: number
+  paymentReceipt: string
+  freeParticipation?: string
+} | null
 
 const AdminPage = () => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [registrationPayment, setRegistrationPayment] = useState<{ id: number; paymentReceipt: string } | null>(null)
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false)
+  const [isParticipationModalOpen, setIsParticipationModalOpen] = useState(false)
+  const [registrationData, setRegistrationData] = useState<RegistrationDataType>(null)
 
   const { data: { data: lastRegistrations } = { data: [] }, isLoading } = useAllRegistrations({
     limit: 20,
@@ -22,10 +30,17 @@ const AdminPage = () => {
   return (
     <>
       <PaymentReceiptDialog
-        open={isOpen}
-        onOpenChange={setIsOpen}
-        registrationPayment={registrationPayment}
-        setRegistrationPayment={setRegistrationPayment}
+        open={isPaymentModalOpen}
+        registrationData={registrationData}
+        onOpenChange={setIsPaymentModalOpen}
+        setRegistrationData={setRegistrationData}
+      />
+
+      <FreeParticipationDialog
+        open={isParticipationModalOpen}
+        registrationData={registrationData}
+        setRegistrationData={setRegistrationData}
+        onOpenChange={setIsParticipationModalOpen}
       />
 
       <div className="container mx-auto px-4 py-12 md:py-16">
@@ -76,9 +91,10 @@ const AdminPage = () => {
                 return (
                   <RegistrationItem
                     key={registration.id}
-                    setIsOpen={setIsOpen}
                     registration={registration}
-                    setRegistrationPayment={setRegistrationPayment}
+                    setRegistrationData={setRegistrationData}
+                    setIsPaymentModalOpen={setIsPaymentModalOpen}
+                    setIsParticipationModalOpen={setIsParticipationModalOpen}
                   />
                 )
               })}

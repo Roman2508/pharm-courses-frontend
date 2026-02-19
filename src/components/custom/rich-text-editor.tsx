@@ -101,7 +101,7 @@ export function RichTextEditor({ content, onChange, placeholder, className = "" 
   return (
     <div className={cn("border border-border rounded-xl overflow-hidden bg-surface", className)}>
       {/* Toolbar */}
-      <div className="bg-surface-hover p-2 flex flex-wrap gap-1 sticky top-0 z-10">
+      <div className="bg-surface-hover p-2 flex items-center flex-wrap gap-1 sticky top-0 z-10">
         {/* Headings */}
         {/* <Button
           type="button"
@@ -133,8 +133,6 @@ export function RichTextEditor({ content, onChange, placeholder, className = "" 
         >
           <Heading3 className="h-4 w-4" />
         </Button> */}
-
-        <div className="w-px h-6 bg-border mx-1" />
 
         {/* Text formatting */}
         <Button

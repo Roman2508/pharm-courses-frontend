@@ -5,6 +5,7 @@ import { useState, type FC } from "react"
 import { Button } from "@/components/ui/button"
 import { useManyRegistrations } from "@/api/hooks/use-registration"
 import { toast } from "sonner"
+import { generateSertificateNumber } from "@/helpers/generate-sertificate-number"
 
 interface Props {
   registrations: any
@@ -32,12 +33,13 @@ const DownloadRegistrationsButton: FC<Props> = ({ registrations }) => {
       }
 
       const newData = data.map((reg) => {
-        const { course, user, type } = reg
+        const { course, user, type, id } = reg
+        const certificateNumber = generateSertificateNumber(id)
 
         return {
-          ["Реєстраційний номер Провайдера"]: 0,
+          ["Реєстраційний номер Провайдера"]: 2044,
           ["Реєстраційний номер заходу"]: course.numberOfInclusionToBpr,
-          ["Номер сертифіката"]: 0,
+          ["Номер сертифіката"]: certificateNumber,
           ["Прізвище, власне ім'я, по батькові (за наявності) учасника"]: user.name,
           ["Бали БПР"]: type === "TRAINER" ? course.pointsBpr * 2 : course.pointsBpr,
           ["Дата народження"]: 0,
@@ -45,7 +47,8 @@ const DownloadRegistrationsButton: FC<Props> = ({ registrations }) => {
           ["Освіта"]: user.education,
           ["Місце роботи"]: user.workplace,
           ["Найменування займаної посади"]: user.jobTitle,
-          ["Результати оцінювання за проходження заходу БПР учасників заходу, які отримали сертифікати"]: 0,
+          ["Результати оцінювання за проходження заходу БПР учасників заходу, які отримали сертифікати"]:
+            type === "TRAINER" ? "Тренер" : "90%",
         }
       })
 

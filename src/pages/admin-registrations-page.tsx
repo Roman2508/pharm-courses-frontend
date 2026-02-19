@@ -14,10 +14,12 @@ import { Button } from "@/components/ui/button"
 import { Title } from "@/components/custom/title"
 import FormField from "@/components/custom/form-field"
 import PageLoader from "@/components/custom/page-loader"
+import type { RegistrationDataType } from "./admin-page"
 import { Pagination } from "@/components/custom/pagination"
 import { useCourses, useFullCourse } from "@/api/hooks/use-courses"
 import PaymentReceiptDialog from "@/components/features/admin-registration-page/payment-receipt-dialog"
 import AdminRegistrationTable from "@/components/features/admin-registration-page/admin-registration-table"
+import FreeParticipationDialog from "@/components/features/admin-registration-page/free-participation-dialog"
 import CreateRegistrationDialog from "@/components/features/admin-registration-page/create-registration-dialog"
 import DownloadRegistrationsButton from "@/components/features/admin-registration-page/download-registrations-button"
 
@@ -27,11 +29,12 @@ const AdminRegistrationsPage = () => {
   const pageParams = useParams()
 
   const [paymentDialogIsOpen, setPaymentDialogIsOpen] = useState(false)
+  const [participationDialogIsOpen, setParticipationDialogIsOpen] = useState(false)
   const [createRegistrationDialogIsOpen, setCreateRegistrationDialogIsOpen] = useState(false)
 
   const [params, setParams] = useState<GetRegistrationsQuery>(initialParams)
   const [selectedRegistrations, setSelectedRegistrations] = useState<number[]>([])
-  const [registrationPayment, setRegistrationPayment] = useState<{ id: number; paymentReceipt: string } | null>(null)
+  const [registrationPayment, setRegistrationPayment] = useState<RegistrationDataType>(null)
 
   // В фільтрі реєстрацій можна вибрати лише заходи, які є запланованими
   const { data: courses } = useCourses("PLANNED")
@@ -76,8 +79,15 @@ const AdminRegistrationsPage = () => {
       <PaymentReceiptDialog
         open={paymentDialogIsOpen}
         onOpenChange={setPaymentDialogIsOpen}
-        registrationPayment={registrationPayment}
-        setRegistrationPayment={setRegistrationPayment}
+        registrationData={registrationPayment}
+        setRegistrationData={setRegistrationPayment}
+      />
+
+      <FreeParticipationDialog
+        open={participationDialogIsOpen}
+        registrationData={registrationPayment}
+        onOpenChange={setParticipationDialogIsOpen}
+        setRegistrationData={setRegistrationPayment}
       />
 
       <CreateRegistrationDialog
@@ -184,10 +194,11 @@ const AdminRegistrationsPage = () => {
                 params={params}
                 setParams={setParams}
                 registrations={registrations}
-                setIsOpen={setPaymentDialogIsOpen}
                 selectedRegistrations={selectedRegistrations}
                 setRegistrationPayment={setRegistrationPayment}
+                setPaymentDialogIsOpen={setPaymentDialogIsOpen}
                 setSelectedRegistrations={setSelectedRegistrations}
+                setParticipationDialogIsOpen={setParticipationDialogIsOpen}
               />
             </div>
           </div>

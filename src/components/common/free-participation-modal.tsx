@@ -10,23 +10,28 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog"
 import { Button } from "../ui/button"
+import { useFreeParticipation } from "@/api/hooks/use-registration"
+import type { RegistrationType } from "@/types/registration.type"
 
 interface Props {
   open: boolean
+  registration?: RegistrationType
   onOpenChange: Dispatch<SetStateAction<boolean>>
   onPaymentOpenChange: Dispatch<SetStateAction<boolean>>
 }
 
-const FreeParticipationModal = ({ open, onOpenChange, onPaymentOpenChange }: Props) => {
+const FreeParticipationModal = ({ open, registration, onOpenChange, onPaymentOpenChange }: Props) => {
   const fileRef = useRef<HTMLInputElement | null>(null)
+
+  const uploadFreeParticipation = useFreeParticipation(registration?.courseId)
 
   const handleUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
-    if (!file) return
+    if (!file || !registration) return
 
     const formData = new FormData()
-    formData.append("paymentReceipt", file)
-    // uploadPaymentReceipt.mutate({ id: registration.id, formData })
+    formData.append("freeParticipation", file)
+    uploadFreeParticipation.mutate({ id: registration.id, formData })
   }
 
   return (
@@ -65,26 +70,26 @@ const FreeParticipationModal = ({ open, onOpenChange, onPaymentOpenChange }: Pro
         </DialogDescription>
 
         <DialogFooter className="flex !flex-col border-t border-border">
-          {/* {registration.paymentReceipt && (
+          {registration?.freeParticipation && (
             <p className="text-center pt-4">
-              Ваша квитанція завантажена та відправлена адміністратору на перевірку. Ви можете відслідкувати статус
-              перевірки на сторінці "Мої заходи"
+              Ваш запит на безкоштовну участь у заході відправлений адміністратору на перевірку. Ви можете відслідкувати
+              статус перевірки на сторінці "Мої заходи"
             </p>
-          )} */}
+          )}
 
           <div className="flex flex-col lg:flex-row gap-2 w-full mt-4">
             <input type="file" className="hidden" accept="image/*" ref={fileRef} onChange={handleUpload} />
+
             <Button
               className="flex-1 min-h-10"
               onClick={() => fileRef?.current?.click()}
-              //   disabled={uploadPaymentReceipt.isPending}
+              disabled={uploadFreeParticipation.isPending || registration?.paymentStatus === "PAID"}
             >
               <Upload />
-              {/* {uploadPaymentReceipt.isPending */}
-              {false
+
+              {uploadFreeParticipation.isPending
                 ? "Завантаження..."
-                : // : registration.paymentReceipt
-                  false
+                : registration?.freeParticipation
                   ? "Завантажити інший файл"
                   : "Підтвердити статус"}
             </Button>

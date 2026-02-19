@@ -19,15 +19,15 @@ interface Props {
   setRegistrationData: Dispatch<SetStateAction<RegistrationDataType>>
 }
 
-// Перевірка квитанції про оплату
-const PaymentReceiptDialog: FC<Props> = ({ open, onOpenChange, registrationData, setRegistrationData }) => {
+// Перегляд заявки на безкоштовну участь у заході
+const FreeParticipationDialog: FC<Props> = ({ open, onOpenChange, registrationData, setRegistrationData }) => {
   const isPending = false
 
-  const uddatePaymentStatus = useUpdateRegistrationPayment()
+  const updatePaymentStatus = useUpdateRegistrationPayment()
 
   const handleSubmit = () => {
     if (!registrationData) return
-    uddatePaymentStatus.mutate({ id: registrationData.id, status: "PAID" })
+    updatePaymentStatus.mutate({ id: registrationData.id, status: "PAID" })
   }
 
   const onDialogClose = () => {
@@ -41,20 +41,20 @@ const PaymentReceiptDialog: FC<Props> = ({ open, onOpenChange, registrationData,
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader className="pb-4">
-          <DialogTitle>Квитанція про оплату</DialogTitle>
+          <DialogTitle>Підтвердження статусу</DialogTitle>
         </DialogHeader>
 
         <DialogDescription className="max-h-[calc(100vh-240px)] overflow-x-hidden overflow-y-auto pt-4 pb-8 px-2 border-y">
-          {registrationData.paymentReceipt ? (
-            <img src={`${import.meta.env.VITE_BASE_URL}${registrationData.paymentReceipt}`} />
+          {registrationData.freeParticipation ? (
+            <img src={`${import.meta.env.VITE_BASE_URL}${registrationData.freeParticipation}`} />
           ) : (
-            <p className="text-center text-base pt-4">Квитанція не завантажена</p>
+            <p className="text-center text-base pt-4">Файл не завантажено</p>
           )}
         </DialogDescription>
 
         <DialogFooter className="w-full gap-2 pt-2">
           <Button size="lg" className="flex-1" disabled={isPending} onClick={handleSubmit}>
-            {isPending ? "Завантаження..." : "Підтвердити оплату"}
+            {isPending ? "Завантаження..." : "Підтвердити реєстрацію"}
           </Button>
 
           <Button size="lg" variant="ghost" className="w-40" disabled={isPending} onClick={onDialogClose}>
@@ -66,4 +66,4 @@ const PaymentReceiptDialog: FC<Props> = ({ open, onOpenChange, registrationData,
   )
 }
 
-export default PaymentReceiptDialog
+export default FreeParticipationDialog

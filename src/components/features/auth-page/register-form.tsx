@@ -129,6 +129,17 @@ const RegisterForm: FC<Props> = ({ setAuthType, setEmail }) => {
         className="mb-4"
       />
 
+      <p className={`text-[14px] text-text-secondary ${showErrors ? "mb-4" : "mb-0"}`}>
+        Реєструючись на сайті ви погоджуєтесь з{" "}
+        <Link to="/privacy-policy" className="text-primary hover:underline">
+          Політикою конфіденційності
+        </Link>{" "}
+        та{" "}
+        <Link to="/terms-of-use" className="text-primary hover:underline">
+          Умовами використання
+        </Link>
+      </p>
+
       {showErrors && (
         <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20">
           {getFormErrors(errors).map((error) => (

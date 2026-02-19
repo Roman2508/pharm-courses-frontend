@@ -2,6 +2,7 @@ import { toast } from "sonner"
 import { useState } from "react"
 import { Upload } from "lucide-react"
 
+import { Input } from "@/components/ui/input"
 import useUserData from "@/hooks/use-user-data"
 import { Button } from "@/components/ui/button"
 import { findError } from "@/helpers/find-error"
@@ -15,6 +16,8 @@ import { updateUserSchema } from "@/components/features/admin-users-page/admin-u
 
 const ProfilePage = () => {
   const { data } = useSession()
+
+  const [deleteInput, setDeleteInput] = useState("")
 
   const { fields, formData } = useUserData(data?.user ? (data.user as unknown as UserType) : null)
 
@@ -138,6 +141,7 @@ const ProfilePage = () => {
               <input type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
             </label>
           </Avatar>
+          <p className="text-sm opacity-[0.7]">*Натисніть на свій аватар щоб змінити його</p>
         </div>
 
         <form className="space-y-6">
@@ -174,6 +178,29 @@ const ProfilePage = () => {
             </Button>
           </div>
         </form>
+      </div>
+
+      <div className="bg-surface rounded-2xl border border-border p-8 mt-4">
+        <h2 className="text-lg font-semibold text-text-primary mb-4">Видалити профіль</h2>
+        <p className="text-base text-text-secondary mb-2">
+          Ця дія назавжди видалить ваш профіль, включно з реєстраціями, курсами та сертифікатами.
+        </p>
+
+        <div className="mt-2">
+          <b className="text-base text-text-secondary">Введіть "Видалити", щоб розблокувати цю дію.</b>
+        </div>
+
+        <Input
+          type="text"
+          placeholder="Видалити"
+          className="mt-2 mb-4"
+          value={deleteInput}
+          onChange={(e) => setDeleteInput(e.target.value)}
+        />
+
+        <Button variant="destructive" className="w-full" size="lg" disabled={deleteInput.toLowerCase() !== "видалити"}>
+          Видалити
+        </Button>
       </div>
     </div>
   )

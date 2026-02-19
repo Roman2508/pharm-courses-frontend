@@ -169,7 +169,8 @@ export const useDeleteRegistration = (courseId?: number) => {
   })
 }
 
-export const useFreeParticipation = () => {
+export const useFreeParticipation = (courseId?: number) => {
+  const queryClient = useQueryClient()
   return useMutation({
     mutationKey: ["free-participation"],
     mutationFn: async (payload: { id: number; formData: FormData }) => {
@@ -180,12 +181,12 @@ export const useFreeParticipation = () => {
       return data
     },
     onSuccess: () => {
-      toast.success(
-        'Запит на безкоштовну участь відправлено, очікуйте на перевірку адміністратором. Ви можете відслідкувати статус перевірки на сторінці "Мої заходи"',
-      )
+      toast.success("Запит на безкоштовну участь відправлено, очікуйте на перевірку адміністратором")
+      queryClient.invalidateQueries({ queryKey: ["user-registrations"] })
+      queryClient.invalidateQueries({ queryKey: ["registration", courseId] })
     },
     onError: () => {
-      toast.error(`Сталась помилка під час завантаження запиту на безкоштовну участь. Спробуйте пізніше!`)
+      toast.error(`Сталась помилка. Спробуйте пізніше!`)
     },
   })
 }

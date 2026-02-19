@@ -1,19 +1,36 @@
 import { type Dispatch, type FC, type SetStateAction } from "react"
 
 import { getDate } from "@/helpers/get-date"
+import type { RegistrationDataType } from "@/pages/admin-page"
 import type { RegistrationType } from "@/types/registration.type"
 import { getPaymentColor, getPaymentStatus } from "@/helpers/get-payment-status"
 
 interface Props {
   registration: RegistrationType
-  setIsOpen: Dispatch<SetStateAction<boolean>>
-  setRegistrationPayment: Dispatch<SetStateAction<{ id: number; paymentReceipt: string } | null>>
+  setIsPaymentModalOpen: Dispatch<SetStateAction<boolean>>
+  setIsParticipationModalOpen: Dispatch<SetStateAction<boolean>>
+  setRegistrationData: Dispatch<SetStateAction<RegistrationDataType>>
 }
 
-const RegistrationItem: FC<Props> = ({ registration, setIsOpen, setRegistrationPayment }) => {
+const RegistrationItem: FC<Props> = ({
+  registration,
+  setRegistrationData,
+  setIsPaymentModalOpen,
+  setIsParticipationModalOpen,
+}) => {
   const { user, course, createdAt, paymentStatus, paymentReceipt } = registration
 
   const color = getPaymentColor(paymentStatus)
+
+  const onRegistrationClick = (type: "payment" | "free") => {
+    if (type === "payment") setIsPaymentModalOpen(true)
+    if (type === "free") setIsParticipationModalOpen(true)
+    setRegistrationData({
+      id: registration.id,
+      paymentReceipt: registration.paymentReceipt,
+      freeParticipation: registration.freeParticipation,
+    })
+  }
 
   return (
     <div className="flex gap-2 items-start md:items-center justify-between py-3 border-b border-border last:border-0 flex-col md:flex-row">
@@ -39,16 +56,17 @@ const RegistrationItem: FC<Props> = ({ registration, setIsOpen, setRegistrationP
         </div>
       </div>
 
-      <div className="flex flex-col gap-2 items-end">
+      <div className="flex flex-col min-[520px]:flex-row md:flex-col gap-2 items-start min-[520px]:items-end">
         <span
-          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-${color}/10 text-${color}`}
+          className={`truncate inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-${color}/10 text-${color}`}
         >
           {getPaymentStatus(paymentStatus)}
         </span>
 
-        <div className="flex gap-1">
-          {true && (
+        <div className="flex flex-col min-[520px]:flex-row gap-2 min-[520px]:gap-1 items-start min-[520px]:items-center">
+          {registration.freeParticipation && (
             <button
+              onClick={() => onRegistrationClick("free")}
               className={
                 "truncate cursor-pointer inline-flex items-center px-3 py-1 rounded-full text-xs " +
                 "font-medium bg-primary/10 hover:bg-primary/20 text-primary"
@@ -59,10 +77,7 @@ const RegistrationItem: FC<Props> = ({ registration, setIsOpen, setRegistrationP
           )}
 
           <button
-            onClick={() => {
-              setIsOpen(true)
-              setRegistrationPayment({ id: registration.id, paymentReceipt: registration.paymentReceipt })
-            }}
+            onClick={() => onRegistrationClick("payment")}
             className={`truncate cursor-pointer inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-colors ${
               paymentReceipt
                 ? "bg-primary/10 text-primary hover:bg-primary/20"

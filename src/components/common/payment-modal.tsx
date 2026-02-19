@@ -57,7 +57,12 @@ export const PaymentModal = ({ open, onOpenChange, registration }: Props) => {
 
   return (
     <>
-      <FreeParticipationModal open={isFreeOpen} onOpenChange={setIsFreeOpen} onPaymentOpenChange={onOpenChange} />
+      <FreeParticipationModal
+        open={isFreeOpen}
+        registration={registration}
+        onOpenChange={setIsFreeOpen}
+        onPaymentOpenChange={onOpenChange}
+      />
 
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="min-w-sm md:min-w-xl lg:min-w-2xl px-2 sm:px-6">
