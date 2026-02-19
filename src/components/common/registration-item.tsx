@@ -46,19 +46,32 @@ const RegistrationItem: FC<Props> = ({ registration, setIsOpen, setRegistrationP
           {getPaymentStatus(paymentStatus)}
         </span>
 
-        <button
-          onClick={() => {
-            setIsOpen(true)
-            setRegistrationPayment({ id: registration.id, paymentReceipt: registration.paymentReceipt })
-          }}
-          className={`truncate cursor-pointer inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-colors ${
-            paymentReceipt
-              ? "bg-primary/10 text-primary hover:bg-primary/20"
-              : "bg-destructive/10 text-destructive hover:bg-destructive/20"
-          }`}
-        >
-          {paymentReceipt ? "Переглянути" : "Не завантажена"}
-        </button>
+        <div className="flex gap-1">
+          {true && (
+            <button
+              className={
+                "truncate cursor-pointer inline-flex items-center px-3 py-1 rounded-full text-xs " +
+                "font-medium bg-primary/10 hover:bg-primary/20 text-primary"
+              }
+            >
+              Безкоштовна участь
+            </button>
+          )}
+
+          <button
+            onClick={() => {
+              setIsOpen(true)
+              setRegistrationPayment({ id: registration.id, paymentReceipt: registration.paymentReceipt })
+            }}
+            className={`truncate cursor-pointer inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-colors ${
+              paymentReceipt
+                ? "bg-primary/10 text-primary hover:bg-primary/20"
+                : "bg-destructive/10 text-destructive hover:bg-destructive/20"
+            }`}
+          >
+            {paymentReceipt ? "Переглянути" : "Не завантажена"}
+          </button>
+        </div>
       </div>
     </div>
   )

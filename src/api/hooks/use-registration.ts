@@ -168,3 +168,24 @@ export const useDeleteRegistration = (courseId?: number) => {
     },
   })
 }
+
+export const useFreeParticipation = () => {
+  return useMutation({
+    mutationKey: ["free-participation"],
+    mutationFn: async (payload: { id: number; formData: FormData }) => {
+      const { id, formData } = payload
+      const { data } = await axiosClient.patch(`/registration/free-participation/${id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      return data
+    },
+    onSuccess: () => {
+      toast.success(
+        'Запит на безкоштовну участь відправлено, очікуйте на перевірку адміністратором. Ви можете відслідкувати статус перевірки на сторінці "Мої заходи"',
+      )
+    },
+    onError: () => {
+      toast.error(`Сталась помилка під час завантаження запиту на безкоштовну участь. Спробуйте пізніше!`)
+    },
+  })
+}

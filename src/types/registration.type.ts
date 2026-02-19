@@ -8,6 +8,7 @@ export type RegistrationType = {
   id: number
   paymentStatus: PaymentStatus
   paymentReceipt: string
+  freeParticipation: string
   amount: number
   certificateEnabled: boolean
   type: RegistrationTypeType
