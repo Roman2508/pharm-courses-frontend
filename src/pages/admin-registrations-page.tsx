@@ -59,13 +59,14 @@ const AdminRegistrationsPage = () => {
     }
   }
 
-  const onRemoveRegistrations = () => {
+  const onRemoveRegistrations = async () => {
     if (!selectedRegistrations || !selectedRegistrations.length) {
       toast.warning("Реєстрації не вибрано")
       return
     }
     if (!window.confirm("Видалити обрані реєстрації?")) return
-    removeRegistrations.mutate(selectedRegistrations)
+    await removeRegistrations.mutateAsync(selectedRegistrations)
+    setSelectedRegistrations([])
   }
 
   useEffect(() => {
@@ -91,8 +92,10 @@ const AdminRegistrationsPage = () => {
       />
 
       <CreateRegistrationDialog
+        params={params}
         open={createRegistrationDialogIsOpen}
         onOpenChange={setCreateRegistrationDialogIsOpen}
+        setSelectedRegistrations={setSelectedRegistrations}
       />
 
       <div className="container mx-auto px-4 py-12 md:py-16">

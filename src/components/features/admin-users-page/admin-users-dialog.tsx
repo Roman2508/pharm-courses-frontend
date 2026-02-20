@@ -16,6 +16,7 @@ import FormField from "@/components/custom/form-field"
 import { getFormErrors } from "@/helpers/get-form-errors"
 import { authClient, useSession } from "@/api/auth-client"
 import { createUserSchema, updateUserSchema } from "./admin-users-form-schema"
+import { toast } from "sonner"
 
 interface Props {
   open: boolean
@@ -64,26 +65,74 @@ const AdminUsersDialog: FC<Props> = ({
 
   const errors = showErrors ? validate() : undefined
 
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault()
+
+  //   const errors = validate()
+  //   if (errors) {
+  //     setShowErrors(true)
+  //     return
+  //   }
+
+  //   try {
+  //     setIsPending(true)
+
+  //     if (editedUser?.id) {
+  //       if (editedUser?.id === data?.user.id) {
+  //         const { email, password, oldPassword, role, ...rest } = formData
+  //         await authClient.updateUser(rest)
+  //         toast.success("Профіль оновлено")
+  //         onDialogClose()
+  //         return
+  //       }
+
+  //       await authClient.admin.updateUser({ userId: editedUser.id, data: formData })
+  //       onDialogClose()
+  //     } else {
+  //       const { email, password, name, ...data } = formData
+  //       if (password) {
+  //         await authClient.admin.createUser({ email, password, name, data })
+  //         onDialogClose()
+  //       }
+  //     }
+  //   } catch (error) {
+  //     toast.error("Сталася помилка при збереженні користувача")
+  //   } finally {
+  //     setIsPending(false)
+  //   }
+  // }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
     const errors = validate()
     if (errors) {
       setShowErrors(true)
       return
     }
 
+    const isEditMode = Boolean(editedUser?.id)
+    const isCurrentUser = editedUser?.id === data?.user.id
+
     try {
       setIsPending(true)
-      if (editedUser?.id) {
-        await authClient.admin.updateUser({ userId: editedUser.id, data: formData })
-        onDialogClose()
-      } else {
-        const { email, password, name, ...data } = formData
-        if (password) {
-          await authClient.admin.createUser({ email, password, name, data })
-          onDialogClose()
-        }
+
+      if (isEditMode && isCurrentUser) {
+        const { email, password, oldPassword, role, ...profileData } = formData
+        await authClient.updateUser(profileData)
+        toast.success("Профіль оновлено")
+        //
+      } else if (isEditMode) {
+        await authClient.admin.updateUser({ userId: editedUser!.id, data: formData })
+        //
+      } else if (formData.password) {
+        const { email, password, name, ...rest } = formData
+        await authClient.admin.createUser({ email, password, name, data: rest })
       }
+
+      onDialogClose()
+    } catch (error) {
+      toast.error("Сталася помилка при збереженні користувача")
     } finally {
       setIsPending(false)
     }

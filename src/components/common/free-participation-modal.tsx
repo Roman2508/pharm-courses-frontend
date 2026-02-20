@@ -10,8 +10,8 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog"
 import { Button } from "../ui/button"
-import { useFreeParticipation } from "@/api/hooks/use-registration"
 import type { RegistrationType } from "@/types/registration.type"
+import { useFreeParticipation } from "@/api/hooks/use-registration"
 
 interface Props {
   open: boolean

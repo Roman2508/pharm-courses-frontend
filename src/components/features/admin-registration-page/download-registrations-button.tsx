@@ -1,10 +1,10 @@
 import * as XLSX from "xlsx"
+import { toast } from "sonner"
 import { Upload } from "lucide-react"
 import { useState, type FC } from "react"
 
 import { Button } from "@/components/ui/button"
 import { useManyRegistrations } from "@/api/hooks/use-registration"
-import { toast } from "sonner"
 import { generateSertificateNumber } from "@/helpers/generate-sertificate-number"
 
 interface Props {
@@ -34,15 +34,17 @@ const DownloadRegistrationsButton: FC<Props> = ({ registrations }) => {
 
       const newData = data.map((reg) => {
         const { course, user, type, id } = reg
-        const certificateNumber = generateSertificateNumber(id)
 
+        const certificateNumber = generateSertificateNumber(id)
+        const currentYear = new Date().getFullYear()
+ 
         return {
-          ["Реєстраційний номер Провайдера"]: 2044,
+          ["Реєстраційний номер Провайдера"]: "2044",
           ["Реєстраційний номер заходу"]: course.numberOfInclusionToBpr,
-          ["Номер сертифіката"]: certificateNumber,
+          ["Номер сертифіката"]: `${currentYear}-2044-${course.numberOfInclusionToBpr}-${certificateNumber}`,
           ["Прізвище, власне ім'я, по батькові (за наявності) учасника"]: user.name,
           ["Бали БПР"]: type === "TRAINER" ? course.pointsBpr * 2 : course.pointsBpr,
-          ["Дата народження"]: 0,
+          ["Дата народження"]: user.birthDate ? new Date(user.birthDate).toLocaleDateString("uk-UA") : undefined,
           ["Засоби зв’язку (електронна адреса)"]: user.email,
           ["Освіта"]: user.education,
           ["Місце роботи"]: user.workplace,

@@ -6,8 +6,8 @@ import type {
   CourseTargetAudienceType,
   CourseRegistrationStatusType,
 } from "@/types/course.type"
-import type { CertificateTemplateType } from "@/types/certificate-template.type"
 import type { FormFieldTypes } from "@/components/custom/form-field"
+import type { CertificateTemplateType } from "@/types/certificate-template.type"
 
 interface IFields {
   name: keyof CourseType
@@ -94,7 +94,7 @@ const useCourseData = (course: Partial<CourseType> = {}, certificateTemplates: C
       {
         name: "startDate",
         required: true,
-        type: "date",
+        type: "date-time",
         label: "Дата початку",
         value: formData.startDate,
         onChange: (value) => setUserFormData({ ...formData, startDate: value as unknown as Date }),
@@ -102,7 +102,7 @@ const useCourseData = (course: Partial<CourseType> = {}, certificateTemplates: C
       {
         name: "endDate",
         required: false,
-        type: "date",
+        type: "date-time",
         label: "Дата закінчення",
         value: formData.endDate,
         onChange: (value) => setUserFormData({ ...formData, endDate: value as unknown as Date }),

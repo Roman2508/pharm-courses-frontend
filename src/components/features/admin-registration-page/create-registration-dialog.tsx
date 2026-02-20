@@ -14,26 +14,29 @@ import type { UserType } from "@/types/user.type"
 import { useCourses } from "@/api/hooks/use-courses"
 import FormField from "@/components/custom/form-field"
 import useRegistrationData from "@/hooks/use-registration-data"
-import { useCreateRegistration } from "@/api/hooks/use-registration"
+import { useCreateRegistration, type GetRegistrationsQuery } from "@/api/hooks/use-registration"
 
 interface Props {
   open: boolean
+  params?: GetRegistrationsQuery
   onOpenChange: Dispatch<SetStateAction<boolean>>
+  setSelectedRegistrations: Dispatch<SetStateAction<number[]>>
 }
 
-const CreateRegistrationDialog: FC<Props> = ({ open, onOpenChange }) => {
+const CreateRegistrationDialog: FC<Props> = ({ open, params, onOpenChange, setSelectedRegistrations }) => {
   const { data: courses } = useCourses("PLANNED")
 
   const [users, setUsers] = useState<UserType[]>([])
 
   const { formData, fields } = useRegistrationData(users, courses)
 
-  const createRegistration = useCreateRegistration()
+  const createRegistration = useCreateRegistration(params)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log(formData)
-    createRegistration.mutate(formData as any)
+    await createRegistration.mutateAsync(formData as any)
+    onOpenChange(false)
+    setSelectedRegistrations([])
   }
 
   useEffect(() => {

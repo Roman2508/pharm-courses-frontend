@@ -20,6 +20,7 @@ const defaultFormData: Partial<UserType> = {
   name: "",
   email: "",
   phone: "",
+  birthDate: "",
   password: "",
   role: "user",
   education: "",
@@ -66,6 +67,14 @@ const useUserData = (user: UserType | null) => {
         label: "Номер телефону",
         value: formData.phone,
         onChange: (value) => setUserFormData({ ...formData, phone: value }),
+      },
+      {
+        name: "birthDate",
+        required: true,
+        type: "date",
+        label: "Дата народження",
+        value: formData.birthDate,
+        onChange: (value) => setUserFormData({ ...formData, birthDate: value }),
       },
       {
         name: "password",

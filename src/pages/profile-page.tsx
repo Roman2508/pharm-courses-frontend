@@ -18,7 +18,7 @@ const ProfilePage = () => {
   const { data } = useSession()
 
   const [deleteInput, setDeleteInput] = useState("")
-
+  console.log("data?.user", data?.user)
   const { fields, formData } = useUserData(data?.user ? (data.user as unknown as UserType) : null)
 
   const availableFields = fields.filter((field) => field.name !== "role")
@@ -61,22 +61,20 @@ const ProfilePage = () => {
     if (data?.user?.id) {
       try {
         setIsPending(true)
-        const isEmailChange = data.user.email === formData.email
+        const isEmailChange = data.user.email !== formData.email
+
+        const { email, password, oldPassword, role, ...rest } = formData
 
         if (isEmailChange) {
-          const { email, password, oldPassword, role, ...rest } = formData
           const { data } = await authClient.updateUser(rest)
           await authClient.changeEmail({ newEmail: formData.email })
           if (data?.status) toast.success("Профіль оновлено")
           else toast.error("Сталась помилка під час оновлення профілю")
         } else {
-          const { role, ...rest } = formData
           const { data } = await authClient.updateUser(rest)
           if (data?.status) toast.success("Профіль оновлено")
           else toast.error("Сталась помилка під час оновлення профілю")
         }
-
-        const { password, oldPassword } = formData
 
         if (password && password !== "" && oldPassword && oldPassword !== "") {
           const data = await authClient.changePassword({ currentPassword: oldPassword, newPassword: password })

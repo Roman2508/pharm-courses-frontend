@@ -14,6 +14,7 @@ export type FormFieldTypes =
   | "password"
   | "number"
   | "date"
+  | "date-time"
   | "tel"
   | "url"
   | "select"
@@ -146,7 +147,7 @@ const FormField: FC<Props> = ({
     )
   }
 
-  if (type === "date") {
+  if (type === "date" || type === "date-time") {
     return (
       <div className="my-6">
         {label && (
@@ -161,6 +162,7 @@ const FormField: FC<Props> = ({
         <DateTimePicker
           id={name}
           required={required}
+          hideTime={type === "date"}
           value={value as unknown as Date}
           onChange={(date) => onChange(date as any)}
           className={cn({ "border-destructive": error })}

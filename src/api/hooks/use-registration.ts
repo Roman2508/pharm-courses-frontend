@@ -87,7 +87,7 @@ export const useCoursesCountRegistrations = (courseId?: number) => {
   })
 }
 
-export const useCreateRegistration = () => {
+export const useCreateRegistration = (params?: GetRegistrationsQuery) => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationKey: ["create-registration"],
@@ -96,9 +96,8 @@ export const useCreateRegistration = () => {
       return data
     },
     onSuccess(_, payload) {
-      queryClient.invalidateQueries({
-        queryKey: ["registration", payload.courseId],
-      })
+      queryClient.invalidateQueries({ queryKey: ["all-registrations", params] })
+      queryClient.invalidateQueries({ queryKey: ["registration", payload.courseId] })
       toast.success("Реєстрація успішно виконана")
     },
     onError(error) {
