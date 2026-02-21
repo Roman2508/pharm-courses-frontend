@@ -26,7 +26,10 @@ export const courseFormSchema = z
 
     registrationOpen: z.enum(["OPEN", "CLOSE"], "Статус реєстрації не вибрано"),
 
-    targetAudience: z.enum(["PHARMACISTS", "LABORATORY_ASSISTANTS"], "Цільову аудиторію не вибрано"),
+    targetAudience: z.enum(
+      ["PHARMACISTS", "LABORATORY_ASSISTANTS", "PHARMACISTS_AND_LABORATORY_ASSISTANTS"],
+      "Цільову аудиторію не вибрано",
+    ),
 
     duration: z.coerce
       .number()

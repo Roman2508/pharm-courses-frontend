@@ -6,37 +6,80 @@ import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
 import { getDate } from "@/helpers/get-date"
 import type { CourseType } from "@/types/course.type"
+import { getTargetAudience } from "@/helpers/get-target-audience"
 
 type Props = CourseType
 
-const CourseCard: FC<Props> = ({ id, name, price, description, startDate, endDate, status }) => {
+const CourseCard: FC<Props> = ({
+  id,
+  name,
+  price,
+  description,
+  startDate,
+  endDate,
+  status,
+  registrationOpen,
+  targetAudience,
+}) => {
   const isEndDate = endDate && endDate !== startDate
+
+  const statusColor = registrationOpen === "OPEN" ? "success" : "destructive"
 
   return (
     <article className="group relative h-full">
-      <div className="absolute -inset-1 bg-gradient-to-r from-primary/0 via-primary/20 to-secondary/0 rounded-[2rem] opacity-0 group-hover:opacity-30 blur-xl transition-all duration-700" />
+      <div
+        className={
+          "absolute -inset-1 bg-gradient-to-r from-primary/0 via-primary/20 to-secondary/0 rounded-[2rem] opacity-0 " +
+          "group-hover:opacity-30 blur-xl transition-all duration-700"
+        }
+      />
 
-      <div className="relative h-full bg-gradient-to-br from-surface via-surface/95 to-surface/90 rounded-[1.75rem] border-2 border-border/60 overflow-hidden transition-all duration-500 group-hover:border-primary/40 group-hover:-translate-y-1.5 group-hover:shadow-2xl">
+      <div
+        className={
+          "relative h-full bg-gradient-to-br from-surface via-surface/95 to-surface/90 rounded-[1.75rem] border-2 " +
+          "border-border/60 overflow-hidden transition-all duration-500 group-hover:border-primary/40 " +
+          "group-hover:-translate-y-1.5 group-hover:shadow-2xl"
+        }
+      >
         <div className="absolute inset-0 opacity-[0.02] bg-grid-pattern" />
-        <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-primary via-secondary to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-        <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-primary/[0.03] via-secondary/[0.02] to-transparent rounded-bl-[5rem] transition-opacity duration-500 group-hover:from-primary/[0.06] group-hover:via-secondary/[0.04]" />
+        <div
+          className={
+            "absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-primary via-secondary to-accent opacity-0 " +
+            "group-hover:opacity-100 transition-opacity duration-500"
+          }
+        />
+        <div
+          className={
+            "absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-primary/[0.03] via-secondary/[0.02] to-transparent " +
+            "rounded-bl-[5rem] transition-opacity duration-500 group-hover:from-primary/[0.06] group-hover:via-secondary/[0.04]"
+          }
+        />
 
         <div className="relative p-6 lg:p-8 flex flex-col h-full">
           <div className="flex items-center justify-between mb-6">
             {status === "PLANNED" && (
-              <Badge className="border-2 px-3.5 py-2 rounded-xl text-xs font-bold bg-success/10 text-success border-success/30">
+              <Badge
+                className={`border-1 px-3.5 py-2 rounded-xl text-xs font-bold bg-${statusColor}/10 text-${statusColor} border-${statusColor}/20`}
+              >
                 <Clock4 />
-                Відкрито
+                {registrationOpen === "OPEN" ? "Відкрито" : "Закрито"}
               </Badge>
             )}
+
             {status === "ARCHIVED" && (
-              <Badge className="border-2 px-3.5 py-2 rounded-xl text-xs font-bold bg-secondary/10 text-secondary border-secondary/30">
+              <Badge className="border-1 px-3.5 py-2 rounded-xl text-xs font-bold bg-secondary/10 text-secondary border-secondary/20">
                 <Archive />
                 Архів
               </Badge>
             )}
             <div className="text-2xl sm:text-3xl font-black text-primary">{price} грн</div>
           </div>
+
+          <span
+            className={`text-sm font-bold mb-2 ${targetAudience === "LABORATORY_ASSISTANTS" ? "text-secondary" : "text-primary"}`}
+          >
+            {getTargetAudience(targetAudience)}
+          </span>
 
           <Link to={`/courses/${id}`}>
             <h2

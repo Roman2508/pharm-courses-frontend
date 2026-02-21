@@ -37,6 +37,9 @@ export const useFullCourse = (id?: string) => {
       const { data } = await axiosClient.get<CourseType>(`/course/${id}`)
       return data
     },
+    staleTime: 0,
+    gcTime: 0,
+    refetchOnMount: true,
   })
 }
 

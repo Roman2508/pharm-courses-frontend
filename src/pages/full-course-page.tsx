@@ -17,7 +17,7 @@ import { FullCoursePagePaymentStatus } from "@/components/features/full-course-p
 const statusColors = {
   PLANNED: "bg-success/10 text-success border-success/20",
   DRAFT: "bg-text-muted/10 text-text-muted border-text-muted/20",
-  ARCHIVED: "bg-text-muted/10 text-text-muted border-text-muted/20",
+  ARCHIVED: "bg-destructive/10 text-destructive border-destructive/20",
 }
 const statusLabels = {
   PLANNED: "Очікується",
@@ -122,10 +122,10 @@ const FullCoursePage = () => {
 
                 <span
                   className={`inline-flex items-center px-2 xl:px-4 py-1 xl:py-2 rounded-full text-[12px] xl:text-sm font-medium border ${
-                    statusColors[course.status]
+                    course.registrationOpen === "OPEN" ? statusColors[course.status] : statusColors["ARCHIVED"]
                   }`}
                 >
-                  {statusLabels[course.status]}
+                  {course.registrationOpen === "OPEN" ? statusLabels[course.status] : "Реєстрація закрита"}
                 </span>
               </div>
 

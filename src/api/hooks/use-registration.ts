@@ -42,11 +42,13 @@ export const useCurrentRegistration = (courseId?: number) => {
   })
 }
 
-export const useUserRegistrations = () => {
+export const useUserRegistrations = (params?: Pick<GetRegistrationsQuery, "page" | "limit">) => {
   return useQuery({
     queryKey: ["user-registrations"],
     queryFn: async () => {
-      const { data } = await axiosClient.get<RegistrationType[]>(`/registration/user`)
+      const { data } = await axiosClient.get<{ data: RegistrationType[]; totalCount: number }>(`/registration/user`, {
+        params,
+      })
       return data
     },
   })
@@ -72,6 +74,16 @@ export const useRemoveManyRegistrations = (params?: GetRegistrationsQuery) => {
     },
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: ["all-registrations", params] })
+    },
+  })
+}
+
+export const useExportRegistrations = () => {
+  return useMutation({
+    mutationKey: ["export-registrations"],
+    mutationFn: async (ids: number[]) => {
+      const { data } = await axiosClient.post(`/registration/export-registrations`, { ids })
+      return data
     },
   })
 }

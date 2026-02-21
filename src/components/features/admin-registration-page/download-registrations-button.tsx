@@ -4,17 +4,17 @@ import { Upload } from "lucide-react"
 import { useState, type FC } from "react"
 
 import { Button } from "@/components/ui/button"
-import { useManyRegistrations } from "@/api/hooks/use-registration"
-import { generateSertificateNumber } from "@/helpers/generate-sertificate-number"
+import { Spinner } from "@/components/ui/spinner"
+import { useExportRegistrations } from "@/api/hooks/use-registration"
 
 interface Props {
-  registrations: any
+  registrations: number[]
 }
 
 const DownloadRegistrationsButton: FC<Props> = ({ registrations }) => {
   const [isDisabled, setIsDisabled] = useState(false)
 
-  const getRegistrations = useManyRegistrations()
+  const exportRegistrations = useExportRegistrations()
 
   const fetchData = async () => {
     try {
@@ -22,39 +22,9 @@ const DownloadRegistrationsButton: FC<Props> = ({ registrations }) => {
         toast.warning("Реєстрації не вибрано")
         return
       }
-
       setIsDisabled(true)
-
-      const data = await getRegistrations.mutateAsync(registrations)
-
-      if (!data.length) {
-        toast.warning("Реєстрації не знайдено")
-        return
-      }
-
-      const newData = data.map((reg) => {
-        const { course, user, type, id } = reg
-
-        const certificateNumber = generateSertificateNumber(id)
-        const currentYear = new Date().getFullYear()
- 
-        return {
-          ["Реєстраційний номер Провайдера"]: "2044",
-          ["Реєстраційний номер заходу"]: course.numberOfInclusionToBpr,
-          ["Номер сертифіката"]: `${currentYear}-2044-${course.numberOfInclusionToBpr}-${certificateNumber}`,
-          ["Прізвище, власне ім'я, по батькові (за наявності) учасника"]: user.name,
-          ["Бали БПР"]: type === "TRAINER" ? course.pointsBpr * 2 : course.pointsBpr,
-          ["Дата народження"]: user.birthDate ? new Date(user.birthDate).toLocaleDateString("uk-UA") : undefined,
-          ["Засоби зв’язку (електронна адреса)"]: user.email,
-          ["Освіта"]: user.education,
-          ["Місце роботи"]: user.workplace,
-          ["Найменування займаної посади"]: user.jobTitle,
-          ["Результати оцінювання за проходження заходу БПР учасників заходу, які отримали сертифікати"]:
-            type === "TRAINER" ? "Тренер" : "90%",
-        }
-      })
-
-      return newData.filter((el: any) => !!Object.keys(el).length)
+      const results = await exportRegistrations.mutateAsync(registrations)
+      return results
     } catch (error) {
       console.log(error)
     } finally {
@@ -87,7 +57,7 @@ const DownloadRegistrationsButton: FC<Props> = ({ registrations }) => {
       onClick={handleExportFile}
       title="Завантажити реєстрації в xlsx"
     >
-      <Upload />
+      {isDisabled ? <Spinner /> : <Upload />}
     </Button>
   )
 }

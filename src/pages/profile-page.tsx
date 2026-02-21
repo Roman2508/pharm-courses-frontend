@@ -18,7 +18,7 @@ const ProfilePage = () => {
   const { data } = useSession()
 
   const [deleteInput, setDeleteInput] = useState("")
-  console.log("data?.user", data?.user)
+
   const { fields, formData } = useUserData(data?.user ? (data.user as unknown as UserType) : null)
 
   const availableFields = fields.filter((field) => field.name !== "role")
@@ -88,6 +88,16 @@ const ProfilePage = () => {
         setIsPending(false)
       }
     }
+  }
+
+  const handleDelete = () => {
+    if (
+      !window.confirm(
+        "Ви впевнені, що хочете видалити свій обліковий запис та всі пов'язані з ним дані? Цю дію не можна відмінити",
+      )
+    )
+      return
+    authClient.deleteUser()
   }
 
   return (
@@ -190,13 +200,19 @@ const ProfilePage = () => {
 
         <Input
           type="text"
-          placeholder="Видалити"
+          placeholder="Слово підтвердження"
           className="mt-2 mb-4"
           value={deleteInput}
           onChange={(e) => setDeleteInput(e.target.value)}
         />
 
-        <Button variant="destructive" className="w-full" size="lg" disabled={deleteInput.toLowerCase() !== "видалити"}>
+        <Button
+          size="lg"
+          className="w-full"
+          variant="destructive"
+          onClick={handleDelete}
+          disabled={deleteInput.toLowerCase() !== "видалити"}
+        >
           Видалити
         </Button>
       </div>
@@ -205,31 +221,3 @@ const ProfilePage = () => {
 }
 
 export default ProfilePage
-
-{
-  /* <div className="pt-4 border-t border-border">
-            <h3 className="text-lg font-semibold text-text-primary mb-4">Зміна пароля</h3>
-            <p className="text-sm text-text-secondary mb-4">Залиште поля пустими, якщо не хочете змінювати пароль</p>
-
-            <div className="space-y-4">
-              <FormField
-                label="Новий пароль"
-                name="password"
-                type="password"
-                placeholder="********"
-                value={""}
-                onChange={() => {}}
-                required
-              />
-              <FormField
-                label="Підтвердити новий пароль"
-                name="confirmPassword"
-                type="password"
-                placeholder="********"
-                value={""}
-                onChange={() => {}}
-                required
-              />
-            </div>
-          </div> */
-}

@@ -1,18 +1,37 @@
+import { useState } from "react"
+
 import { useSession } from "@/api/auth-client"
 import { Title } from "@/components/custom/title"
 import type { UserType } from "@/types/user.type"
 import PageLoader from "@/components/custom/page-loader"
+import { Pagination } from "@/components/custom/pagination"
 import MyCourseCard from "@/components/common/my-course-card"
 import { useUserRegistrations } from "@/api/hooks/use-registration"
 
 const MyCoursesPage = () => {
+  const [params, setParams] = useState({ page: 1, limit: 20 })
+
   const { data: session } = useSession()
 
-  const { data: registrations, isLoading } = useUserRegistrations()
+  const { data: { data: registrations, totalCount } = { data: [], totalCount: 0 }, isLoading } =
+    useUserRegistrations(params)
+
+  const handleChangeParams = (key: keyof typeof params, value: any) => {
+    setParams((prev) => ({ ...prev, [key]: value }))
+  }
 
   return (
     <div className="my-16">
-      <Title className="mb-12 mx-auto max-w-7xl px-4">Мої заходи</Title>
+      <div className="flex items-center justify-between gap-6 sm:gap-0 flex-col sm:flex-row px-4 mb-12 max-w-7xl mx-auto">
+        <Title>Мої заходи</Title>
+
+        <Pagination
+          total={totalCount}
+          limit={params.limit}
+          page={params.page}
+          handleChangeParams={handleChangeParams}
+        />
+      </div>
 
       {isLoading ? (
         <PageLoader />

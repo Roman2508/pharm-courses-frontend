@@ -39,7 +39,7 @@ const MyCourseCard: FC<Props> = ({ registration, user }) => {
         </div>
 
         <div className="flex items-start md:items-center justify-between gap-2 mb-4 flex-col md:flex-row border-b md:border-none">
-          <div className="flex items-start md:items-center gap-1 md:gap-4 text-muted-foreground flex-col md:flex-row">
+          <div className="flex items-start min-[840px]:items-center gap-1 min-[840px]:gap-4 text-muted-foreground flex-col min-[840px]:flex-row">
             <div className="flex items-center gap-2">
               <Calendar className="w-4 h-4" />
               <span className="text-[14px] min-[420px]:text-sm">Початок: {getDate(registration.course.startDate)}</span>

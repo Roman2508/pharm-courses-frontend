@@ -47,6 +47,9 @@ export const CourseActions: FC<Props> = ({
     )
   }
 
+  // Реєстрацію на курс закрито
+  if (course?.registrationOpen === "CLOSE") return
+
   // Закінчились доступні реєстрації
   if (course && typeof course.maxMembers === "number" && registrationCount) {
     if (!!course.maxMembers && course.maxMembers <= registrationCount) {
