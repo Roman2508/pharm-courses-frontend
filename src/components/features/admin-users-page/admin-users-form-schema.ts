@@ -13,9 +13,9 @@ export const userFormSchema = z.object({
     .max(100, { message: "Занадто довгий ПІБ" })
     .regex(/^[A-Za-zА-Яа-яІіЇїЄєҐґ'`\-\s]+$/, "ПІБ може містити лише літери, пробіли та дефіс"),
 
-  email: z.email({ message: "Не правильний формат пошти" }).max(120),
+  email: z.email({ message: "Неправильний формат пошти" }).max(120),
 
-  phone: z.string().regex(phoneRegex, "Не правильний формат телефону"),
+  phone: z.string().regex(phoneRegex, "Неправильний формат телефону"),
 
   role: z.enum(["user", "admin"], "Оберіть роль користувача"),
 

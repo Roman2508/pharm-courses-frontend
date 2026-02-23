@@ -101,7 +101,7 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12 md:py-16 max-w-3xl">
+    <div className="max-w-[800px] mx-auto px-4 py-12 md:py-16 max-w-3xl">
       <div className="flex items-center gap-3 mb-8">
         <div className="h-1 w-12 bg-gradient-to-r from-primary to-secondary rounded-full" />
         <h1 className="text-3xl font-bold text-text-primary">Профіль</h1>

@@ -21,7 +21,7 @@ export const CoursesList: FC<Props> = ({ courses, isLoading }) => {
           ))}
         </div>
       ) : (
-        <section className="container mx-auto px-4 pb-20 text-center max-w-7xl">
+        <section className="max-w-[1300px] mx-auto px-4 pb-20 text-center max-w-7xl">
           <div className="max-w-md mx-auto">
             <div className="w-18 h-18 sm:w-24 sm:h-24 rounded-3xl bg-primary/10 mx-auto mb-4 sm:mb-8 flex items-center justify-center">
               <svg

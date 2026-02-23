@@ -11,13 +11,12 @@ import type { AuthPageVariants } from "@/pages/auth-page"
 
 const initialFormData = { name: "", email: "", phone: "", password: "" }
 
-// const phoneRegex = new RegExp(/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/)
 const phoneRegex = new RegExp(/^(\+380|380|0)(39|50|63|66|67|68|73|91|92|93|94|95|96|97|98|99)\d{7}$/)
 
 const formSchema = z.object({
   name: z.string().min(8, { message: "Занадто короткий ПІБ" }).max(100, { message: "Занадто довгий ПІБ" }),
-  email: z.email({ message: "Не правильний формат пошти" }),
-  phone: z.string().regex(phoneRegex, "Не правильний формат телефону"),
+  email: z.email({ message: "Неправильний формат пошти" }),
+  phone: z.string().regex(phoneRegex, "Неправильний формат телефону"),
   password: z
     .string()
     .min(8, { message: "Мінімальна довжина пароля - 8 символів" })

@@ -43,7 +43,7 @@ const AdminPage = () => {
         onOpenChange={setIsParticipationModalOpen}
       />
 
-      <div className="container mx-auto px-4 py-12 md:py-16">
+      <div className="max-w-[1500px] mx-auto px-4 py-12 md:py-16">
         <Title className="mb-12">Адміністрування</Title>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">

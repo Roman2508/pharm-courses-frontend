@@ -89,7 +89,7 @@ const AdminRegistrationTable: FC<Props> = ({
     <Table className="w-full">
       <TableHeader>
         <TableRow className="bg-surface-hover border-b border-border">
-          <TableHead className="w-12 px-6 py-4">
+          <TableHead className="w-12 px-2 xl:px-4 py-4">
             <input
               type="checkbox"
               onChange={handleSelectAll}
@@ -99,7 +99,7 @@ const AdminRegistrationTable: FC<Props> = ({
           </TableHead>
 
           {tableColumns.map((col) => (
-            <TableHead className="text-left px-6 py-4 text-sm font-semibold text-text-primary" key={col.key}>
+            <TableHead className="text-left px-2 xl:px-4 py-4 text-sm font-semibold text-text-primary" key={col.key}>
               <span className="flex items-center inline-flex cursor-pointer" onClick={() => onSortChange(col.key)}>
                 {col.label}
                 {params.orderBy === col.key && (
@@ -116,7 +116,7 @@ const AdminRegistrationTable: FC<Props> = ({
       <TableBody>
         {registrations.map((reg: RegistrationType) => (
           <TableRow key={reg.id} className="border-b border-border last:border-0 hover:bg-surface-hover/50">
-            <TableCell className="px-2 xl:px-6 py-2 xl:py-2 text-center">
+            <TableCell className="text-sm px-2 xl:px-4 py-2 xl:py-2 text-center">
               <input
                 type="checkbox"
                 checked={checkIsSelected(reg.id)}
@@ -125,22 +125,22 @@ const AdminRegistrationTable: FC<Props> = ({
               />
             </TableCell>
 
-            <TableCell className="px-2 xl:px-6 py-2 xl:py-2">
+            <TableCell className="text-sm px-2 xl:px-4 py-2 xl:py-2">
               <div className="font-medium text-text-primary">{reg.user.name}</div>
               <div className="text-sm text-text-secondary">{reg.user.email}</div>
             </TableCell>
 
-            <TableCell className="px-2 xl:px-6 py-2 xl:py-4 text-text-primary max-w-xs break-words whitespace-normal">
+            <TableCell className="text-sm px-2 xl:px-4 py-2 xl:py-4 text-text-primary max-w-xs break-words whitespace-normal">
               <span className="line-clamp-3" title={reg.course.name}>
                 {reg.course.name}
               </span>
             </TableCell>
 
-            <TableCell className="px-2 xl:px-6 py-2 xl:py-2">
+            <TableCell className="text-sm px-2 xl:px-4 py-2 xl:py-2">
               <span className="font-semibold text-primary truncate">{reg.amount} грн.</span>
             </TableCell>
 
-            <TableCell className="px-2 xl:px-6 py-2 xl:py-2">
+            <TableCell className="text-sm px-2 xl:px-4 py-2 xl:py-2">
               <span
                 className={`inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium 
                   bg-${getPaymentColor(reg.paymentStatus)}/10 text-${getPaymentColor(reg.paymentStatus)}`}
@@ -149,7 +149,7 @@ const AdminRegistrationTable: FC<Props> = ({
               </span>
             </TableCell>
 
-            <TableCell className="px-2 xl:px-6 py-2 xl:py-2">
+            <TableCell className="text-sm px-2 xl:px-4 py-2 xl:py-2">
               <button
                 // onClick={() => toggleCertificate.mutate({ id: reg.id, enabled: !reg.certificate_enabled })}
                 // disabled={toggleCertificate.isPending}
@@ -163,7 +163,7 @@ const AdminRegistrationTable: FC<Props> = ({
               </button>
             </TableCell>
 
-            <TableCell className="px-2 xl:px-6 py-2 xl:py-2">
+            <TableCell className="text-sm px-2 xl:px-4 py-2 xl:py-2">
               <div className={cn({ "flex flex-col items-start gap-1": reg.freeParticipation })}>
                 <button
                   onClick={() => onOpenModal(reg, "payment")}
@@ -190,7 +190,7 @@ const AdminRegistrationTable: FC<Props> = ({
               </div>
             </TableCell>
 
-            <TableCell className="px-2 xl:px-6 py-2 xl:py-2">
+            <TableCell className="text-sm px-2 xl:px-4 py-2 xl:py-2">
               <span className="text-sm text-text-secondary truncate">{getDate(reg.createdAt)}</span>
             </TableCell>
           </TableRow>

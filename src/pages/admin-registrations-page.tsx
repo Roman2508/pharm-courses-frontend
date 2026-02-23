@@ -98,7 +98,7 @@ const AdminRegistrationsPage = () => {
         setSelectedRegistrations={setSelectedRegistrations}
       />
 
-      <div className="container mx-auto px-4 py-12 md:py-16">
+      <div className="max-w-[1500px] mx-auto px-4 py-12 md:py-16">
         <div className="flex gap-4 items-center justify-between mb-8 flex-col lg:flex-row">
           <Title>Всі реєстрації</Title>
 

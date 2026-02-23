@@ -27,7 +27,7 @@ const AdminCoursesPage = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12 md:py-16">
+    <div className="max-w-[1500px] mx-auto px-4 py-12 md:py-16">
       <div className="flex gap-4 items-start sm:items-center justify-between mb-8 flex-col lg:flex-row">
         <Title>Управління заходами</Title>
 

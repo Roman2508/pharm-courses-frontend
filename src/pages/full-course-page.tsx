@@ -44,7 +44,7 @@ const FullCoursePage = () => {
   if (!course) {
     return (
       <div className="min-h-[calc(100vh-150px)] bg-background flex items-center justify-center">
-        <div className="container mx-auto px-4 py-12 text-center">
+        <div className="max-w-[1500px] mx-auto px-4 py-12 text-center">
           <h1 className="text-2xl font-bold text-text-primary mb-4">Захід не знайдено</h1>
           <Button onClick={() => navigate("/")}>Повернутися на головну</Button>
         </div>
@@ -64,7 +64,7 @@ const FullCoursePage = () => {
     <>
       <PaymentModal open={isOpen} onOpenChange={setIsOpen} registration={registration} />
 
-      <div className="container mx-auto px-0 sm:px-4 py-12 md:py-16">
+      <div className="max-w-[1500px] mx-auto px-0 sm:px-4 py-12 md:py-16">
         <Button variant="ghost" className="mb-8 gap-2" onClick={() => navigate(-1)}>
           <ChevronLeft className="h-4 w-4" />
           Повернутись назад

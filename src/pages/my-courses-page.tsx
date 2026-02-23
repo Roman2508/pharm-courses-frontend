@@ -22,7 +22,7 @@ const MyCoursesPage = () => {
 
   return (
     <div className="my-16">
-      <div className="flex items-center justify-between gap-6 sm:gap-0 flex-col sm:flex-row px-4 mb-12 max-w-7xl mx-auto">
+      <div className="flex items-center justify-between gap-6 sm:gap-0 flex-col sm:flex-row px-4 mb-12 max-w-[1500px] mx-auto">
         <Title>Мої заходи</Title>
 
         <Pagination
@@ -36,7 +36,7 @@ const MyCoursesPage = () => {
       {isLoading ? (
         <PageLoader />
       ) : !!registrations?.length && session ? (
-        <div className="grid grid-cols-1 gap-2 mb-24 max-w-7xl mx-auto px-4">
+        <div className="grid grid-cols-1 gap-2 mb-24 max-w-[1500px] mx-auto px-4">
           {registrations.map((registration) => (
             <MyCourseCard
               key={registration.id}
@@ -46,7 +46,7 @@ const MyCoursesPage = () => {
           ))}
         </div>
       ) : (
-        <div className="container max-w-7xl mx-auto px-4">
+        <div className="max-w-[1500px] mx-auto px-4">
           <div className="text-center py-24 bg-surface rounded-2xl border border-border">
             <div className="max-w-md mx-auto">
               <div className="w-16 h-16 rounded-full bg-surface-hover mx-auto mb-6 flex items-center justify-center">

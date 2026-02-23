@@ -17,7 +17,7 @@ const AdminCertificatesPage = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12 md:py-16">
+    <div className="max-w-[1500px] mx-auto px-4 py-12 md:py-16">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4 sm:gap-0">
         <Title>Шаблони сертифікатів</Title>
 

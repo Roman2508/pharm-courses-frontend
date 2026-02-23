@@ -6,7 +6,7 @@ const phone = "+380 67 123 45 67"
 
 const PrivacyPolicyPage = () => {
   return (
-    <div className="container mx-auto px-4 py-12 max-w-4xl">
+    <div className="max-w-[900px] mx-auto px-4 py-12 max-w-4xl">
       <Title className="mb-10">Політика конфіденційності</Title>
 
       <div className="space-y-8 leading-relaxed mb-10">

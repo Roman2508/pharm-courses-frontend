@@ -50,8 +50,8 @@ export const courseFormSchema = z
 
     numberOfInclusionToBpr: z.coerce
       .number()
-      .positive("Номер заходу БПР має не правильний формат")
-      .min(0, "Номер заходу БПР має не правильний формат"),
+      .positive("Номер заходу БПР має неправильний формат")
+      .min(0, "Номер заходу БПР має неправильний формат"),
   })
   .refine((data) => !data.endDate || data.endDate >= data.startDate, {
     path: ["endDate"],

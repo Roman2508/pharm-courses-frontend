@@ -44,7 +44,7 @@ const AdminUserPageTable: FC<Props> = ({ users, onEditUser, params, setParams })
       <TableHeader>
         <TableRow className="bg-surface-hover border-b border-border">
           {tableColumns.map((col) => (
-            <TableHead className="text-left px-6 py-4 text-sm font-semibold text-text-primary" key={col.key}>
+            <TableHead className="text-left px-2 lg:px-4 py-4 text-sm font-semibold text-text-primary" key={col.key}>
               <span className="flex items-center inline-flex cursor-pointer" onClick={() => onSortChange(col.key)}>
                 {col.label}
                 {params.orderBy === col.key && (
@@ -56,30 +56,30 @@ const AdminUserPageTable: FC<Props> = ({ users, onEditUser, params, setParams })
             </TableHead>
           ))}
 
-          <TableHead className="text-left px-6 py-4 text-sm font-semibold text-text-primary">Дії</TableHead>
+          <TableHead className="text-left px-2 lg:px-4 py-4 text-sm font-semibold text-text-primary">Дії</TableHead>
         </TableRow>
       </TableHeader>
 
       <TableBody>
         {users.map((user) => (
           <TableRow key={user.id} className="border-b border-border last:border-0 hover:bg-surface-hover/50">
-            <TableCell className="px-6 py-2">
+            <TableCell className="!text-[12px] !lg:text-base px-2 lg:px-4 py-2">
               <div className="text-sm font-medium text-text-primary">{user.name}</div>
             </TableCell>
 
-            <TableCell className="px-6 py-4 text-text-primary max-w-xs break-words whitespace-normal">
+            <TableCell className="!text-[12px] !lg:text-base px-2 lg:px-4 py-4 text-text-primary max-w-xs break-words whitespace-normal">
               <div className="text-sm text-text-secondary">{user.email}</div>
             </TableCell>
 
-            <TableCell className="px-6 py-2">
+            <TableCell className="!text-[12px] !lg:text-base px-2 lg:px-4 py-2">
               <div className="text-sm text-text-secondary">{user.phone || "-"}</div>
             </TableCell>
 
-            <TableCell className="px-6 py-2">
+            <TableCell className="!text-[12px] !lg:text-base px-2 lg:px-4 py-2">
               <span className="text-sm text-text-secondary truncate">{getDate(user.createdAt)}</span>
             </TableCell>
 
-            <TableCell className="px-6 py-2">
+            <TableCell className="!text-[12px] !lg:text-base px-2 lg:px-4 py-2">
               {user.role === "user" ? (
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-secondary/10 text-secondary border border-secondary/20">
                   Користувач
@@ -91,7 +91,7 @@ const AdminUserPageTable: FC<Props> = ({ users, onEditUser, params, setParams })
               )}
             </TableCell>
 
-            <TableCell className="px-6 py-2">
+            <TableCell className="!text-[12px] !lg:text-base px-2 lg:px-4 py-2">
               <button
                 onClick={() => onEditUser(user)}
                 className="cursor-pointer text-sm font-medium text-primary hover:text-primary-hover transition-colors"

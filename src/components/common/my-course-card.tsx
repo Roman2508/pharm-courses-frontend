@@ -26,7 +26,7 @@ const MyCourseCard: FC<Props> = ({ registration, user }) => {
       <PaymentModal open={isOpen} onOpenChange={setIsOpen} registration={registration} />
 
       <Card className="mb-2 px-4 gap-0">
-        <div className="mb-2 flex items-start md:items-center justify-between flex-col md:flex-row">
+        <div className="mb-2 flex items-start md:items-center justify-between flex-col md:flex-row gap-0 md:gap-4">
           <Link to={`/courses/${registration.course.id}`}>
             <h3 className="text-base min-[420px]:text-lg sm:text-xl font-bold text-text-primary hover:underline">
               {registration.course.name}

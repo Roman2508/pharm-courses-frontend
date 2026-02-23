@@ -80,7 +80,7 @@ const AdminUsersPage = () => {
         onOpenChange={setIsDialogOpen}
       />
 
-      <div className="container mx-auto px-4 py-12 md:py-16">
+      <div className="max-w-[1500px] mx-auto px-4 py-12 md:py-16">
         <div className="flex flex-col lg:flex-row gap-4 justify-between items-center mb-8">
           <div className="flex items-center gap-3">
             <Title>Управління користувачами</Title>

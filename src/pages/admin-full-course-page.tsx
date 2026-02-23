@@ -60,7 +60,7 @@ const AdminFullCoursePage = () => {
   const error = createCourse.error || updateCourse.error
 
   return (
-    <div className="container mx-auto px-4 py-12 md:py-16 max-w-4xl">
+    <div className="max-w-[900px] mx-auto px-4 py-12 md:py-16 max-w-4xl">
       <div className="flex items-center justify-between mb-8">
         <Title>{isUpdate ? "Редагувати захід" : "Новий захід"}</Title>
       </div>

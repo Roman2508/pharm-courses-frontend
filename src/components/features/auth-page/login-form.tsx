@@ -13,7 +13,7 @@ import { startCooldown } from "@/helpers/email-verification-cooldown"
 const initialFormData = { email: "", password: "" }
 
 const formSchema = z.object({
-  email: z.email({ message: "Не правильний формат пошти" }),
+  email: z.email({ message: "Неправильний формат пошти" }),
   password: z
     .string()
     .min(8, { message: "Мінімальна довжина пароля - 8 символів" })

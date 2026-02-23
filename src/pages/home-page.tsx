@@ -41,11 +41,11 @@ const HomePage = () => {
           ))}
         </div>
 
-        <div className="container mx-auto px-4 pb-20 relative z-10 max-w-7xl">
-          <div className="max-w-3xl">
+        <div className="max-w-[1300px] w-full mx-auto px-4 pb-20 relative z-10 max-w-7xl">
+          <div className="max-w-full lg:max-w-3xl">
             <h1
               className={
-                "max-[420px]:text-2xl max-[500px]:text-3xl text-4xl md:text-5xl lg:text-6xl text-center sm:text-left " +
+                "max-[420px]:text-2xl max-[500px]:text-3xl text-4xl md:text-5xl lg:text-6xl text-center lg:text-left " +
                 "font-black text-white max-[500px]:mb-5 mb-8 text-balance leading-[1.1] tracking-tight"
               }
             >
@@ -54,14 +54,14 @@ const HomePage = () => {
 
             <p
               className={
-                "max-[500px]:text-base text-lg md:text-xl text-center sm:text-left " +
-                "text-white/90 text-pretty max-[500px]:mb-8 mb-12 max-w-2xl leading-5 sm:leading-relaxed"
+                "max-[500px]:text-base text-lg md:text-xl text-center lg:text-left " +
+                "text-white/90 text-pretty max-[500px]:mb-8 mb-12 max-w-2xl mx-auto lg:mx-0 leading-5 sm:leading-relaxed"
               }
             >
               Сертифіковані програми для фармацевтів та медичних працівників. Інвестуйте в майбутнє своєї кар'єри.
             </p>
 
-            <div className="flex justify-center sm:justify-start flex-wrap gap-5">
+            <div className="flex justify-center lg:justify-start flex-wrap gap-5">
               <a
                 href="#events"
                 className={
@@ -101,7 +101,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section className="container mx-auto px-4 py-20 max-w-7xl">
+      <section className="max-w-[1300px] mx-auto px-4 py-20 max-w-7xl">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {stats.map((stat) => (
             <div

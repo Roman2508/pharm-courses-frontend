@@ -31,6 +31,8 @@ createRoot(document.getElementById("root")!).render(<RouterProvider router={rout
 // Не треба показувати тост "Not authentificated"
 // Перевірити чи не зламалась ревалідація queryKey: ["user-registrations"],
 // Генерація номера сертифіката
+// фіксований контейнер
+// Перевірити валідацію при реєстрації на сайті
 
 /* 
 translate better auth errors:
@@ -48,3 +50,11 @@ export function getAuthErrorMessage(error: any) {
   return authErrors[error.code] ?? error.message;
 }
 */
+
+/*  */
+/*  */
+/*  */
+
+
+/* Для кожного заходу опитулвальний буде один і той же? звідки брати google sheet id? */
+/* запитання про email краще забрати з питання і підставляти емайл з якого юзер проходить тест */
