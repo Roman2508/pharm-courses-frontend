@@ -75,7 +75,7 @@ export const CourseActions: FC<Props> = ({
   //   <>
   //     {course && user.name && (
   //       <div className="max-w-[260px]">
-  //         <CertificateDownloadButton course={course} registration={registration} userName={user.name} />
+  //         <CertificateDownloadButton course={course} registration={registration} userName={user.name} size="sm" />
   //       </div>
   //     )}
   //   </>
@@ -133,9 +133,9 @@ export const CourseActions: FC<Props> = ({
     )
   }
 
+  //
+  // Реєстрація є, квитанцію НЕ завантажено завантажено
   if (registration) {
-    //
-    // Реєстрація є, квитанцію НЕ завантажено завантажено
     if (registration.paymentStatus !== "PAID" && registration.paymentStatus !== "PENDING") {
       return (
         <Button size={size} className={className} onClick={() => setIsOpen(true)}>
@@ -146,10 +146,11 @@ export const CourseActions: FC<Props> = ({
 
     //
     // Реєстрація є, квитанцію завантажено але ще не перевірено
-    if (registration.paymentStatus === "PENDING") {
+    // if (registration.paymentStatus === "PENDING") {
+    if (registration.paymentReceipt || registration.freeParticipation) {
       return (
         <Button size={size} className={className} onClick={() => setIsOpen(true)}>
-          Завантажити іншу квитанцію
+          {registration.paymentReceipt ? "Завантажити іншу квитанцію" : "Завантажити інший файл"}
         </Button>
       )
     }

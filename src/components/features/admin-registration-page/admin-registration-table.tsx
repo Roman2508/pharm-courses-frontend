@@ -89,12 +89,12 @@ const AdminRegistrationTable: FC<Props> = ({
     <Table className="w-full">
       <TableHeader>
         <TableRow className="bg-surface-hover border-b border-border">
-          <TableHead className="w-12 px-2 xl:px-4 py-4">
+          <TableHead className="w-12 px-2 xl:px-4 py-5 pl-2 xl:pl-4 flex justify-center">
             <input
               type="checkbox"
               onChange={handleSelectAll}
               checked={selectedRegistrations.length === registrations.length && registrations.length > 0}
-              className="rounded border-border bg-input text-primary focus:ring-primary cursor-pointer"
+              className="rounded border-border bg-input text-primary focus:ring-primary cursor-pointer w-[13px] h-[13px]"
             />
           </TableHead>
 
@@ -151,8 +151,6 @@ const AdminRegistrationTable: FC<Props> = ({
 
             <TableCell className="text-sm px-2 xl:px-4 py-2 xl:py-2">
               <button
-                // onClick={() => toggleCertificate.mutate({ id: reg.id, enabled: !reg.certificate_enabled })}
-                // disabled={toggleCertificate.isPending}
                 className={`truncate cursor-pointer inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-colors ${
                   reg.certificateEnabled
                     ? "bg-primary/10 text-primary hover:bg-primary/20"

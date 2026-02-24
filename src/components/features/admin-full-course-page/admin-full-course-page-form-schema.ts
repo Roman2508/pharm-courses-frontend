@@ -22,6 +22,10 @@ export const courseFormSchema = z
 
     maxMembers: z.coerce.number().int().optional().nullable(),
 
+    type: z.string("Тип заходу обовʼязковий").trim().min(1, "Тип заходу обовʼязковий"),
+
+    googleSheetId: z.string().trim().optional().nullable(),
+
     status: z.enum(["DRAFT", "PLANNED", "ARCHIVE"], "Статус заходу не вибрано"),
 
     registrationOpen: z.enum(["OPEN", "CLOSE"], "Статус реєстрації не вибрано"),

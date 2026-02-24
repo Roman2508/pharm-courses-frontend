@@ -14,7 +14,20 @@ const initialFormData = { name: "", email: "", phone: "", password: "" }
 const phoneRegex = new RegExp(/^(\+380|380|0)(39|50|63|66|67|68|73|91|92|93|94|95|96|97|98|99)\d{7}$/)
 
 const formSchema = z.object({
-  name: z.string().min(8, { message: "Занадто короткий ПІБ" }).max(100, { message: "Занадто довгий ПІБ" }),
+  name: z
+    .string()
+    .min(5, { message: "Занадто короткий ПІБ" })
+    .max(100, { message: "Занадто довгий ПІБ" })
+    .refine(
+      (value) => {
+        const parts = value.trim().split(/\s+/)
+        // Мінімум 2 частини (прізвище + ім'я), максимум 3 (+ по батькові)
+        if (parts.length < 2 || parts.length > 3) return false
+        // Кожна частина мінімум 2 символи
+        return parts.every((part) => part.length >= 2)
+      },
+      { message: "Введіть правильно прізвище, ім'я та по батькові" },
+    ),
   email: z.email({ message: "Неправильний формат пошти" }),
   phone: z.string().regex(phoneRegex, "Неправильний формат телефону"),
   password: z
@@ -57,6 +70,7 @@ const RegisterForm: FC<Props> = ({ setAuthType, setEmail }) => {
       setIsPending(false)
       return
     }
+
     await signUp.email(
       { ...formData, callbackURL: "/auth/verify-email" },
       {
@@ -92,7 +106,7 @@ const RegisterForm: FC<Props> = ({ setAuthType, setEmail }) => {
         name="name"
         label="ПІБ"
         type="text"
-        placeholder="Прізвище Ім'я Побатькові"
+        placeholder="Прізвище Ім'я По батькові"
         value={formData.name}
         onChange={(value) => changeUserFormData("name", value)}
         className="mb-4"

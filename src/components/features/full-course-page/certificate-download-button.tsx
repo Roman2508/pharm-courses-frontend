@@ -1,10 +1,12 @@
-import { useState } from "react"
-import { PDFDocument, rgb } from "pdf-lib"
-import fontkit from "@pdf-lib/fontkit"
-import { Download } from "lucide-react"
 import { toast } from "sonner"
+import { useState } from "react"
+import fontkit from "@pdf-lib/fontkit"
+import { PDFDocument, rgb } from "pdf-lib"
+import { Download, File } from "lucide-react"
 
+import { axiosClient } from "@/api/client"
 import { Button } from "@/components/ui/button"
+import { Spinner } from "@/components/ui/spinner"
 import type { CourseType } from "@/types/course.type"
 import type { RegistrationType } from "@/types/registration.type"
 import { splitTextIntoLines } from "@/helpers/split-text-into-lines"
@@ -12,24 +14,30 @@ import { splitTextIntoLines } from "@/helpers/split-text-into-lines"
 const BLOCK_PADDING = 8
 
 interface CertificateDownloadButtonProps {
-  course: CourseType
-  registration: RegistrationType
   userName: string
+  course?: CourseType
+  registration?: RegistrationType
   size?: "lg" | "sm"
+  onButtonClick?: () => void
+  variant?: "default" | "icon"
   className?: string
 }
 
 export const CertificateDownloadButton = ({
   course,
-  registration,
   userName,
   size = "lg",
+  registration,
+  onButtonClick,
+  variant = "default",
   className = "w-full",
 }: CertificateDownloadButtonProps) => {
   const [isGenerating, setIsGenerating] = useState(false)
 
   const generateCertificate = async () => {
     try {
+      if (!course || !registration) return
+
       setIsGenerating(true)
 
       if (!course.certificateTemplate) {
@@ -54,9 +62,6 @@ export const CertificateDownloadButton = ({
       const pages = pdfDoc.getPages()
       const firstPage = pages[0]
 
-      // Додай одразу після:
-      // Додай одразу після:
-      // Додай одразу після:
       const pdfWidth = firstPage.getWidth()
       const pdfHeight = firstPage.getHeight()
       const displayWidth = 900
@@ -70,14 +75,13 @@ export const CertificateDownloadButton = ({
       const regularFontBytes = await fetch(regularFontUrl).then((res) => res.arrayBuffer())
       const boldFontBytes = await fetch(boldFontUrl).then((res) => res.arrayBuffer())
 
-      // const fontBytes = await fetch(fontUrl).then((res) => res.arrayBuffer())
-      // const customFont = await pdfDoc.embedFont(fontBytes)
-
       const regularFont = await pdfDoc.embedFont(regularFontBytes)
       const boldFont = await pdfDoc.embedFont(boldFontBytes)
 
+      const { data } = await axiosClient.get(`/certificate-numbers/${registration.id}`)
+
       // Prepare data for text blocks
-      const certificateNumber = `${course.yearOfInclusionToBpr}-${course.numberOfInclusionToBpr}-${registration.id}`
+      // const certificateNumber = `${course.yearOfInclusionToBpr}-${course.numberOfInclusionToBpr}-${registration.id}`
       const courseDate = course.startDate
         ? new Date(course.startDate).toLocaleDateString("uk-UA", {
             day: "2-digit",
@@ -90,13 +94,13 @@ export const CertificateDownloadButton = ({
         namePosition: userName,
         courseNamePosition: course.name,
         courseDatePosition: courseDate,
-        certificateNumberPosition: certificateNumber,
+        certificateNumberPosition: data && data.certificateNumber ? data.certificateNumber : "",
         durationPosition: course.duration.toString(),
         pointsPosition: course.pointsBpr.toString(),
         yearOfInclusionPosition: course.yearOfInclusionToBpr.toString(),
         numberOfInclusionPosition: course.numberOfInclusionToBpr.toString(),
-        eventTypePosition: "майстер-класу",
-        certificateTypePosition: "СЕРТИФІКАТ",
+        eventTypePosition: course.type,
+        certificateTypePosition: registration.type === "TRAINER" ? "СЕРТИФІКАТ ТРЕНЕРА" : "СЕРТИФІКАТ УЧАСНИКА",
       }
 
       // Draw text blocks on PDF
@@ -171,46 +175,6 @@ export const CertificateDownloadButton = ({
         })
       })
 
-      // blocks.forEach((block) => {
-      //   if (!block.position || !block.text) return
-
-      //   const { x, y, fontSize, color, textAlign } = block.position
-
-      //   const colorHex = color || "#000000"
-      //   const r = parseInt(colorHex.slice(1, 3), 16) / 255
-      //   const g = parseInt(colorHex.slice(3, 5), 16) / 255
-      //   const b = parseInt(colorHex.slice(5, 7), 16) / 255
-
-      //   const scaledX = x * scale
-      //   const scaledY = y * scale
-      //   const scaledFontSize = (fontSize || 12) * scale
-      //   const scaledPadding = BLOCK_PADDING * scale
-      //   const scaledHeight = (block.position.height || 40) * scale
-
-      //   // Горизонтальна позиція тексту з урахуванням padding
-      //   const scaledWidth = (block.position.width || 200) * scale
-      //   const textWidth = customFont.widthOfTextAtSize(block.text, scaledFontSize)
-
-      //   let xPosition = scaledX + scaledPadding // лівий край + padding
-
-      //   if (textAlign === "center") {
-      //     xPosition = scaledX + scaledWidth / 2 - textWidth / 2
-      //   } else if (textAlign === "right") {
-      //     xPosition = scaledX + scaledWidth - scaledPadding - textWidth
-      //   }
-
-      //   // Вертикальна позиція: центр блоку мінус половина шрифту
-      //   const yPosition = pdfHeight - scaledY - scaledHeight / 2 - scaledFontSize / 2
-
-      //   firstPage.drawText(block.text, {
-      //     x: xPosition,
-      //     y: yPosition,
-      //     size: scaledFontSize,
-      //     font: customFont,
-      //     color: rgb(r, g, b),
-      //   })
-      // })
-
       // Save and download the PDF
       const pdfBytes = await pdfDoc.save()
       // @ts-ignore
@@ -234,21 +198,40 @@ export const CertificateDownloadButton = ({
     }
   }
 
+  if (variant === "default") {
+    return (
+      <Button
+        size={size}
+        className={className}
+        onClick={() => {
+          onButtonClick && onButtonClick()
+          generateCertificate()
+        }}
+        disabled={isGenerating || !course?.certificateTemplate}
+      >
+        {isGenerating ? (
+          "Генерація сертифіката..."
+        ) : (
+          <>
+            <Download className="w-5 h-5 mr-2" />
+            Завантажити сертифікат
+          </>
+        )}
+      </Button>
+    )
+  }
+
   return (
     <Button
       size={size}
       className={className}
-      onClick={generateCertificate}
-      // disabled={isGenerating || !course.certificateTemplate}
+      onClick={() => {
+        onButtonClick && onButtonClick()
+        generateCertificate()
+      }}
+      disabled={isGenerating || !course?.certificateTemplate}
     >
-      {isGenerating ? (
-        "Генерація сертифіката..."
-      ) : (
-        <>
-          <Download className="w-5 h-5 mr-2" />
-          Завантажити сертифікат
-        </>
-      )}
+      {isGenerating ? <Spinner /> : <File />}
     </Button>
   )
 }

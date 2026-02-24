@@ -19,11 +19,11 @@ const AdminFullCoursePage = () => {
 
   const isUpdate = !isNaN(Number(params.id))
 
-  const { data: course } = useFullCourse(isUpdate ? params?.id : undefined)
+  const { data: course } = useFullCourse(isUpdate ? params?.id : undefined, 'admin')
   const { data: certificateTemplates } = useGetAllCertificateTemplates()
 
   const createCourse = useCreateCourse()
-  const updateCourse = useUpdateCourse()
+  const updateCourse = useUpdateCourse('admin')
 
   const { fields, formData } = useCourseData(course, certificateTemplates)
 
@@ -47,7 +47,7 @@ const AdminFullCoursePage = () => {
 
     if (isUpdate) {
       if (!params.id) return
-      const { paymentQrCode, ...data } = formData
+      const { paymentQrCode, certCounter, ...data } = formData
       updateCourse.mutate({ ...(data as CourseType), id: +params.id }, { onSuccess: () => navigate("/admin/courses") })
     } else {
       createCourse.mutate(formData as CourseType, {

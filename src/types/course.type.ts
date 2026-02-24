@@ -13,6 +13,7 @@ export type CourseType = {
   description: any
   link: string
   maxMembers?: number
+  type: string
   status: CourseStatusType
   registrationOpen: CourseRegistrationStatusType
   targetAudience?: CourseTargetAudienceType
@@ -20,7 +21,9 @@ export type CourseType = {
   certificateTemplateId: number
   registrations: RegistrationType[]
 
+  googleSheetId?: string
   paymentQrCode?: string
+  certCounter?: number
 
   duration: number
   pointsBpr: number

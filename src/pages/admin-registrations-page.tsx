@@ -20,6 +20,7 @@ import { useCourses, useFullCourse } from "@/api/hooks/use-courses"
 import PaymentReceiptDialog from "@/components/features/admin-registration-page/payment-receipt-dialog"
 import AdminRegistrationTable from "@/components/features/admin-registration-page/admin-registration-table"
 import FreeParticipationDialog from "@/components/features/admin-registration-page/free-participation-dialog"
+import DownloadUserCertificate from "@/components/features/admin-registration-page/download-user-certificate"
 import CreateRegistrationDialog from "@/components/features/admin-registration-page/create-registration-dialog"
 import DownloadRegistrationsButton from "@/components/features/admin-registration-page/download-registrations-button"
 
@@ -146,6 +147,8 @@ const AdminRegistrationsPage = () => {
                 </Button>
 
                 <DownloadRegistrationsButton registrations={selectedRegistrations} />
+
+                <DownloadUserCertificate selectedRegistrations={selectedRegistrations} registrations={registrations} />
 
                 <Button
                   size="sm"

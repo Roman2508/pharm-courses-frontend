@@ -29,12 +29,14 @@ export const useAllCourses = (params?: GetCoursesQuery) => {
   })
 }
 
-export const useFullCourse = (id?: string) => {
+export const useFullCourse = (id?: string, role: "user" | "admin" = "user") => {
   return useQuery({
     enabled: !!id,
-    queryKey: ["full-course", id],
+    queryKey: ["full-course", id, role],
     queryFn: async () => {
-      const { data } = await axiosClient.get<CourseType>(`/course/${id}`)
+      const access = role === "admin" ? "admin" : "user"
+      const { data } = await axiosClient.get<CourseType>(`/course/${access}/${id}`)
+
       return data
     },
     staleTime: 0,
@@ -56,7 +58,7 @@ export const useCreateCourse = () => {
   })
 }
 
-export const useUpdateCourse = () => {
+export const useUpdateCourse = (role: "user" | "admin") => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationKey: ["update-course"],
@@ -66,8 +68,7 @@ export const useUpdateCourse = () => {
       return data
     },
     onSuccess: (updatedCourse) => {
-      // queryClient.setQueryData(["full-course", updatedCourse.id], updatedCourse)
-      queryClient.invalidateQueries({ queryKey: ["full-course", updatedCourse.id] })
+      queryClient.invalidateQueries({ queryKey: ["full-course", updatedCourse.id, role] })
     },
     onError: (error) => toast.error(`Помилка оновлення заходу. ${error?.message}`),
   })
