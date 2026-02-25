@@ -29,6 +29,7 @@ createRoot(document.getElementById("root")!).render(<RouterProvider router={rout
 // Не треба показувати тост "Not authentificated"
 // Перевірити чи не зламалась ревалідація queryKey: ["user-registrations"],
 // "Сервер недоступний" не треба показувати багато разів
+// Перевірити на різних пристроях/емуляторах
 
 /* 
 translate better auth errors:
