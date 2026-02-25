@@ -31,6 +31,17 @@ export const useAllRegistrations = (params?: GetRegistrationsQuery) => {
   })
 }
 
+export const useRegistrationById = (id?: number) => {
+  return useQuery({
+    enabled: !!id,
+    queryKey: ["registration-by-id", id],
+    queryFn: async () => {
+      const { data } = await axiosClient.get<RegistrationType>(`/registration/${id}`)
+      return data
+    },
+  })
+}
+
 export const useCurrentRegistration = (courseId?: number) => {
   return useQuery({
     enabled: !!courseId,
@@ -148,10 +159,15 @@ export const useUpdateRegistrationPayment = (params?: GetRegistrationsQuery) => 
       })
       return data
     },
-    onSuccess() {
+    onSuccess(data) {
       queryClient.invalidateQueries({
         queryKey: ["all-registrations", params],
       })
+      queryClient.invalidateQueries({
+        queryKey: ["registration-by-id", data.id],
+      })
+      //
+      //  ["registration-by-id", id]
       toast.success("Оновлено доступ до сертифікатів!")
     },
     onError(error) {

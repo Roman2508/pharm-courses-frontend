@@ -13,14 +13,17 @@ interface Props {
 const DownloadUserCertificate = ({ selectedRegistrations, registrations }: Props) => {
   const [selectedRegistration, setSelectedRegistration] = useState<RegistrationType>()
 
-  const { data: course } = useFullCourse(
+  const { data: course, isLoading } = useFullCourse(
     selectedRegistration?.courseId ? String(selectedRegistration.courseId) : undefined,
   )
 
   useEffect(() => {
-    if (!registrations) return
-    const selectedRegistration = registrations.find((reg) => reg.id === selectedRegistrations[0])
-    if (selectedRegistration) setSelectedRegistration(selectedRegistration)
+    if (!selectedRegistrations.length) {
+      setSelectedRegistration(undefined)
+    } else {
+      const selectedRegistration = registrations.find((reg) => reg.id === selectedRegistrations[0])
+      if (selectedRegistration) setSelectedRegistration(selectedRegistration)
+    }
   }, [selectedRegistrations])
 
   const onDownloadCertificate = () => {
@@ -37,6 +40,7 @@ const DownloadUserCertificate = ({ selectedRegistrations, registrations }: Props
         className=""
         variant="icon"
         course={course}
+        isLoading={isLoading}
         registration={selectedRegistration}
         onButtonClick={onDownloadCertificate}
         userName={selectedRegistration?.user?.name || ""}

@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import type { RegistrationDataType } from "@/pages/admin-page"
-import { useUpdateRegistrationPayment } from "@/api/hooks/use-registration"
+import { useRegistrationById, useUpdateRegistrationPayment } from "@/api/hooks/use-registration"
 
 interface Props {
   open: boolean
@@ -21,7 +21,8 @@ interface Props {
 
 // Перевірка квитанції про оплату
 const PaymentReceiptDialog: FC<Props> = ({ open, onOpenChange, registrationData, setRegistrationData }) => {
-  const isPending = false
+  const { data: currentRegistration } = useRegistrationById(registrationData?.id)
+  const isPaid = currentRegistration?.paymentStatus === "PAID"
 
   const uddatePaymentStatus = useUpdateRegistrationPayment()
 
@@ -53,11 +54,26 @@ const PaymentReceiptDialog: FC<Props> = ({ open, onOpenChange, registrationData,
         </DialogDescription>
 
         <DialogFooter className="w-full gap-2 pt-2">
-          <Button size="lg" className="flex-1" disabled={isPending} onClick={handleSubmit}>
-            {isPending ? "Завантаження..." : "Підтвердити оплату"}
+          <Button
+            size="lg"
+            className="flex-1"
+            onClick={handleSubmit}
+            disabled={uddatePaymentStatus.isPending || isPaid}
+          >
+            {uddatePaymentStatus.isPending
+              ? "Завантаження..."
+              : isPaid
+                ? "Реєстрацію підтверджено"
+                : "Підтвердити оплату"}
           </Button>
 
-          <Button size="lg" variant="ghost" className="w-40" disabled={isPending} onClick={onDialogClose}>
+          <Button
+            size="lg"
+            variant="ghost"
+            className="w-40"
+            onClick={onDialogClose}
+            disabled={uddatePaymentStatus.isPending}
+          >
             Закрити
           </Button>
         </DialogFooter>

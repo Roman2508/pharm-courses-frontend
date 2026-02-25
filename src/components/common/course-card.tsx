@@ -84,7 +84,7 @@ const CourseCard: FC<Props> = ({
           <Link to={`/courses/${id}`}>
             <h2
               className={
-                "text-xl lg:text-2xl font-black text-text-primary mb-4 text-balance leading-tight tracking-tight " +
+                "text-lg lg:text-xl xl:text-2xl font-black text-text-primary mb-4 text-balance leading-tight tracking-tight " +
                 "group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-primary " +
                 "group-hover:to-secondary transition-all duration-300 truncate text-ellipsis line-clamp-3"
               }

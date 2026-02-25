@@ -48,7 +48,46 @@ export const CourseActions: FC<Props> = ({
   }
 
   // Реєстрацію на курс закрито
-  if (course?.registrationOpen === "CLOSE") return
+  if (course?.registrationOpen === "CLOSE") {
+    //
+    // Реєстрація вже була, статус - оплачено. Сертифікат доступний для завантаження
+    if (registration.paymentStatus === "PAID" && registration.certificateEnabled) {
+      return (
+        <div>
+          <div className="mb-1 text-sm text-success font-medium flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
+            Сертифікат доступний
+          </div>
+
+          {course && user && (
+            <CertificateDownloadButton
+              size={size}
+              course={course}
+              userName={user.name}
+              className={className}
+              registration={registration}
+            />
+          )}
+        </div>
+      )
+    }
+
+    //
+    // Реєстрація вже була, статус - оплачено. Сертифікат НЕ доступний для завантаження
+    if (registration.paymentStatus === "PAID" && !registration.certificateEnabled) {
+      return (
+        <div className="text-sm text-primary font-medium flex items-center gap-2">
+          <span
+            className={`border border-primary/50 rounded-xl ${size === "lg" ? "p-4" : "py-1 px-4"} bg-primary/10 text-center`}
+          >
+            Після завершення заходу, тут ви зможете завантажити сертифікат про участь
+          </span>
+        </div>
+      )
+    }
+
+    return
+  }
 
   // Закінчились доступні реєстрації
   if (course && typeof course.maxMembers === "number" && registrationCount) {
@@ -71,28 +110,7 @@ export const CourseActions: FC<Props> = ({
     )
   }
 
-  // return (
-  //   <>
-  //     {course && user.name && (
-  //       <div className="max-w-[260px]">
-  //         <CertificateDownloadButton course={course} registration={registration} userName={user.name} size="sm" />
-  //       </div>
-  //     )}
-  //   </>
-  // )
-
   if (!registration && courseId && amount) {
-    // Закінчились доступні реєстрації
-    // if (course && typeof course.maxMembers === "number" && registrationCount) {
-    //   if (course.maxMembers <= registrationCount) {
-    //     return (
-    //       <Button className={className} size={size} disabled>
-    //         Всі місця зайняті
-    //       </Button>
-    //     )
-    //   }
-    // }
-
     const requiredFields = ["region_city", "education", "specialty", "workplace", "jobTitle"] as const
 
     const isAllRequiredFieldsFilled = requiredFields.every((field) => {
@@ -117,7 +135,6 @@ export const CourseActions: FC<Props> = ({
           className={className}
           disabled={isCreateRegistrationPending}
           onClick={() => {
-            console.log("isAllRequiredFieldsFilled", isAllRequiredFieldsFilled)
             if (isAllRequiredFieldsFilled) {
               // Немає реєстрації
               createRegistration({ userId: user.id, courseId, amount }, { onSuccess: () => setIsOpen(true) })
@@ -134,7 +151,7 @@ export const CourseActions: FC<Props> = ({
   }
 
   //
-  // Реєстрація є, квитанцію НЕ завантажено завантажено
+  // Реєстрація є, квитанцію НЕ завантажено
   if (registration) {
     if (registration.paymentStatus !== "PAID" && registration.paymentStatus !== "PENDING") {
       return (
@@ -147,7 +164,7 @@ export const CourseActions: FC<Props> = ({
     //
     // Реєстрація є, квитанцію завантажено але ще не перевірено
     // if (registration.paymentStatus === "PENDING") {
-    if (registration.paymentReceipt || registration.freeParticipation) {
+    if (registration.paymentStatus !== "PAID" && (registration.paymentReceipt || registration.freeParticipation)) {
       return (
         <Button size={size} className={className} onClick={() => setIsOpen(true)}>
           {registration.paymentReceipt ? "Завантажити іншу квитанцію" : "Завантажити інший файл"}
@@ -181,8 +198,10 @@ export const CourseActions: FC<Props> = ({
     // Реєстрація є, статус - оплачено. Сертифікат НЕ доступний для завантаження
     if (registration.paymentStatus === "PAID" && !registration.certificateEnabled) {
       return (
-        <div className="mt-3 text-sm text-success font-medium flex items-center gap-2">
-          <span className="border border-success/50 rounded-xl p-4 bg-success/10 text-center">
+        <div className="text-sm text-primary font-medium flex items-center gap-2">
+          <span
+            className={`border border-primary/50 rounded-xl ${size === "lg" ? "p-4" : "py-1 px-4"} bg-primary/10 text-center`}
+          >
             Після завершення заходу, тут ви зможете завантажити сертифікат про участь
           </span>
         </div>

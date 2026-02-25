@@ -136,7 +136,7 @@ const useCourseData = (course: Partial<CourseType> = {}, certificateTemplates: C
         items: [
           { label: "Чернетка", value: "DRAFT" },
           { label: "Очікується", value: "PLANNED" },
-          { label: "Архів", value: "ARCHIVE" },
+          { label: "Архів", value: "ARCHIVED" },
         ],
       },
       {

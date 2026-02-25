@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import type { RegistrationDataType } from "@/pages/admin-page"
-import { useUpdateRegistrationPayment } from "@/api/hooks/use-registration"
+import { useRegistrationById, useUpdateRegistrationPayment } from "@/api/hooks/use-registration"
 
 interface Props {
   open: boolean
@@ -23,6 +23,7 @@ interface Props {
 const FreeParticipationDialog: FC<Props> = ({ open, onOpenChange, registrationData, setRegistrationData }) => {
   const isPending = false
 
+  const { data: currentRegistration } = useRegistrationById(registrationData?.id)
   const updatePaymentStatus = useUpdateRegistrationPayment()
 
   const handleSubmit = () => {
@@ -53,8 +54,17 @@ const FreeParticipationDialog: FC<Props> = ({ open, onOpenChange, registrationDa
         </DialogDescription>
 
         <DialogFooter className="w-full gap-2 pt-2">
-          <Button size="lg" className="flex-1" disabled={isPending} onClick={handleSubmit}>
-            {isPending ? "Завантаження..." : "Підтвердити реєстрацію"}
+          <Button
+            size="lg"
+            className="flex-1"
+            disabled={updatePaymentStatus.isPending || currentRegistration?.paymentStatus === "PAID"}
+            onClick={handleSubmit}
+          >
+            {updatePaymentStatus.isPending
+              ? "Завантаження..."
+              : currentRegistration?.paymentStatus === "PAID"
+                ? "Реєстрацію підтверджено"
+                : "Підтвердити реєстрацію"}
           </Button>
 
           <Button size="lg" variant="ghost" className="w-40" disabled={isPending} onClick={onDialogClose}>

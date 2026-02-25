@@ -1,3 +1,4 @@
+import { toast } from "sonner"
 import { useState, type Dispatch, type FC, type SetStateAction } from "react"
 
 import {
@@ -16,7 +17,6 @@ import FormField from "@/components/custom/form-field"
 import { getFormErrors } from "@/helpers/get-form-errors"
 import { authClient, useSession } from "@/api/auth-client"
 import { createUserSchema, updateUserSchema } from "./admin-users-form-schema"
-import { toast } from "sonner"
 
 interface Props {
   open: boolean
@@ -132,6 +132,7 @@ const AdminUsersDialog: FC<Props> = ({
 
       onDialogClose()
     } catch (error) {
+      console.log("Error saving user:", error)
       toast.error("Сталася помилка при збереженні користувача")
     } finally {
       setIsPending(false)
@@ -141,7 +142,6 @@ const AdminUsersDialog: FC<Props> = ({
   const onDialogClose = () => {
     onOpenChange(false)
     setEditedUser(null)
-    useUserData(null)
   }
 
   return (

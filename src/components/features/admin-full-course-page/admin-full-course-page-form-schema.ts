@@ -26,7 +26,7 @@ export const courseFormSchema = z
 
     googleSheetId: z.string().trim().optional().nullable(),
 
-    status: z.enum(["DRAFT", "PLANNED", "ARCHIVE"], "Статус заходу не вибрано"),
+    status: z.enum(["DRAFT", "PLANNED", "ARCHIVED"], "Статус заходу не вибрано"),
 
     registrationOpen: z.enum(["OPEN", "CLOSE"], "Статус реєстрації не вибрано"),
 

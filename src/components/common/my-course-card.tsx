@@ -1,6 +1,6 @@
 import { Link } from "react-router"
 import { useState, type FC } from "react"
-import { Calendar, Clock } from "lucide-react"
+import { Calendar, Clock, Clock4 } from "lucide-react"
 
 import { Card } from "../ui/card"
 import { Badge } from "../ui/badge"
@@ -21,6 +21,8 @@ const MyCourseCard: FC<Props> = ({ registration, user }) => {
 
   const color = getPaymentColor(registration.paymentStatus)
 
+  const statusColor = registration?.course.registrationOpen === "OPEN" ? "success" : "destructive"
+
   return (
     <>
       <PaymentModal open={isOpen} onOpenChange={setIsOpen} registration={registration} />
@@ -38,27 +40,56 @@ const MyCourseCard: FC<Props> = ({ registration, user }) => {
           </p>
         </div>
 
-        <div className="flex items-start md:items-center justify-between gap-2 mb-4 flex-col md:flex-row border-b md:border-none">
-          <div className="flex items-start min-[840px]:items-center gap-1 min-[840px]:gap-4 text-muted-foreground flex-col min-[840px]:flex-row">
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4" />
-              <span className="text-[14px] min-[420px]:text-sm">Початок: {getDate(registration.course.startDate)}</span>
+        <div className="flex items-start justify-between gap-2 mb-4 flex-col md:flex-row border-b md:border-none">
+          <div className="">
+            <div className="flex items-start min-[840px]:items-center gap-1 min-[840px]:gap-4 text-muted-foreground flex-col min-[840px]:flex-row">
+              <div className="flex items-center gap-2">
+                <Calendar className="w-4 h-4" />
+                <span className="text-[14px] min-[420px]:text-sm">
+                  Початок: {getDate(registration.course.startDate)}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Clock className="w-4 h-4" />
+                <span className="text-[14px] min-[420px]:text-sm">
+                  Зареєстрований(на): {getDate(registration.course.createdAt)}
+                </span>
+              </div>
             </div>
 
-            <div className="flex items-center gap-2">
-              <Clock className="w-4 h-4" />
-              <span className="text-[14px] min-[420px]:text-sm">
-                Зареєстрований(на): {getDate(registration.course.createdAt)}
-              </span>
+            <div className="mt-4 hidden md:block">
+              <CourseActions
+                size="sm"
+                className=""
+                user={user}
+                isLoading={false}
+                setIsOpen={setIsOpen}
+                registration={registration}
+                course={registration.course}
+                courseId={registration.course.id}
+                amount={registration.course.price}
+              />
             </div>
           </div>
 
-          <Badge className={`bg-${color}/10 text-${color} mb-4 md:mb-0`}>
-            {getPaymentStatus(registration.paymentStatus)}
-          </Badge>
+          <div className="flex flex-col items-start md:items-end gap-1">
+            {registration?.course.status === "PLANNED" && (
+              <Badge
+                className={`border-1 px-2 py-0.5 rounded-xl text-xs font-bold bg-${statusColor}/10 text-${statusColor} border-${statusColor}/20`}
+              >
+                <Clock4 />
+                Реєстрація {registration?.course.registrationOpen === "OPEN" ? "відкрита" : "закрита"}
+              </Badge>
+            )}
+
+            <Badge className={`bg-${color}/10 text-${color} mb-4 md:mb-0`}>
+              {getPaymentStatus(registration.paymentStatus)}
+            </Badge>
+          </div>
         </div>
 
-        <div>
+        <div className="block md:hidden">
           <CourseActions
             size="sm"
             className=""

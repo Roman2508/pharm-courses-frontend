@@ -24,7 +24,7 @@ export const RootLayout = () => {
           <Outlet />
           {location.pathname === "/" && <Footer />}
 
-          <Toaster />
+          <Toaster duration={5000} closeButton />
         </div>
       </PermissionsLayout>
     </TanstackLayout>

@@ -35,7 +35,7 @@ export const PaymentModal = ({ open, onOpenChange, registration }: Props) => {
 
   const [isFreeOpen, setIsFreeOpen] = useState(false)
 
-  const uploadPaymentReceipt = usePayment()
+  const uploadPaymentReceipt = usePayment(registration?.courseId)
   const deleteRegistration = useDeleteRegistration(registration?.courseId)
 
   const handleUploadPaymentReceipt = (e: ChangeEvent<HTMLInputElement>) => {
@@ -44,7 +44,14 @@ export const PaymentModal = ({ open, onOpenChange, registration }: Props) => {
 
     const formData = new FormData()
     formData.append("paymentReceipt", file)
-    uploadPaymentReceipt.mutate({ id: registration.id, formData })
+    uploadPaymentReceipt.mutate(
+      { id: registration.id, formData },
+      {
+        onSettled: () => {
+          if (fileRef.current) fileRef.current.value = ""
+        },
+      },
+    )
   }
 
   const handleCancelRegistration = () => {
@@ -169,10 +176,11 @@ export const PaymentModal = ({ open, onOpenChange, registration }: Props) => {
               >
                 Безкоштовна участь
               </Button>
-
-              <Button variant="destructive" onClick={handleCancelRegistration}>
-                Відмінити реєстрацію
-              </Button>
+              {registration.paymentStatus !== "PAID" && (
+                <Button variant="destructive" onClick={handleCancelRegistration}>
+                  Відмінити реєстрацію
+                </Button>
+              )}
             </div>
           </DialogFooter>
         </DialogContent>

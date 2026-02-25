@@ -18,6 +18,7 @@ interface CertificateDownloadButtonProps {
   course?: CourseType
   registration?: RegistrationType
   size?: "lg" | "sm"
+  isLoading?: boolean
   onButtonClick?: () => void
   variant?: "default" | "icon"
   className?: string
@@ -29,6 +30,7 @@ export const CertificateDownloadButton = ({
   size = "lg",
   registration,
   onButtonClick,
+  isLoading = false,
   variant = "default",
   className = "w-full",
 }: CertificateDownloadButtonProps) => {
@@ -207,9 +209,9 @@ export const CertificateDownloadButton = ({
           onButtonClick && onButtonClick()
           generateCertificate()
         }}
-        disabled={isGenerating || !course?.certificateTemplate}
+        disabled={isGenerating || !course?.certificateTemplate || isLoading}
       >
-        {isGenerating ? (
+        {isGenerating || isLoading ? (
           "Генерація сертифіката..."
         ) : (
           <>
@@ -229,9 +231,9 @@ export const CertificateDownloadButton = ({
         onButtonClick && onButtonClick()
         generateCertificate()
       }}
-      disabled={isGenerating || !course?.certificateTemplate}
+      disabled={isGenerating || !course?.certificateTemplate || isLoading}
     >
-      {isGenerating ? <Spinner /> : <File />}
+      {isGenerating || isLoading ? <Spinner /> : <File />}
     </Button>
   )
 }

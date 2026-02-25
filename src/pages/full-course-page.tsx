@@ -60,6 +60,8 @@ const FullCoursePage = () => {
 
   const isEndDate = course.endDate && course.endDate !== course.startDate
 
+  console.log(course.description)
+
   return (
     <>
       <PaymentModal open={isOpen} onOpenChange={setIsOpen} registration={registration} />
@@ -100,7 +102,10 @@ const FullCoursePage = () => {
               {course.description ? (
                 <div
                   dangerouslySetInnerHTML={{ __html: course.description }}
-                  className="prose prose-lg max-w-none text-text-secondary leading-relaxed max-[500px]:text-sm"
+                  className={
+                    "prose prose-lg max-w-none text-text-secondary leading-relaxed max-[500px]:text-sm " +
+                    "[&>ol]:list-decimal [&>ol]:ml-4 [&>h1]:text-2xl [&>h2]:text-xl [&>h3]:text-lg"
+                  }
                 />
               ) : (
                 <p className="text-text-secondary italic">Опис відсутній</p>

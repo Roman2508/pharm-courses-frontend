@@ -31,7 +31,14 @@ const FreeParticipationModal = ({ open, registration, onOpenChange, onPaymentOpe
 
     const formData = new FormData()
     formData.append("freeParticipation", file)
-    uploadFreeParticipation.mutate({ id: registration.id, formData })
+    uploadFreeParticipation.mutate(
+      { id: registration.id, formData },
+      {
+        onSettled: () => {
+          if (fileRef.current) fileRef.current.value = ""
+        },
+      },
+    )
   }
 
   return (

@@ -15,7 +15,11 @@ export const CoursesList: FC<Props> = ({ courses, isLoading }) => {
       {isLoading ? (
         <PageLoader />
       ) : courses && !!courses.length ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-0 max-w-7xl mx-auto px-4">
+        <div
+          className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 xl:gap-8 mb-0 max-w-7xl mx-auto px-4 ${
+            courses.length ? "mb-20 lg:mb-30" : ""
+          }`}
+        >
           {courses.map((course) => (
             <CourseCard {...course} />
           ))}
