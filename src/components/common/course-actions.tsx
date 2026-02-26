@@ -176,21 +176,22 @@ export const CourseActions: FC<Props> = ({
     // Реєстрація є, статус - оплачено. Сертифікат доступний для завантаження
     if (registration.paymentStatus === "PAID" && registration.certificateEnabled) {
       return (
-        <>
-          <div className="mt-3 text-sm text-success font-medium flex items-center gap-2">
+        <div>
+          <div className="mt-3 mb-1 text-sm text-success font-medium flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
             Сертифікат доступний
           </div>
 
           {course && user && (
             <CertificateDownloadButton
+              size={size}
               course={course}
               userName={user.name}
               className={className}
               registration={registration}
             />
           )}
-        </>
+        </div>
       )
     }
 

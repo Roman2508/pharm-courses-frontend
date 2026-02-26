@@ -22,7 +22,8 @@ const HomePage = () => {
       <section className="relative overflow-hidden min-h-[90svh] flex items-center">
         <div className="absolute inset-0">
           <img src={bgImage} className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/95 via-primary/85 to-secondary/90" />
+          {/* <div className="absolute inset-0 bg-gradient-to-br from-primary/95 via-primary/85 to-secondary/90" /> */}
+          <div className="absolute inset-0 [background:linear-gradient(to_bottom_right,rgba(15,116,197,0.95),rgba(15,116,197,0.85),rgba(0,175,167,0.90))]" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.1),transparent_70%)]" />
         </div>
 

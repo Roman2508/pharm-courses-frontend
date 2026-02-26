@@ -95,7 +95,7 @@ const CourseCard: FC<Props> = ({
 
           <p
             dangerouslySetInnerHTML={{ __html: description }}
-            className="text-sm text-muted-foreground line-clamp-3 mb-6 leading-relaxed min-h-[4.5rem]"
+            className="text-sm text-muted-foreground line-clamp-3-safe mb-6 leading-relaxed min-h-[4.5rem]"
           />
 
           <div className="relative mb-6 p-4 rounded-2xl bg-gradient-to-br from-primary/[0.04] to-secondary/[0.02] border border-primary/10 overflow-hidden">

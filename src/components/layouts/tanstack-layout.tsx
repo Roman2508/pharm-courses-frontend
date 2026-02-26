@@ -1,19 +1,11 @@
 import type { FC, PropsWithChildren } from "react"
 import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
-import { handleGlobalError } from "@/helpers/handle-global-error"
+import { handleGlobalError } from "@/api/error-handlers/handle-global-error"
 
 export const queryClient = new QueryClient({
-  queryCache: new QueryCache({
-    onError: (error) => {
-      handleGlobalError(error)
-    },
-  }),
-  mutationCache: new MutationCache({
-    onError: (error) => {
-      handleGlobalError(error)
-    },
-  }),
+  queryCache: new QueryCache({ onError: handleGlobalError }),
+  mutationCache: new MutationCache({ onError: handleGlobalError }),
   defaultOptions: {
     queries: { retry: 1 },
   },

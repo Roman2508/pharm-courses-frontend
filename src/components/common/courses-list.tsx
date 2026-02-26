@@ -21,7 +21,7 @@ export const CoursesList: FC<Props> = ({ courses, isLoading }) => {
           }`}
         >
           {courses.map((course) => (
-            <CourseCard {...course} />
+            <CourseCard key={course.id} {...course} />
           ))}
         </div>
       ) : (

@@ -70,29 +70,34 @@ const RegisterForm: FC<Props> = ({ setAuthType, setEmail }) => {
       setIsPending(false)
       return
     }
-
-    await signUp.email(
-      { ...formData, callbackURL: "/auth/verify-email" },
-      {
-        onRequest: () => {
-          setIsPending(true)
+    try {
+      await signUp.email(
+        { ...formData, callbackURL: "/auth/verify-email" },
+        {
+          onRequest: () => {
+            setIsPending(true)
+          },
+          onSuccess: ({ data }) => {
+            setIsPending(false)
+            if (data?.user?.email) {
+              setEmail(data.user.email)
+              authClient.sendVerificationEmail({ email: data.user.email, callbackURL: "/auth/verify-email" })
+              setAuthType("verify-email")
+            } else {
+              toast.error("Помилка реєстрації")
+            }
+          },
+          onError: (ctx) => {
+            setIsPending(false)
+            toast.error(ctx.error.message)
+          },
         },
-        onSuccess: ({ data }) => {
-          setIsPending(false)
-          if (data?.user?.email) {
-            setEmail(data.user.email)
-            authClient.sendVerificationEmail({ email: data.user.email, callbackURL: "/auth/verify-email" })
-            setAuthType("verify-email")
-          } else {
-            toast.error("Помилка реєстрації")
-          }
-        },
-        onError: (ctx) => {
-          setIsPending(false)
-          toast.error(ctx.error.message)
-        },
-      },
-    )
+      )
+    } catch (err) {
+      toast.error("Не вдалося отримати відповідь від сервера. Спробуйте пізніше")
+    } finally {
+      setIsPending(false)
+    }
   }
 
   const changeUserFormData = (key: keyof FormData, value: string) => {

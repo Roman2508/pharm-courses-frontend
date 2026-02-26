@@ -60,8 +60,6 @@ const FullCoursePage = () => {
 
   const isEndDate = course.endDate && course.endDate !== course.startDate
 
-  console.log(course.description)
-
   return (
     <>
       <PaymentModal open={isOpen} onOpenChange={setIsOpen} registration={registration} />

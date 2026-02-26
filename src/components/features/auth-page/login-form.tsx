@@ -56,45 +56,50 @@ const LoginForm: FC<Props> = ({ setAuthType, setEmail }) => {
       setIsPending(false)
       return
     }
-    await signIn.email(
-      { ...formData, callbackURL: "/" },
-      {
-        onRequest: () => {
-          setIsPending(true)
+    try {
+      await signIn.email(
+        { ...formData, callbackURL: "/" },
+        {
+          onRequest: () => {
+            setIsPending(true)
+          },
+          onSuccess: () => {
+            setIsPending(false)
+            navigate("/", { replace: true })
+          },
+          onError: async (ctx) => {
+            setIsPending(false)
+
+            const { error, request } = ctx
+            if (error.code !== "EMAIL_NOT_VERIFIED") {
+              toast.error(error.message)
+              return
+            }
+
+            const email = JSON.parse(request?.body)?.email
+
+            if (!email) {
+              toast.error(error.message)
+              return
+            }
+
+            try {
+              await authClient.sendVerificationEmail({ email, callbackURL: "/" })
+              setEmail(email)
+              startCooldown()
+              navigate("/auth/verify-email", { replace: true })
+              toast.error("Підтвердіть свою електронну пошту")
+            } catch {
+              toast.error("Не вдалося надіслати лист для підтвердження")
+            }
+          },
         },
-        onSuccess: () => {
-          setIsPending(false)
-          navigate("/", { replace: true })
-        },
-        onError: async (ctx) => {
-          setIsPending(false)
-
-          const { error, request } = ctx
-
-          if (error.code !== "EMAIL_NOT_VERIFIED") {
-            toast.error(error.message)
-            return
-          }
-
-          const email = JSON.parse(request?.body)?.email
-
-          if (!email) {
-            toast.error(error.message)
-            return
-          }
-
-          try {
-            await authClient.sendVerificationEmail({ email, callbackURL: "/" })
-            setEmail(email)
-            startCooldown()
-            navigate("/auth/verify-email", { replace: true })
-            toast.error("Підтвердіть свою електронну пошту")
-          } catch {
-            toast.error("Не вдалося надіслати лист для підтвердження")
-          }
-        },
-      },
-    )
+      )
+    } catch (err) {
+      toast.error("Не вдалося отримати відповідь від сервера. Спробуйте пізніше")
+    } finally {
+      setIsPending(false)
+    }
   }
 
   const changeUserFormData = (key: keyof FormData, value: string) => {

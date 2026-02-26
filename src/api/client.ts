@@ -1,4 +1,5 @@
 import axios from "axios"
+import { HttpError, NetworkError } from "./error-handlers/api-error"
 
 export const axiosClient = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL || "http://localhost:7777",
@@ -8,26 +9,13 @@ export const axiosClient = axios.create({
 axiosClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (!error.response || error.code === "ERR_NETWORK") {
-      return Promise.reject({
-        type: "NETWORK_ERROR",
-        message: "Спробуйте пізніше або перевірте підключення до Інтернету",
-        // message: "Сервер недоступний",
-      })
+    if (!error.response) {
+      return Promise.reject(new NetworkError())
     }
 
-    // const status = error.response?.status
-    // const method = error.config?.method?.toLowerCase()
+    const status = error.response.status as number
+    const message: string = error.response?.data?.message || "Помилка сервера"
 
-    // if (status >= 500 && method === "get") {
-    //   window.location.href = "/500"
-    // }
-
-    return Promise.reject({
-      type: "HTTP_ERROR",
-      status,
-      message: error.response?.data?.message || "Помилка сервера",
-    })
-    // return Promise.reject(error)
+    return Promise.reject(new HttpError(status, message))
   },
 )

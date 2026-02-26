@@ -132,7 +132,6 @@ const AdminUsersDialog: FC<Props> = ({
 
       onDialogClose()
     } catch (error) {
-      console.log("Error saving user:", error)
       toast.error("Сталася помилка при збереженні користувача")
     } finally {
       setIsPending(false)

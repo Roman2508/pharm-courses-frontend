@@ -105,16 +105,15 @@ export const router = createBrowserRouter([
         path: "/auth/verified",
         element: <AuthPage defaultAuthType="verified" />,
       },
+
+      {
+        path: "/500",
+        element: <InternalServerErrorPage />,
+      },
+      {
+        path: "*",
+        element: <NotFoundErrorPage />,
+      },
     ],
-  },
-
-  {
-    path: "/500",
-    element: <InternalServerErrorPage />,
-  },
-
-  {
-    path: "*",
-    element: <NotFoundErrorPage />,
   },
 ])

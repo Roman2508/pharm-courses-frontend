@@ -21,7 +21,9 @@ export const RootLayout = () => {
 
         <div className="min-h-screen">
           {!location.pathname.includes("/auth") && <Header />}
+
           <Outlet />
+
           {location.pathname === "/" && <Footer />}
 
           <Toaster duration={5000} closeButton />
