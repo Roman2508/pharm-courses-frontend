@@ -10,20 +10,17 @@ import {
   AlignCenter,
   AlignJustify,
   UnderlineIcon,
-  Heading1,
-  Heading2,
-  Heading3,
   Link as LinkIcon,
   ChevronDown,
 } from "lucide-react"
 import Link from "@tiptap/extension-link"
 import StarterKit from "@tiptap/starter-kit"
+import { useState, useRef, useEffect } from "react"
 import Underline from "@tiptap/extension-underline"
 import TextAlign from "@tiptap/extension-text-align"
 import FontFamily from "@tiptap/extension-font-family"
 import { useEditor, EditorContent } from "@tiptap/react"
 import { TextStyle } from "@tiptap/extension-text-style"
-import { useState, useRef, useEffect, useCallback } from "react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "../ui/button"
@@ -36,7 +33,7 @@ interface RichTextEditorProps {
 }
 
 // Dropdown for heading selection
-function HeadingDropdown({ editor, editorVersion }: { editor: any; editorVersion: number }) {
+function HeadingDropdown({ editor }: { editor: any; editorVersion: number }) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
@@ -208,7 +205,7 @@ export function RichTextEditor({ content, onChange, placeholder, className = "" 
   // entire current block so Tiptap wraps only that node into a list,
   // not the whole document.
   const toggleList = (type: "bulletList" | "orderedList") => {
-    const { state, view } = editor
+    const { state } = editor
     const { selection } = state
     const { $from, empty } = selection
 
