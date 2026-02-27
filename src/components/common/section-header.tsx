@@ -1,4 +1,4 @@
-import type { FC } from "react"
+import { getRGB } from "@/constants/colors"
 
 interface Props {
   title: string
@@ -8,14 +8,17 @@ interface Props {
   bageText?: string
 }
 
-const SectionHeader: FC<Props> = ({ title, description, color, icon, bageText }) => {
+const SectionHeader = ({ title, description, color, icon, bageText }: Props) => {
   return (
     <section className="text-center mb-10 sm:mb-16">
       <div
-        className={`inline-flex items-center gap-2 px-3 sm:px-6 py-1 sm:py-3 rounded-full bg-${color}/10 border border-${color}/30 mb-4 sm:mb-6`}
+        className={`inline-flex items-center gap-2 px-3 sm:px-6 py-1 sm:py-3 rounded-full border mb-4 sm:mb-6`}
+        style={{ background: `${getRGB(color, 0.1)}`, borderColor: `${getRGB(color, 0.3)}` }}
       >
         {icon}
-        <span className={`text-sm font-bold text-${color} tracking-wider uppercase`}>{bageText}</span>
+        <span className={`text-sm font-bold tracking-wider uppercase`} style={{ color: `${getRGB(color)}` }}>
+          {bageText}
+        </span>
       </div>
 
       <h2 className="text-2xl min-[450px]:text-3xl sm:text-4xl md:text-5xl font-black text-text-primary mb-2 sm:mb-4">

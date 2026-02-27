@@ -2,6 +2,7 @@ import { Link } from "react-router"
 import { useState, type Dispatch, type FC, type SetStateAction } from "react"
 
 import { Button } from "../ui/button"
+import { COLORS } from "@/constants/colors"
 import { Spinner } from "@/components/ui/spinner"
 import type { UserType } from "@/types/user.type"
 import type { CourseType } from "@/types/course.type"
@@ -78,7 +79,8 @@ export const CourseActions: FC<Props> = ({
       return (
         <div className="text-sm text-primary font-medium flex items-center gap-2">
           <span
-            className={`border border-primary/50 rounded-xl ${size === "lg" ? "p-4" : "py-1 px-4"} bg-primary/10 text-center`}
+            className={`border rounded-xl ${size === "lg" ? "p-4" : "py-1 px-4"} text-center`}
+            style={{ borderColor: `rgba(${COLORS.primary}, 0.5)`, background: `rgba(${COLORS.primary}, 0.1)` }}
           >
             Після завершення заходу, тут ви зможете завантажити сертифікат про участь
           </span>
@@ -201,7 +203,8 @@ export const CourseActions: FC<Props> = ({
       return (
         <div className="text-sm text-primary font-medium flex items-center gap-2">
           <span
-            className={`border border-primary/50 rounded-xl ${size === "lg" ? "p-4" : "py-1 px-4"} bg-primary/10 text-center`}
+            className={`border rounded-xl ${size === "lg" ? "p-4" : "py-1 px-4"} text-center`}
+            style={{ borderColor: `rgba(${COLORS.primary}, 0.5)`, background: `rgba(${COLORS.primary}, 0.1)` }}
           >
             Після завершення заходу, тут ви зможете завантажити сертифікат про участь
           </span>

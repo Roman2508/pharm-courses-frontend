@@ -1,6 +1,7 @@
 import { Link } from "react-router"
 import { Archive, ArrowRight, BadgeCheck } from "lucide-react"
 
+import { COLORS, getRGB } from "@/constants/colors"
 import { useCourses } from "@/api/hooks/use-courses"
 import bgImage from "../assets/medical-laboratory.jpg"
 import SectionHeader from "@/components/common/section-header"
@@ -11,32 +12,44 @@ const stats = [
   { title: "Проведених заходів", value: "4+", icon: <StatIcons type="users" />, color: "primary" },
   { title: "Учасників заходів", value: "3500+", icon: <StatIcons type="members" />, color: "secondary" },
   { title: "Задоволених", value: "98%", icon: <StatIcons type="reviews" />, color: "success" },
-]
+] as const
 
 const HomePage = () => {
   const { data: plannedCourses, isLoading: isPlannedLoading } = useCourses("PLANNED")
   const { data: archivedCourses, isLoading: isArchivedLoading } = useCourses("ARCHIVED", { limit: 3 })
 
   return (
-    <main className="">
+    <main>
       <section className="relative overflow-hidden min-h-[90svh] flex items-center">
         <div className="absolute inset-0">
           <img src={bgImage} className="w-full h-full object-cover" />
-          {/* <div className="absolute inset-0 bg-gradient-to-br from-primary/95 via-primary/85 to-secondary/90" /> */}
-          <div className="absolute inset-0 [background:linear-gradient(to_bottom_right,rgba(15,116,197,0.95),rgba(15,116,197,0.85),rgba(0,175,167,0.90))]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.1),transparent_70%)]" />
+
+          <div
+            className="absolute inset-0"
+            style={{
+              background: `linear-gradient(to bottom right, ${getRGB("primary", 0.95)}, ${getRGB("primary", 0.85)}, ${getRGB("secondary", 0.9)})`,
+            }}
+          />
+
+          <div
+            className="absolute inset-0"
+            style={{
+              background: `radial-gradient(circle at 30% 50%, ${getRGB("white", 0.1)}, transparent 70%)`,
+            }}
+          />
         </div>
 
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {[...Array(50)].map((_, i) => (
             <div
               key={i}
-              className="absolute w-1 h-1 bg-white/40 rounded-full animate-float"
+              className="absolute w-1 h-1 rounded-full animate-float"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
                 animationDelay: `${Math.random() * 5}s`,
                 animationDuration: `${5 + Math.random() * 1}s`,
+                background: `${getRGB("white", 0.5)}`,
               }}
             />
           ))}
@@ -56,8 +69,9 @@ const HomePage = () => {
             <p
               className={
                 "max-[500px]:text-base text-lg md:text-xl text-center lg:text-left " +
-                "text-white/90 text-pretty max-[500px]:mb-8 mb-12 max-w-2xl mx-auto lg:mx-0 leading-5 sm:leading-relaxed"
+                "text-pretty max-[500px]:mb-8 mb-12 max-w-2xl mx-auto lg:mx-0 leading-5 sm:leading-relaxed"
               }
+              style={{ color: `${getRGB("white", 0.9)}` }}
             >
               Сертифіковані програми для фармацевтів та медичних працівників. Інвестуйте в майбутнє своєї кар'єри.
             </p>
@@ -68,7 +82,6 @@ const HomePage = () => {
                 className={
                   "inline-flex items-center justify-center gap-3 rounded-2xl bg-white " +
                   "text-primary font-bold hover:bg-white/95 transition-all hover:scale-105 hover:shadow-2xl " +
-                  // "w-full sm:w-auto py-3 min-[500px]:py-4 sm:py-5"
                   "sm:w-auto py-2 min-[500px]:py-3 sm:py-5 px-6 min-[500px]:px-8 sm:px-10 text-base sm:text-lg"
                 }
               >
@@ -80,10 +93,10 @@ const HomePage = () => {
                 to="/archive"
                 className={
                   "inline-flex items-center justify-center gap-3 rounded-2xl bg-white/10 backdrop-blur-md " +
-                  "border-2 border-white/30 text-white font-bold hover:bg-white/20 transition-all hover:scale-105 " +
-                  // "w-full sm:w-auto py-3 min-[500px]:py-4 sm:py-5"
+                  "border-2 text-white font-bold hover:bg-white/20 transition-all hover:scale-105 " +
                   "sm:w-auto py-2 min-[500px]:py-3 sm:py-5 px-6 min-[500px]:px-8 sm:px-10 text-base sm:text-lg"
                 }
+                style={{ borderColor: `${getRGB("white", 0.3)}` }}
               >
                 <Archive className="w-5 min-[500px]:w-6 h-5 min-[500px]:h-6" />
                 Архів заходів
@@ -107,25 +120,37 @@ const HomePage = () => {
           {stats.map((stat) => (
             <div
               key={stat.title}
-              className="group relative p-6 lg:p-8 rounded-3xl bg-gradient-to-br from-surface/80 to-surface/40 backdrop-blur-sm border border-border/50 hover:border-primary/50 transition-all md:hover:scale-105 md:hover:shadow-xl"
+              className={
+                "group relative p-6 lg:p-8 rounded-3xl backdrop-blur-sm border transition-all " +
+                `md:hover:scale-105 md:hover:shadow-xl border-${stat.color}`
+              }
+              style={{
+                borderColor: `${getRGB("border", 0.5)}`,
+                background: `linear-gradient(to bottom right, ${getRGB("white", 0.8)}, ${getRGB("white", 0.4)})`,
+              }}
             >
               <div
-                className={`absolute inset-0 bg-gradient-to-br from-${stat.color}/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity`}
+                className={`absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity`}
+                style={{
+                  background: `linear-gradient(to bottom right, ${getRGB(stat.color, 0.05)}, transparent)`,
+                }}
               />
 
               <div className="relative flex gap-6 md:gap-4 flex-row md:flex-col">
                 <div
                   className={
-                    `w-16 h-16 rounded-2xl bg-${stat.color}/10 flex items-center ` +
+                    `w-16 h-16 rounded-2xl flex items-center ` +
                     "justify-center mx-0 md:mx-auto group-hover:scale-110 transition-transform"
                   }
+                  style={{ background: `${getRGB(stat.color, 0.1)}` }}
                 >
                   {stat.icon}
                 </div>
 
                 <div className="flex flex-col">
                   <div
-                    className={`text-2xl max-[500px]:text-3xl text-4xl sm:text-5xl font-black text-${stat.color} mb-2`}
+                    className={`text-2xl max-[500px]:text-3xl text-4xl sm:text-5xl font-black mb-2`}
+                    style={{ color: `${getRGB(stat.color)}` }}
                   >
                     {stat.value}
                   </div>

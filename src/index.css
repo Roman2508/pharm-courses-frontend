@@ -145,6 +145,17 @@
     transform: translateY(-20px);
   }
 }
+/* border */
+.border-primary:hover {
+  border-color: rgba(15, 116, 197, 0.5) !important;
+}
+.border-secondary:hover {
+  border-color: rgba(0, 175, 167, 0.5) !important;
+}
+.border-success:hover {
+  border-color: rgba(58, 151, 66, 0.5) !important;
+}
+/* border */
 
 /* ===== browsers adaptation ===== */
 .line-clamp-3-safe {

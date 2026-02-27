@@ -32,6 +32,7 @@ const CourseCard: FC<Props> = ({
           "absolute -inset-1 bg-gradient-to-r from-primary/0 via-primary/20 to-secondary/0 rounded-[2rem] opacity-0 " +
           "group-hover:opacity-30 blur-xl transition-all duration-700"
         }
+        style={{  }}
       />
 
       <div

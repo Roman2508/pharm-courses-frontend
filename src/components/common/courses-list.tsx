@@ -1,6 +1,5 @@
-import type { FC } from "react"
-
 import CourseCard from "./course-card"
+import { getRGB } from "@/constants/colors"
 import PageLoader from "../custom/page-loader"
 import type { CourseType } from "@/types/course.type"
 
@@ -9,7 +8,7 @@ interface Props {
   courses?: CourseType[]
 }
 
-export const CoursesList: FC<Props> = ({ courses, isLoading }) => {
+export const CoursesList = ({ courses, isLoading }: Props) => {
   return (
     <>
       {isLoading ? (
@@ -27,9 +26,13 @@ export const CoursesList: FC<Props> = ({ courses, isLoading }) => {
       ) : (
         <section className="max-w-[1300px] mx-auto px-4 pb-20 text-center max-w-7xl">
           <div className="max-w-md mx-auto">
-            <div className="w-18 h-18 sm:w-24 sm:h-24 rounded-3xl bg-primary/10 mx-auto mb-4 sm:mb-8 flex items-center justify-center">
+            <div
+              className="w-18 h-18 sm:w-24 sm:h-24 rounded-3xl mx-auto mb-4 sm:mb-8 flex items-center justify-center"
+              style={{ background: `${getRGB("primary", 0.1)}` }}
+            >
               <svg
-                className="w-10 h-10sm:w-16 sm:h-16 text-primary/50"
+                className="w-10 h-10sm:w-16 sm:h-16"
+                style={{ color: `${getRGB("primary", 0.5)}` }}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
