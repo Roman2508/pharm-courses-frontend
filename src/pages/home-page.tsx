@@ -1,7 +1,7 @@
 import { Link } from "react-router"
 import { Archive, ArrowRight, BadgeCheck } from "lucide-react"
 
-import { COLORS, getRGB } from "@/constants/colors"
+import { getRGB } from "@/constants/colors"
 import { useCourses } from "@/api/hooks/use-courses"
 import bgImage from "../assets/medical-laboratory.jpg"
 import SectionHeader from "@/components/common/section-header"
@@ -92,11 +92,11 @@ const HomePage = () => {
               <Link
                 to="/archive"
                 className={
-                  "inline-flex items-center justify-center gap-3 rounded-2xl bg-white/10 backdrop-blur-md " +
+                  "inline-flex items-center justify-center gap-3 rounded-2xl backdrop-blur-md " +
                   "border-2 text-white font-bold hover:bg-white/20 transition-all hover:scale-105 " +
                   "sm:w-auto py-2 min-[500px]:py-3 sm:py-5 px-6 min-[500px]:px-8 sm:px-10 text-base sm:text-lg"
                 }
-                style={{ borderColor: `${getRGB("white", 0.3)}` }}
+                style={{ borderColor: `${getRGB("white", 0.3)}`, backgroundColor: `${getRGB("white", 0.1)}` }}
               >
                 <Archive className="w-5 min-[500px]:w-6 h-5 min-[500px]:h-6" />
                 Архів заходів

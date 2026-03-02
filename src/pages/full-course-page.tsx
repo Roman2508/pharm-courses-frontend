@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router"
 import { BookOpen, Calendar, ChevronLeft, Users } from "lucide-react"
 
 import { getDate } from "@/helpers/get-date"
+import { getRGB } from "@/constants/colors"
 import { useSession } from "@/api/auth-client"
 import { Button } from "@/components/ui/button"
 import type { UserType } from "@/types/user.type"
@@ -14,10 +15,14 @@ import { CourseActions } from "@/components/common/course-actions"
 import { useCurrentRegistration } from "@/api/hooks/use-registration"
 import { FullCoursePagePaymentStatus } from "@/components/features/full-course-page/full-course-page-payment-status"
 
-const statusColors = {
-  PLANNED: "bg-success/10 text-success border-success/20",
-  DRAFT: "bg-text-muted/10 text-text-muted border-text-muted/20",
-  ARCHIVED: "bg-destructive/10 text-destructive border-destructive/20",
+const statusStyles = {
+  PLANNED: { background: getRGB("success", 0.1), color: getRGB("success"), borderColor: getRGB("success", 0.2) },
+  DRAFT: { background: getRGB("text-muted", 0.1), color: getRGB("text-muted"), borderColor: getRGB("text-muted", 0.2) },
+  ARCHIVED: {
+    background: getRGB("destructive", 0.1),
+    color: getRGB("destructive"),
+    borderColor: getRGB("destructive", 0.2),
+  },
 }
 const statusLabels = {
   PLANNED: "Очікується",
@@ -88,11 +93,15 @@ const FullCoursePage = () => {
 
               <div className="flex items-center gap-3 mb-6">
                 <div
-                  className={`min-w-9 sm:w-10 h-9 sm:h-10 rounded-full bg-${color}/10 flex items-center justify-center`}
+                  className="min-w-9 sm:w-10 h-9 sm:h-10 rounded-full flex items-center justify-center"
+                  style={{ background: getRGB(color, 0.1) }}
                 >
-                  <BookOpen className={`w-4 sm:w-5 h-4 sm:h-5 text-${color}`} />
+                  <BookOpen className="w-4 sm:w-5 h-4 sm:h-5" style={{ color: getRGB(color) }} />
                 </div>
-                <h2 className={`text-sm sm:text-base lg:text-lg xl:text-xl leading-[1.3] font-bold text-${color}`}>
+                <h2
+                  className="text-sm sm:text-base lg:text-lg xl:text-xl leading-[1.3] font-bold"
+                  style={{ color: getRGB(color) }}
+                >
                   Цільова аудиторія: {getTargetAudience(course.targetAudience)}
                 </h2>
               </div>
@@ -124,9 +133,8 @@ const FullCoursePage = () => {
                 </div>
 
                 <span
-                  className={`inline-flex items-center px-2 xl:px-4 py-1 xl:py-2 rounded-full text-[12px] xl:text-sm font-medium border ${
-                    course.registrationOpen === "OPEN" ? statusColors[course.status] : statusColors["ARCHIVED"]
-                  }`}
+                  className="inline-flex items-center px-2 xl:px-4 py-1 xl:py-2 rounded-full text-[12px] xl:text-sm font-medium border"
+                  style={course.registrationOpen === "OPEN" ? statusStyles[course.status] : statusStyles["ARCHIVED"]}
                 >
                   {course.registrationOpen === "OPEN" ? statusLabels[course.status] : "Реєстрація закрита"}
                 </span>
@@ -134,7 +142,10 @@ const FullCoursePage = () => {
 
               <div className="space-y-4">
                 <div className="flex items-start gap-4 p-3 xl:p-4 rounded-xl bg-background border border-border">
-                  <div className="w-9 xl:w-10 h-9 xl:h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                  <div
+                    className="w-9 xl:w-10 h-9 xl:h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                    style={{ background: getRGB("primary", 0.1) }}
+                  >
                     <Calendar className="w-4 xl:w-5 h-4 xl:h-5 text-primary" />
                   </div>
                   <div>
@@ -155,7 +166,10 @@ const FullCoursePage = () => {
 
                 {!!course.maxMembers && (
                   <div className="flex items-start gap-4 p-4 rounded-xl bg-background border border-border">
-                    <div className="w-9 xl:w-10 h-9 xl:h-10 rounded-full bg-secondary/10 flex items-center justify-center flex-shrink-0">
+                    <div
+                      className="w-9 xl:w-10 h-9 xl:h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                      style={{ background: getRGB("secondary", 0.1) }}
+                    >
                       <Users className="w-4 xl:w-5 h-4 xl:h-5 text-secondary" />
                     </div>
 

@@ -3,6 +3,7 @@ import type { Dispatch, FC, SetStateAction } from "react"
 
 import { cn } from "@/lib/utils"
 import { getDate } from "@/helpers/get-date"
+import { getRGB } from "@/constants/colors"
 import type { RegistrationDataType } from "@/pages/admin-page"
 import type { RegistrationType } from "@/types/registration.type"
 import type { GetRegistrationsQuery } from "@/api/hooks/use-registration"
@@ -115,7 +116,13 @@ const AdminRegistrationTable: FC<Props> = ({
 
       <TableBody>
         {registrations.map((reg: RegistrationType) => (
-          <TableRow key={reg.id} className="border-b border-border last:border-0 hover:bg-surface-hover/50">
+          <TableRow
+            key={reg.id}
+            className="border-b border-border last:border-0"
+            style={{ background: "transparent" }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = getRGB("surface-hover", 0.5))}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+          >
             <TableCell className="text-sm px-2 xl:px-4 py-2 xl:py-2 text-center">
               <input
                 type="checkbox"
@@ -142,8 +149,11 @@ const AdminRegistrationTable: FC<Props> = ({
 
             <TableCell className="text-sm px-2 xl:px-4 py-2 xl:py-2">
               <span
-                className={`inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium 
-                  bg-${getPaymentColor(reg.paymentStatus)}/10 text-${getPaymentColor(reg.paymentStatus)}`}
+                className="inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium"
+                style={{
+                  background: getRGB(getPaymentColor(reg.paymentStatus) as any, 0.1),
+                  color: getRGB(getPaymentColor(reg.paymentStatus) as any),
+                }}
               >
                 {getPaymentStatus(reg.paymentStatus)}
               </span>
@@ -151,11 +161,11 @@ const AdminRegistrationTable: FC<Props> = ({
 
             <TableCell className="text-sm px-2 xl:px-4 py-2 xl:py-2">
               <button
-                className={`truncate cursor-pointer inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-colors ${
-                  reg.certificateEnabled
-                    ? "bg-primary/10 text-primary hover:bg-primary/20"
-                    : "bg-surface-hover text-text-secondary hover:bg-border"
-                }`}
+                className="truncate cursor-pointer inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-colors"
+                style={{
+                  background: reg.certificateEnabled ? getRGB("primary", 0.1) : undefined,
+                  color: reg.certificateEnabled ? getRGB("primary") : undefined,
+                }}
               >
                 {reg.certificateEnabled ? "Доступно" : "Немає доступу"}
               </button>
@@ -165,11 +175,11 @@ const AdminRegistrationTable: FC<Props> = ({
               <div className={cn({ "flex flex-col items-start gap-1": reg.freeParticipation })}>
                 <button
                   onClick={() => onOpenModal(reg, "payment")}
-                  className={`truncate cursor-pointer inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-colors ${
-                    reg.paymentReceipt
-                      ? "bg-primary/10 text-primary hover:bg-primary/20"
-                      : "bg-destructive/10 text-destructive hover:bg-destructive/20"
-                  }`}
+                  className="truncate cursor-pointer inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-colors"
+                  style={{
+                    background: reg.paymentReceipt ? getRGB("primary", 0.1) : getRGB("destructive", 0.1),
+                    color: reg.paymentReceipt ? getRGB("primary") : getRGB("destructive"),
+                  }}
                 >
                   {reg.paymentReceipt ? "Переглянути" : "Не завантажена"}
                 </button>
@@ -179,8 +189,9 @@ const AdminRegistrationTable: FC<Props> = ({
                     onClick={() => onOpenModal(reg, "free")}
                     className={
                       "truncate cursor-pointer inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium " +
-                      "transition-colors bg-primary/10 text-primary hover:bg-primary/20"
+                      "transition-colors text-primary"
                     }
+                    style={{ background: getRGB("primary", 0.1) }}
                   >
                     Безкоштовна участь
                   </button>

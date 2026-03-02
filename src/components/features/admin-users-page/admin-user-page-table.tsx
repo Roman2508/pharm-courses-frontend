@@ -2,6 +2,7 @@ import { ArrowUp } from "lucide-react"
 import type { Dispatch, FC, SetStateAction } from "react"
 
 import { cn } from "@/lib/utils"
+import { getRGB } from "@/constants/colors"
 import { getDate } from "@/helpers/get-date"
 import type { UserType } from "@/types/user.type"
 import type { GetUsersQuery } from "@/pages/admin-users-page"
@@ -62,7 +63,13 @@ const AdminUserPageTable: FC<Props> = ({ users, onEditUser, params, setParams })
 
       <TableBody>
         {users.map((user) => (
-          <TableRow key={user.id} className="border-b border-border last:border-0 hover:bg-surface-hover/50">
+          <TableRow
+            key={user.id}
+            className="border-b border-border last:border-0"
+            style={{ background: "transparent" }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = getRGB("surface-hover", 0.5))}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+          >
             <TableCell className="!text-[12px] !lg:text-base px-2 lg:px-4 py-2">
               <div className="text-sm font-medium text-text-primary">{user.name}</div>
             </TableCell>
@@ -81,11 +88,29 @@ const AdminUserPageTable: FC<Props> = ({ users, onEditUser, params, setParams })
 
             <TableCell className="!text-[12px] !lg:text-base px-2 lg:px-4 py-2">
               {user.role === "user" ? (
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-secondary/10 text-secondary border border-secondary/20">
+                <span
+                  className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
+                  style={{
+                    background: getRGB("secondary", 0.1),
+                    color: getRGB("secondary"),
+                    borderColor: getRGB("secondary", 0.2),
+                    borderWidth: "1px",
+                    borderStyle: "solid",
+                  }}
+                >
                   Користувач
                 </span>
               ) : (
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20">
+                <span
+                  className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
+                  style={{
+                    background: getRGB("primary", 0.1),
+                    color: getRGB("primary"),
+                    borderColor: getRGB("primary", 0.2),
+                    borderWidth: "1px",
+                    borderStyle: "solid",
+                  }}
+                >
                   Адміністратор
                 </span>
               )}

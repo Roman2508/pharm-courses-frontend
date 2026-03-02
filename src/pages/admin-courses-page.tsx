@@ -3,6 +3,7 @@ import { Link } from "react-router"
 import { Pencil, Trash, Users } from "lucide-react"
 
 import { getDate } from "@/helpers/get-date"
+import { getRGB } from "@/constants/colors"
 import { Button } from "@/components/ui/button"
 import { Title } from "@/components/custom/title"
 import PageLoader from "@/components/custom/page-loader"
@@ -41,7 +42,8 @@ const AdminCoursesPage = () => {
 
           <Link
             to="/admin/courses/new"
-            className="px-4 lg:px-6 py-2 lg:py-3 rounded-xl bg-primary text-white font-medium hover:bg-primary-hover transition-all hover:shadow-lg hover:shadow-primary/20"
+            className="px-4 lg:px-6 py-2 lg:py-3 rounded-xl bg-primary text-white font-medium hover:bg-primary-hover transition-all hover:shadow-lg"
+            style={{ boxShadow: `0 10px 15px -3px ${getRGB("primary", 0.2)}` }}
           >
             Створити захід
           </Link>
@@ -65,23 +67,32 @@ const AdminCoursesPage = () => {
                   </div>
                   <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-sm text-text-secondary">
                     <span
-                      className={`inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium ${
-                        course.status === "PLANNED"
-                          ? "bg-success/10 text-success"
-                          : course.status === "ARCHIVED"
-                            ? "bg-secondary/10 text-secondary"
-                            : "bg-text-muted/10 text-text-muted"
-                      }`}
+                      className="inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium"
+                      style={{
+                        background:
+                          course.status === "PLANNED"
+                            ? getRGB("success", 0.1)
+                            : course.status === "ARCHIVED"
+                              ? getRGB("secondary", 0.1)
+                              : getRGB("text-muted", 0.1),
+                        color:
+                          course.status === "PLANNED"
+                            ? getRGB("success")
+                            : course.status === "ARCHIVED"
+                              ? getRGB("secondary")
+                              : getRGB("text-muted"),
+                      }}
                     >
                       Статус: {getCourseStatus(course.status)}
                     </span>
 
                     <span
-                      className={`inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium ${
-                        course.registrationOpen === "CLOSE"
-                          ? "bg-destructive/10 text-destructive"
-                          : "bg-success/10 text-success"
-                      }`}
+                      className="inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium"
+                      style={{
+                        background:
+                          course.registrationOpen === "CLOSE" ? getRGB("destructive", 0.1) : getRGB("success", 0.1),
+                        color: course.registrationOpen === "CLOSE" ? getRGB("destructive") : getRGB("success"),
+                      }}
                     >
                       Реєстрацію: {course.registrationOpen === "CLOSE" ? "закрито" : "відкрито"}
                     </span>
@@ -137,7 +148,8 @@ const AdminCoursesPage = () => {
             <p className="text-text-secondary mb-6">Створіть свій перший захід, щоб почати.</p>
             <Link
               to="/admin/courses/new"
-              className="inline-block px-6 py-3 rounded-xl bg-primary text-white font-medium hover:bg-primary-hover transition-all hover:shadow-lg hover:shadow-primary/20"
+              className="inline-block px-6 py-3 rounded-xl bg-primary text-white font-medium hover:bg-primary-hover transition-all hover:shadow-lg"
+              style={{ boxShadow: `0 10px 15px -3px ${getRGB("primary", 0.2)}` }}
             >
               Створити захід
             </Link>

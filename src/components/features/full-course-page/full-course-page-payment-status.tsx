@@ -1,6 +1,7 @@
 import { Award } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { getRGB } from "@/constants/colors"
 import type { RegistrationType } from "@/types/registration.type"
 
 interface Props {
@@ -10,19 +11,18 @@ interface Props {
 export const FullCoursePagePaymentStatus = ({ registration }: Props) => {
   return (
     <div
-      className={cn(
-        "p-4 rounded-xl border mb-4",
-        registration.paymentStatus === "PAID"
-          ? "bg-success/10 border-success/20"
-          : "bg-destructive/10 border-destructive/20",
-      )}
+      className={cn("p-4 rounded-xl border mb-4")}
+      style={{
+        background: registration.paymentStatus === "PAID" ? getRGB("success", 0.1) : getRGB("destructive", 0.1),
+        borderColor: registration.paymentStatus === "PAID" ? getRGB("success", 0.2) : getRGB("destructive", 0.2),
+      }}
     >
       <div className="flex items-start gap-3">
         <div
-          className={cn(
-            "w-8 h-8 rounded-full bg-success/20 flex items-center justify-center flex-shrink-0 mt-0.5",
-            registration.paymentStatus === "PAID" ? "bg-success/20" : "bg-destructive/20",
-          )}
+          className={cn("w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5")}
+          style={{
+            background: registration.paymentStatus === "PAID" ? getRGB("success", 0.2) : getRGB("destructive", 0.2),
+          }}
         >
           <Award
             className={cn("w-4 h-4", registration.paymentStatus === "PAID" ? "text-success" : "text-destructive")}

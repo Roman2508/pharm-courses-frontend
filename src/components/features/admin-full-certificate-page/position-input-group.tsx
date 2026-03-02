@@ -1,5 +1,6 @@
 import type { FC } from "react"
 import { AlignCenter, AlignLeft, AlignRight } from "lucide-react"
+import { getRGB } from "@/constants/colors"
 import type { TextBlock } from "./draggable-initial-blocks"
 
 interface Props {
@@ -13,15 +14,23 @@ interface Props {
 const PositionInputGroup: FC<Props> = ({ label, block, updateBlock, isSelected, onSelect }) => {
   return (
     <div
-      className={`p-4 rounded-xl border transition-all ${
-        isSelected ? "bg-primary/5 border-primary shadow-sm" : "bg-secondary/5 border-secondary/10"
-      }`}
+      className="p-4 rounded-xl border transition-all"
+      style={{
+        background: isSelected ? getRGB("primary", 0.05) : getRGB("secondary", 0.05),
+        borderColor: isSelected ? getRGB("primary") : getRGB("secondary", 0.1),
+        ...(isSelected ? { boxShadow: "0 1px 2px 0 rgb(0 0 0 / 0.05)" } : {}),
+      }}
       onClick={onSelect}
     >
       <h4 className="font-medium text-text-primary mb-3 flex items-center justify-between">
         {label}
         {isSelected && (
-          <span className="text-xs text-primary font-normal bg-primary/10 px-2 py-0.5 rounded-full">Активний</span>
+          <span
+            className="text-xs text-primary font-normal px-2 py-0.5 rounded-full"
+            style={{ background: getRGB("primary", 0.1) }}
+          >
+            Активний
+          </span>
         )}
       </h4>
 
@@ -124,8 +133,9 @@ const PositionInputGroup: FC<Props> = ({ label, block, updateBlock, isSelected, 
                 updateBlock(block.id, "textAlign", "left")
               }}
               className={`flex-1 py-1.5 px-3 cursor-pointer flex justify-center hover:bg-surface-hover ${
-                block.textAlign === "left" ? "bg-primary/10 text-primary" : "text-text-muted"
-              }`}
+                block.textAlign === "left" ? "text-primary" : "text-text-muted"
+              } ${block.textAlign === "left" ? "" : ""}`}
+              style={block.textAlign === "left" ? { background: getRGB("primary", 0.1) } : {}}
             >
               <AlignLeft className="w-4 h-4" />
             </button>
@@ -137,8 +147,9 @@ const PositionInputGroup: FC<Props> = ({ label, block, updateBlock, isSelected, 
                 updateBlock(block.id, "textAlign", "center")
               }}
               className={`flex-1 py-1.5 px-3 cursor-pointer flex justify-center hover:bg-surface-hover ${
-                block.textAlign === "center" ? "bg-primary/10 text-primary" : "text-text-muted"
-              }`}
+                block.textAlign === "center" ? "text-primary" : "text-text-muted"
+              } ${block.textAlign === "center" ? "" : ""}`}
+              style={block.textAlign === "center" ? { background: getRGB("primary", 0.1) } : {}}
             >
               <AlignCenter className="w-4 h-4" />
             </button>
@@ -150,8 +161,9 @@ const PositionInputGroup: FC<Props> = ({ label, block, updateBlock, isSelected, 
                 updateBlock(block.id, "textAlign", "right")
               }}
               className={`flex-1 py-1.5 px-3 cursor-pointer flex justify-center hover:bg-surface-hover ${
-                block.textAlign === "right" ? "bg-primary/10 text-primary" : "text-text-muted"
-              }`}
+                block.textAlign === "right" ? "text-primary" : "text-text-muted"
+              } ${block.textAlign === "right" ? "" : ""}`}
+              style={block.textAlign === "right" ? { background: getRGB("primary", 0.1) } : {}}
             >
               <AlignRight className="w-4 h-4" />
             </button>

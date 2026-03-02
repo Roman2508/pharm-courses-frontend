@@ -24,6 +24,7 @@ import { TextStyle } from "@tiptap/extension-text-style"
 
 import { cn } from "@/lib/utils"
 import { Button } from "../ui/button"
+import { getRGB } from "@/constants/colors"
 
 interface RichTextEditorProps {
   content: string
@@ -117,12 +118,16 @@ function HeadingDropdown({ editor }: { editor: any; editorVersion: number }) {
                 opt.action()
                 setOpen(false)
               }}
-              style={{ backgroundColor: opt.isActive() ? undefined : "var(--color-surface, white)" }}
               className={cn(
                 "w-full text-left px-3 py-2 hover:bg-surface-hover transition-colors text-text-primary",
-                opt.isActive() && "bg-primary/10 text-primary",
+                opt.isActive() && "text-primary",
                 opt.className,
               )}
+              style={
+                opt.isActive()
+                  ? { backgroundColor: getRGB("primary", 0.1) }
+                  : { backgroundColor: "var(--color-surface, white)" }
+              }
             >
               {opt.label}
             </button>
@@ -329,7 +334,8 @@ export function RichTextEditor({ content, onChange, placeholder, className = "" 
             variant="ghost"
             size="sm"
             onClick={() => editor.chain().focus().toggleBold().run()}
-            className={editor.isActive("bold") ? "!bg-primary/10 text-primary" : ""}
+            className={editor.isActive("bold") ? "text-primary" : ""}
+            style={editor.isActive("bold") ? { background: getRGB("primary", 0.1) } : {}}
             title="Bold"
           >
             <Bold className="h-4 w-4" />
@@ -340,7 +346,8 @@ export function RichTextEditor({ content, onChange, placeholder, className = "" 
             variant="ghost"
             size="sm"
             onClick={() => editor.chain().focus().toggleItalic().run()}
-            className={editor.isActive("italic") ? "!bg-primary/10 text-primary" : ""}
+            className={editor.isActive("italic") ? "text-primary" : ""}
+            style={editor.isActive("italic") ? { background: getRGB("primary", 0.1) } : {}}
             title="Italic"
           >
             <Italic className="h-4 w-4" />
@@ -351,7 +358,8 @@ export function RichTextEditor({ content, onChange, placeholder, className = "" 
             variant="ghost"
             size="sm"
             onClick={() => editor.chain().focus().toggleUnderline().run()}
-            className={editor.isActive("underline") ? "!bg-primary/10 text-primary" : ""}
+            className={editor.isActive("underline") ? "text-primary" : ""}
+            style={editor.isActive("underline") ? { background: getRGB("primary", 0.1) } : {}}
             title="Underline"
           >
             <UnderlineIcon className="h-4 w-4" />
@@ -362,7 +370,8 @@ export function RichTextEditor({ content, onChange, placeholder, className = "" 
             variant="ghost"
             size="sm"
             onClick={setLink}
-            className={editor.isActive("link") ? "!bg-primary/10 text-primary" : ""}
+            className={editor.isActive("link") ? "text-primary" : ""}
+            style={editor.isActive("link") ? { background: getRGB("primary", 0.1) } : {}}
             title="Link"
           >
             <LinkIcon className="h-4 w-4" />
@@ -376,7 +385,8 @@ export function RichTextEditor({ content, onChange, placeholder, className = "" 
             variant="ghost"
             size="sm"
             onClick={() => toggleList("bulletList")}
-            className={editor.isActive("bulletList") ? "!bg-primary/10 text-primary" : ""}
+            className={editor.isActive("bulletList") ? "text-primary" : ""}
+            style={editor.isActive("bulletList") ? { background: getRGB("primary", 0.1) } : {}}
             title="Bullet List"
           >
             <List className="h-4 w-4" />
@@ -387,7 +397,8 @@ export function RichTextEditor({ content, onChange, placeholder, className = "" 
             variant="ghost"
             size="sm"
             onClick={() => toggleList("orderedList")}
-            className={editor.isActive("orderedList") ? "!bg-primary/10 text-primary" : ""}
+            className={editor.isActive("orderedList") ? "text-primary" : ""}
+            style={editor.isActive("orderedList") ? { background: getRGB("primary", 0.1) } : {}}
             title="Ordered List"
           >
             <ListOrdered className="h-4 w-4" />
@@ -401,7 +412,8 @@ export function RichTextEditor({ content, onChange, placeholder, className = "" 
             variant="ghost"
             size="sm"
             onClick={() => editor.chain().focus().setTextAlign("left").run()}
-            className={editor.isActive({ textAlign: "left" }) ? "!bg-primary/10 text-primary" : ""}
+            className={editor.isActive({ textAlign: "left" }) ? "text-primary" : ""}
+            style={editor.isActive({ textAlign: "left" }) ? { background: getRGB("primary", 0.1) } : {}}
             title="Align Left"
           >
             <AlignLeft className="h-4 w-4" />
@@ -412,7 +424,8 @@ export function RichTextEditor({ content, onChange, placeholder, className = "" 
             variant="ghost"
             size="sm"
             onClick={() => editor.chain().focus().setTextAlign("center").run()}
-            className={editor.isActive({ textAlign: "center" }) ? "!bg-primary/10 text-primary" : ""}
+            className={editor.isActive({ textAlign: "center" }) ? "text-primary" : ""}
+            style={editor.isActive({ textAlign: "center" }) ? { background: getRGB("primary", 0.1) } : {}}
             title="Align Center"
           >
             <AlignCenter className="h-4 w-4" />
@@ -423,7 +436,8 @@ export function RichTextEditor({ content, onChange, placeholder, className = "" 
             variant="ghost"
             size="sm"
             onClick={() => editor.chain().focus().setTextAlign("right").run()}
-            className={editor.isActive({ textAlign: "right" }) ? "!bg-primary/10 text-primary" : ""}
+            className={editor.isActive({ textAlign: "right" }) ? "text-primary" : ""}
+            style={editor.isActive({ textAlign: "right" }) ? { background: getRGB("primary", 0.1) } : {}}
             title="Align Right"
           >
             <AlignRight className="h-4 w-4" />
@@ -434,7 +448,8 @@ export function RichTextEditor({ content, onChange, placeholder, className = "" 
             variant="ghost"
             size="sm"
             onClick={() => editor.chain().focus().setTextAlign("justify").run()}
-            className={editor.isActive({ textAlign: "justify" }) ? "!bg-primary/10 text-primary" : ""}
+            className={editor.isActive({ textAlign: "justify" }) ? "text-primary" : ""}
+            style={editor.isActive({ textAlign: "justify" }) ? { background: getRGB("primary", 0.1) } : {}}
             title="Justify"
           >
             <AlignJustify className="h-4 w-4" />

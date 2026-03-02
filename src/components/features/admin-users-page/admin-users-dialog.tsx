@@ -1,6 +1,8 @@
 import { toast } from "sonner"
 import { useState, type Dispatch, type FC, type SetStateAction } from "react"
 
+import { getRGB } from "@/constants/colors"
+
 import {
   Dialog,
   DialogTitle,
@@ -195,7 +197,10 @@ const AdminUsersDialog: FC<Props> = ({
             })}
 
             {showErrors && !!getFormErrors(errors).length && (
-              <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20">
+              <div
+                className="p-3 rounded-xl border"
+                style={{ background: getRGB("destructive", 0.1), borderColor: getRGB("destructive", 0.2) }}
+              >
                 {getFormErrors(errors).map((error) => (
                   <p className="text-sm text-destructive" key={error}>
                     {error}

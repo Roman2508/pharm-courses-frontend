@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { useNavigate, useParams } from "react-router"
 
+import { getRGB } from "@/constants/colors"
+
 import { Button } from "@/components/ui/button"
 import { findError } from "@/helpers/find-error"
 import { Title } from "@/components/custom/title"
@@ -19,11 +21,11 @@ const AdminFullCoursePage = () => {
 
   const isUpdate = !isNaN(Number(params.id))
 
-  const { data: course } = useFullCourse(isUpdate ? params?.id : undefined, 'admin')
+  const { data: course } = useFullCourse(isUpdate ? params?.id : undefined, "admin")
   const { data: certificateTemplates } = useGetAllCertificateTemplates()
 
   const createCourse = useCreateCourse()
-  const updateCourse = useUpdateCourse('admin')
+  const updateCourse = useUpdateCourse("admin")
 
   const { fields, formData } = useCourseData(course, certificateTemplates)
 
@@ -108,13 +110,19 @@ const AdminFullCoursePage = () => {
 
           <div className="space-y-6">
             {error && (
-              <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20">
+              <div
+                className="p-3 rounded-xl border"
+                style={{ background: getRGB("destructive", 0.1), borderColor: getRGB("destructive", 0.2) }}
+              >
                 <p className="text-sm text-destructive">{error.message}</p>
               </div>
             )}
 
             {showErrors && !!getFormErrors(errors).length && (
-              <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20">
+              <div
+                className="p-3 rounded-xl border"
+                style={{ background: getRGB("destructive", 0.1), borderColor: getRGB("destructive", 0.2) }}
+              >
                 {getFormErrors(errors).map((error) => (
                   <p className="text-sm text-destructive" key={error}>
                     {error}

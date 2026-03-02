@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router"
+import { getRGB } from "@/constants/colors"
 
 import {
   DropdownMenu,
@@ -21,7 +22,10 @@ const Header = () => {
   const { data: session, isPending } = useSession()
 
   return (
-    <header className="sticky top-0 z-50 flex items-center w-full px-4 h-16 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header
+      className="sticky top-0 z-50 flex items-center w-full px-4 h-16 border-b border-border backdrop-blur"
+      style={{ background: getRGB("background", 0.95) }}
+    >
       <div className="flex items-center justify-between w-full">
         <div className="hidden"></div>
 

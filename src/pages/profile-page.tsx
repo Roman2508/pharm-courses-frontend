@@ -1,4 +1,5 @@
 import { toast } from "sonner"
+import { getRGB } from "@/constants/colors"
 import { useState } from "react"
 import { Upload } from "lucide-react"
 
@@ -108,9 +109,15 @@ const ProfilePage = () => {
       </div>
 
       {data?.user?.role === "admin" && (
-        <div className="mb-4 p-4 rounded-xl bg-primary/5 border border-primary/20">
+        <div
+          className="mb-4 p-4 rounded-xl border"
+          style={{ background: getRGB("primary", 0.05), borderColor: getRGB("primary", 0.2) }}
+        >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center"
+              style={{ background: getRGB("primary", 0.1) }}
+            >
               <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
                   strokeLinecap="round"
@@ -138,7 +145,10 @@ const ProfilePage = () => {
             <AvatarFallback className="text-5xl">AA</AvatarFallback>
 
             <label>
-              <div className="absolute inset-0 bg-muted/0 group-hover:bg-muted/80 transition-all opacity-[0] group-hover:opacity-[1]">
+              <div
+                className="absolute inset-0 group-hover:opacity-[1] transition-all opacity-[0]"
+                style={{ background: getRGB("muted", 0.8) }}
+              >
                 <div className="cursor-pointer absolute inset-0 flex items-center justify-center">
                   <div className="">
                     <Upload className="w-8 h-8" />
@@ -171,7 +181,10 @@ const ProfilePage = () => {
           ))}
 
           {showErrors && !!getFormErrors(errors).length && (
-            <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20">
+            <div
+              className="p-3 rounded-xl border"
+              style={{ background: getRGB("destructive", 0.1), borderColor: getRGB("destructive", 0.2) }}
+            >
               {getFormErrors(errors).map((error) => (
                 <p className="text-sm text-destructive" key={error}>
                   {error}

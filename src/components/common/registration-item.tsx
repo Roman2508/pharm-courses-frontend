@@ -1,6 +1,7 @@
 import { type Dispatch, type FC, type SetStateAction } from "react"
 
 import { getDate } from "@/helpers/get-date"
+import { getRGB } from "@/constants/colors"
 import type { RegistrationDataType } from "@/pages/admin-page"
 import type { RegistrationType } from "@/types/registration.type"
 import { getPaymentColor, getPaymentStatus } from "@/helpers/get-payment-status"
@@ -58,7 +59,8 @@ const RegistrationItem: FC<Props> = ({
 
       <div className="flex flex-col min-[520px]:flex-row md:flex-col gap-2 items-start min-[520px]:items-end">
         <span
-          className={`truncate inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-${color}/10 text-${color}`}
+          className="truncate inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
+          style={{ background: getRGB(color as any, 0.1), color: getRGB(color as any) }}
         >
           {getPaymentStatus(paymentStatus)}
         </span>
@@ -69,8 +71,9 @@ const RegistrationItem: FC<Props> = ({
               onClick={() => onRegistrationClick("free")}
               className={
                 "truncate cursor-pointer inline-flex items-center px-3 py-1 rounded-full text-xs " +
-                "font-medium bg-primary/10 hover:bg-primary/20 text-primary"
+                "font-medium text-primary"
               }
+              style={{ background: getRGB("primary", 0.1) }}
             >
               Безкоштовна участь
             </button>
@@ -78,11 +81,11 @@ const RegistrationItem: FC<Props> = ({
 
           <button
             onClick={() => onRegistrationClick("payment")}
-            className={`truncate cursor-pointer inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-colors ${
-              paymentReceipt
-                ? "bg-primary/10 text-primary hover:bg-primary/20"
-                : "bg-destructive/10 text-destructive hover:bg-destructive/20"
-            }`}
+            className="truncate cursor-pointer inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium transition-colors"
+            style={{
+              background: paymentReceipt ? getRGB("primary", 0.1) : getRGB("destructive", 0.1),
+              color: paymentReceipt ? getRGB("primary") : getRGB("destructive"),
+            }}
           >
             {paymentReceipt ? "Переглянути" : "Не завантажена"}
           </button>

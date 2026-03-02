@@ -1,5 +1,7 @@
 import { Link } from "react-router"
 import { ChevronLeft } from "lucide-react"
+
+import { getRGB } from "@/constants/colors"
 import { useEffect, useState, type FC } from "react"
 
 import logo from "../assets/logo.png"
@@ -24,7 +26,12 @@ const AuthPage: FC<Props> = ({ defaultAuthType }) => {
   }, [defaultAuthType])
 
   return (
-    <div className="min-h-[100svh] bg-gradient-to-br from-primary/5 via-background to-secondary/5 flex items-center flex-col justify-center px-4 py-12">
+    <div
+      className="min-h-[100svh] flex items-center flex-col justify-center px-4 py-12"
+      style={{
+        background: `linear-gradient(to bottom right, ${getRGB("primary", 0.05)}, var(--background), ${getRGB("secondary", 0.05)})`,
+      }}
+    >
       <div className="flex justify-start w-full max-w-md">
         <Link to="/">
           <Button variant="ghost" className="mb-4 gap-2">

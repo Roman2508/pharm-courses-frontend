@@ -3,6 +3,8 @@ import { toast } from "sonner"
 import { Link } from "react-router"
 import { useState, type Dispatch, type FC, type MouseEvent, type SetStateAction } from "react"
 
+import { getRGB } from "@/constants/colors"
+
 import { Button } from "../../ui/button"
 import FormField from "../../custom/form-field"
 import { authClient, signUp } from "@/api/auth-client"
@@ -159,7 +161,10 @@ const RegisterForm: FC<Props> = ({ setAuthType, setEmail }) => {
       </p>
 
       {showErrors && (
-        <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20">
+        <div
+          className="p-3 rounded-xl border"
+          style={{ background: getRGB("destructive", 0.1), borderColor: getRGB("destructive", 0.2) }}
+        >
           {getFormErrors(errors).map((error) => (
             <p className="text-sm text-destructive">{error}</p>
           ))}

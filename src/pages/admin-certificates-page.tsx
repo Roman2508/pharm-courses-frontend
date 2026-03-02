@@ -1,6 +1,7 @@
 import { Link } from "react-router"
 
 import { getDate } from "@/helpers/get-date"
+import { getRGB } from "@/constants/colors"
 import { Button } from "@/components/ui/button"
 import PageLoader from "@/components/custom/page-loader"
 import { useDeleteCertificateTemplate, useGetAllCertificateTemplates } from "@/api/hooks/use-certificate-template"
@@ -23,13 +24,17 @@ const AdminCertificatesPage = () => {
 
         <Link
           to="/admin/certificates/new"
-          className="px-6 py-2 sm:py-3 rounded-xl bg-primary text-white font-medium hover:bg-primary-hover transition-all hover:shadow-lg hover:shadow-primary/20"
+          className="px-6 py-2 sm:py-3 rounded-xl bg-primary text-white font-medium hover:bg-primary-hover transition-all hover:shadow-lg"
+          style={{ boxShadow: `0 10px 15px -3px ${getRGB("primary", 0.2)}` }}
         >
           Створити шаблон
         </Link>
       </div>
 
-      <div className="mb-6 p-4 rounded-xl bg-secondary/10 border border-secondary/20">
+      <div
+        className="mb-6 p-4 rounded-xl border"
+        style={{ background: getRGB("secondary", 0.1), borderColor: getRGB("secondary", 0.2) }}
+      >
         <div className="flex gap-3">
           <svg
             className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5 hidden min-[450px]:inline-flex"
@@ -105,7 +110,8 @@ const AdminCertificatesPage = () => {
             <p className="text-text-secondary mb-6">Створіть свій перший шаблон сертифіката.</p>
             <Link
               to="/admin/certificates/new"
-              className="inline-block px-6 py-3 rounded-xl bg-primary text-white font-medium hover:bg-primary-hover transition-all hover:shadow-lg hover:shadow-primary/20"
+              className="inline-block px-6 py-3 rounded-xl bg-primary text-white font-medium hover:bg-primary-hover transition-all hover:shadow-lg"
+              style={{ boxShadow: `0 10px 15px -3px ${getRGB("primary", 0.2)}` }}
             >
               Створити шаблон
             </Link>
