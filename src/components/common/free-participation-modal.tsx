@@ -54,7 +54,7 @@ const FreeParticipationModal = ({ open, registration, onOpenChange, onPaymentOpe
           <DialogTitle className="font-bold border-b border-border pb-4">Безкоштовна участь у заході</DialogTitle>
         </DialogHeader>
 
-        <DialogDescription className="max-h-[calc(100svh-240px)] overflow-x-hidden overflow-y-auto pt-4 pb-8 text-base">
+        <DialogDescription className="max-h-[calc(100vh-240px)] max-h-[calc(100svh-240px)] overflow-x-hidden overflow-y-auto pt-4 pb-8 text-base">
           <div className="leading-normal">
             <p className="text-base">
               Безкоштовна участь у заходах БПР для працівників сфери охорони здоров’я, які перебувають на службі у

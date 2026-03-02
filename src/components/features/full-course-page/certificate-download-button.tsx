@@ -71,8 +71,10 @@ export const CertificateDownloadButton = ({
 
       // Embed a font that supports Cyrillic characters
       // Using Roboto font stored locally
-      const regularFontUrl = "/fonts/Roboto-Regular.ttf"
-      const boldFontUrl = "/fonts/Roboto-Bold.ttf"
+      const regularFontUrl = "/fonts/Bookman_Old_Style_Regular.ttf"
+      const boldFontUrl = "/fonts/Bookman_Old_Style_Bold.ttf"
+      // const regularFontUrl = "/fonts/Roboto-Regular.ttf"
+      // const boldFontUrl = "/fonts/Roboto-Bold.ttf"
 
       const regularFontBytes = await fetch(regularFontUrl).then((res) => res.arrayBuffer())
       const boldFontBytes = await fetch(boldFontUrl).then((res) => res.arrayBuffer())

@@ -20,7 +20,7 @@ const HomePage = () => {
 
   return (
     <main>
-      <section className="relative overflow-hidden min-h-[90svh] flex items-center">
+      <section className="relative overflow-hidden min-h-[90vh] min-h-[90svh] flex items-center">
         <div className="absolute inset-0">
           <img src={bgImage} className="w-full h-full object-cover" />
 

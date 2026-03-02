@@ -77,7 +77,7 @@ export const PaymentModal = ({ open, onOpenChange, registration }: Props) => {
             <DialogTitle className="font-bold border-b border-border pb-4">Оплата заходу</DialogTitle>
           </DialogHeader>
 
-          <DialogDescription className="max-h-[calc(100svh-240px)] overflow-x-hidden overflow-y-auto pt-4 pb-8 text-base">
+          <DialogDescription className="max-h-[calc(100vh-240px)] max-h-[calc(100svh-240px)] overflow-x-hidden overflow-y-auto pt-4 pb-8 text-base">
             <div className="leading-normal">
               <p className="text-base">
                 Дякуємо за реєстрацію на захід! Щоб завершити реєстрацію, будь ласка, здійсніть оплату.

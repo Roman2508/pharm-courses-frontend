@@ -27,7 +27,7 @@ const AuthPage: FC<Props> = ({ defaultAuthType }) => {
 
   return (
     <div
-      className="min-h-[100svh] flex items-center flex-col justify-center px-4 py-12"
+      className="min-h-[100vh] min-h-[100svh] flex items-center flex-col justify-center px-4 py-12"
       style={{
         background: `linear-gradient(to bottom right, ${getRGB("primary", 0.05)}, var(--background), ${getRGB("secondary", 0.05)})`,
       }}
