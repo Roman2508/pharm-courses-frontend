@@ -15,11 +15,11 @@ export const useUpdateAvatar = () => {
       return data
     },
     onSuccess: () => {
-      toast.success("Аватар профіля успішно створено")
+      toast.success("Аватар профіля змінено")
       queryClient.invalidateQueries({ queryKey: ["session"] })
     },
     onError: (error: any) => {
-      toast.error(`Помилка оновлення аватара. ${error?.response?.data?.message || error?.message}`)
+      toast.error(`Помилка зміни аватара. ${error?.response?.data?.message || error?.message}`)
     },
   })
 }

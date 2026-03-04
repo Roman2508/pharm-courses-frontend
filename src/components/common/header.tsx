@@ -48,7 +48,12 @@ const Header = () => {
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <Avatar className="h-9 w-9">
-                  <AvatarImage src={session.user.image ? session.user.image : undefined} alt="avatar" />
+                  <AvatarImage
+                    src={
+                      session.user.image ? `${import.meta.env.VITE_FILE_STORAGE_URL}/${session.user.image}` : undefined
+                    }
+                    alt="avatar"
+                  />
                   <AvatarFallback className="uppercase">{session.user.name.slice(0, 2)}</AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>

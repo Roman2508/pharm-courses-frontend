@@ -123,7 +123,7 @@ export const PaymentModal = ({ open, onOpenChange, registration }: Props) => {
                     <img
                       className="max-w-80"
                       alt="QR Code для оплати"
-                      src={`${import.meta.env.VITE_BASE_URL}/${registration.course.paymentQrCode}`}
+                      src={`${import.meta.env.VITE_FILE_STORAGE_URL}/${registration.course.paymentQrCode}`}
                       // src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=UA1234567800000000000000000000;1000;Оплата+заходу+БПР+-+Тестовий"
                     />
                   </div>

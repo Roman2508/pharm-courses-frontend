@@ -2,18 +2,6 @@ import { toast } from "sonner"
 import { createAuthClient } from "better-auth/react"
 import { adminClient, multiSessionClient } from "better-auth/client/plugins"
 
-// const fetchWith5xxRedirect: typeof fetch = async (input, init) => {
-//   const res = await fetch(input, init)
-
-//   if (res.status >= 500 && res.status < 600) {
-//     if (typeof window !== "undefined") {
-//       window.location.replace("/500")
-//     }
-//   }
-
-//   return res
-// }
-
 const TOAST_IDS = {
   NETWORK: "error-network",
   SERVER: "error-server",
@@ -47,7 +35,6 @@ export const authClient = createAuthClient({
   basePath: "/auth",
   plugins: [adminClient(), multiSessionClient()],
   fetch: fetchWithErrorHandling,
-  // fetch: fetchWith5xxRedirect,
 })
 
 export const { signIn, signUp, signOut, useSession, multiSession } = authClient

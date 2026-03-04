@@ -1,8 +1,8 @@
 import { toast } from "sonner"
-import { getRGB } from "@/constants/colors"
 import { useState } from "react"
-import { Upload } from "lucide-react"
+import { Loader, Upload } from "lucide-react"
 
+import { getRGB } from "@/constants/colors"
 import { Input } from "@/components/ui/input"
 import useUserData from "@/hooks/use-user-data"
 import { Button } from "@/components/ui/button"
@@ -16,7 +16,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { updateUserSchema } from "@/components/features/admin-users-page/admin-users-form-schema"
 
 const ProfilePage = () => {
-  const { data } = useSession()
+  const { data, refetch } = useSession()
 
   const [deleteInput, setDeleteInput] = useState("")
 
@@ -39,6 +39,7 @@ const ProfilePage = () => {
     updateAvatar.mutate(formData, {
       onSuccess: () => {
         setPreview(URL.createObjectURL(file))
+        refetch()
       },
     })
   }
@@ -69,7 +70,7 @@ const ProfilePage = () => {
         if (isEmailChange) {
           const { data } = await authClient.updateUser(rest)
           await authClient.changeEmail({ newEmail: formData.email })
-          if (data?.status) toast.success("Профіль оновлено")
+          if (data?.status) toast.success("Запит на зміну email відправлено на нову електронну пошту")
           else toast.error("Сталась помилка під час оновлення профілю")
         } else {
           const { data } = await authClient.updateUser(rest)
@@ -139,10 +140,19 @@ const ProfilePage = () => {
         <div className="flex flex-col items-center gap-4 mb-8">
           <Avatar className="w-40 h-40 relative group">
             <AvatarImage
-              src={preview || `${import.meta.env.VITE_BASE_URL}${data?.user?.image}` || ""}
+              src={preview || `${import.meta.env.VITE_FILE_STORAGE_URL}/${data?.user?.image}` || ""}
               alt="profile avarar"
             />
-            <AvatarFallback className="text-5xl">AA</AvatarFallback>
+
+            {!updateAvatar.isPending ? (
+              <AvatarFallback className="text-5xl">{data?.user?.name.slice(0, 2)}</AvatarFallback>
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center animate-spin">
+                <div className="rounded-full p-2" style={{ background: "rgba(0, 0, 0, 0.7)" }}>
+                  <Loader className="w-8 h-8 text-white" />
+                </div>
+              </div>
+            )}
 
             <label>
               <div
@@ -159,6 +169,7 @@ const ProfilePage = () => {
               <input type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
             </label>
           </Avatar>
+
           <p className="text-sm opacity-[0.7]">*Натисніть на свій аватар щоб змінити його</p>
         </div>
 

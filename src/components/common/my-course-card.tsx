@@ -4,13 +4,13 @@ import { Calendar, Clock, Clock4 } from "lucide-react"
 
 import { Card } from "../ui/card"
 import { Badge } from "../ui/badge"
+import { getRGB } from "@/constants/colors"
 import { getDate } from "@/helpers/get-date"
 import { PaymentModal } from "./payment-modal"
 import { CourseActions } from "./course-actions"
 import type { UserType } from "@/types/user.type"
 import type { RegistrationType } from "@/types/registration.type"
 import { getPaymentColor, getPaymentStatus } from "@/helpers/get-payment-status"
-import { getRGB } from "@/constants/colors"
 
 type Props = {
   user: UserType

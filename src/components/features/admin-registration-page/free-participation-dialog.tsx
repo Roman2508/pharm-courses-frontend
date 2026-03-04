@@ -47,7 +47,7 @@ const FreeParticipationDialog: FC<Props> = ({ open, onOpenChange, registrationDa
 
         <DialogDescription className="max-h-[calc(100vh-240px)] overflow-x-hidden overflow-y-auto pt-4 pb-8 px-2 border-y">
           {registrationData.freeParticipation ? (
-            <img src={`${import.meta.env.VITE_BASE_URL}${registrationData.freeParticipation}`} />
+            <img src={`${import.meta.env.VITE_FILE_STORAGE_URL}/${registrationData.freeParticipation}`} />
           ) : (
             <p className="text-center text-base pt-4">Файл не завантажено</p>
           )}
