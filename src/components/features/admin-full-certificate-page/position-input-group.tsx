@@ -1,5 +1,6 @@
 import type { FC } from "react"
 import { AlignCenter, AlignLeft, AlignRight } from "lucide-react"
+
 import { getRGB } from "@/constants/colors"
 import type { TextBlock } from "./draggable-initial-blocks"
 
@@ -10,6 +11,15 @@ interface Props {
   onSelect: () => void
   updateBlock: (id: string, key: keyof TextBlock, value: any) => void
 }
+
+const availableFonts = [
+  { label: "Bookman Old Style", value: "Bookman_Old_Style" },
+  { label: "Google Sans", value: "GoogleSans" },
+  { label: "Lora", value: "Lora" },
+  { label: "Playfair Display", value: "PlayfairDisplay" },
+  { label: "Roboto", value: "Roboto" },
+  { label: "Roboto Slab", value: "RobotoSlab" },
+] as const
 
 const PositionInputGroup: FC<Props> = ({ label, block, updateBlock, isSelected, onSelect }) => {
   return (
@@ -93,9 +103,11 @@ const PositionInputGroup: FC<Props> = ({ label, block, updateBlock, isSelected, 
             onChange={(e) => updateBlock(block.id, "fontFamily", e.target.value)}
             className="w-full px-2 py-1.5 rounded-lg border border-border bg-input text-text-primary text-sm focus:outline-none focus:ring-2 focus:ring-primary"
           >
-            <option value="Helvetica">Helvetica</option>
-            <option value="Times-Roman">Times New Roman</option>
-            <option value="Courier">Courier</option>
+            {availableFonts.map((font) => (
+              <option key={font.value} value={font.value}>
+                {font.label}
+              </option>
+            ))}
           </select>
         </div>
 

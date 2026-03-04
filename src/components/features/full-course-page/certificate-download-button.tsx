@@ -69,19 +69,6 @@ export const CertificateDownloadButton = ({
       const displayWidth = 900
       const scale = pdfWidth / displayWidth
 
-      // Embed a font that supports Cyrillic characters
-      // Using Roboto font stored locally
-      const regularFontUrl = "/fonts/Bookman_Old_Style_Regular.ttf"
-      const boldFontUrl = "/fonts/Bookman_Old_Style_Bold.ttf"
-      // const regularFontUrl = "/fonts/Roboto-Regular.ttf"
-      // const boldFontUrl = "/fonts/Roboto-Bold.ttf"
-
-      const regularFontBytes = await fetch(regularFontUrl).then((res) => res.arrayBuffer())
-      const boldFontBytes = await fetch(boldFontUrl).then((res) => res.arrayBuffer())
-
-      const regularFont = await pdfDoc.embedFont(regularFontBytes)
-      const boldFont = await pdfDoc.embedFont(boldFontBytes)
-
       const { data } = await axiosClient.get(`/certificate-numbers/${registration.id}`)
 
       // Prepare data for text blocks
@@ -122,12 +109,30 @@ export const CertificateDownloadButton = ({
         { position: template.certificateTypePosition, text: textBlocksData.certificateTypePosition },
       ]
 
-      blocks.forEach((block) => {
-        if (!block.position || !block.text) return
+      for (const block of blocks) {
+        if (!block.position || !block.text) continue
 
-        const { x, y, fontSize, color, textAlign, fontWeight } = block.position
+        const { x, y, fontSize, color, textAlign, fontWeight, fontFamily } = block.position
+
+        // Перевіряємо чи шрифт доступний, якщо ні — fallback на Bookman_Old_Style
+        const AVAILABLE_FONTS = ["Bookman_Old_Style", "GoogleSans", "Lora", "PlayfairDisplay", "Roboto", "RobotoSlab"]
+        const resolvedFontFamily = AVAILABLE_FONTS.includes(fontFamily) ? fontFamily : "Bookman_Old_Style"
 
         // Вибираємо шрифт в залежності від жирності
+        const regularFontUrl = `/fonts/${resolvedFontFamily}_Regular.ttf`
+        const boldFontUrl = `/fonts/${resolvedFontFamily}_Bold.ttf`
+
+        const regularRes = await fetch(regularFontUrl)
+        if (!regularRes.ok) throw new Error(`Шрифт не знайдено: ${regularFontUrl} (${regularRes.status})`)
+        const regularFontBytes = new Uint8Array(await regularRes.arrayBuffer())
+
+        const boldRes = await fetch(boldFontUrl)
+        if (!boldRes.ok) throw new Error(`Шрифт не знайдено: ${boldFontUrl} (${boldRes.status})`)
+        const boldFontBytes = new Uint8Array(await boldRes.arrayBuffer())
+
+        const regularFont = await pdfDoc.embedFont(regularFontBytes)
+        const boldFont = await pdfDoc.embedFont(boldFontBytes)
+
         const selectedFont = fontWeight === "bold" ? boldFont : regularFont
 
         const colorHex = color || "#000000"
@@ -177,7 +182,7 @@ export const CertificateDownloadButton = ({
             color: rgb(r, g, b),
           })
         })
-      })
+      }
 
       // Save and download the PDF
       const pdfBytes = await pdfDoc.save()
@@ -239,3 +244,63 @@ export const CertificateDownloadButton = ({
     </Button>
   )
 }
+/* 
+
+      blocks.forEach((block) => {
+        if (!block.position || !block.text) return
+
+        const { x, y, fontSize, color, textAlign, fontWeight } = block.position
+
+        // Вибираємо шрифт в залежності від жирності
+        const selectedFont = fontWeight === "bold" ? boldFont : regularFont
+
+        const colorHex = color || "#000000"
+        const r = parseInt(colorHex.slice(1, 3), 16) / 255
+        const g = parseInt(colorHex.slice(3, 5), 16) / 255
+        const b = parseInt(colorHex.slice(5, 7), 16) / 255
+
+        const scaledX = x * scale
+        const scaledY = y * scale
+        const scaledFontSize = (fontSize || 12) * scale
+        const scaledPadding = BLOCK_PADDING * scale
+        const scaledWidth = (block.position.width || 200) * scale
+        const scaledHeight = (block.position.height || 40) * scale
+
+        const maxTextWidth = scaledWidth - scaledPadding * 2
+        const lineHeight = scaledFontSize * 1.2 // відстань між рядками
+
+        // Розбиваємо текст на рядки
+        const lines = splitTextIntoLines(block.text, selectedFont, scaledFontSize, maxTextWidth)
+
+        // Загальна висота всього тексту
+        const totalTextHeight = lines.length * lineHeight
+
+        // Починаємо з вертикального центру блоку
+        const blockCenterY = scaledY + scaledHeight / 2
+        const startY = blockCenterY - totalTextHeight / 2
+
+        lines.forEach((line, index) => {
+          const lineWidth = selectedFont.widthOfTextAtSize(line, scaledFontSize)
+          const lineY = startY + index * lineHeight
+
+          let xPosition = scaledX + scaledPadding
+          if (textAlign === "center") {
+            xPosition = scaledX + scaledWidth / 2 - lineWidth / 2
+          } else if (textAlign === "right") {
+            xPosition = scaledX + scaledWidth - scaledPadding - lineWidth
+          }
+
+          // Конвертація Y з екранної в PDF систему координат
+          const yPosition = pdfHeight - lineY - scaledFontSize
+
+          firstPage.drawText(line, {
+            x: xPosition,
+            y: yPosition,
+            size: scaledFontSize,
+            font: selectedFont,
+            color: rgb(r, g, b),
+          })
+        })
+      })
+
+*/

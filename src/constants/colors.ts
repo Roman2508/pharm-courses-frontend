@@ -15,6 +15,7 @@ export const COLORS = {
   black: "0, 0, 0",
   ring: "15, 116, 197",
   surface: "255, 255, 255",
+  ghost: "255, 255, 255",
 }
 
 export const getRGB = (color: keyof typeof COLORS, percentage: number = 1) => {

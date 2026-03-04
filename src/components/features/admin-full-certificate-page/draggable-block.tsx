@@ -1,6 +1,6 @@
-// import { GripVertical } from 'lucide-react'
 import { CSS } from "@dnd-kit/utilities"
 import { useDraggable } from "@dnd-kit/core"
+
 import type { TextBlock } from "./draggable-initial-blocks"
 
 function DraggableBlock({
@@ -20,7 +20,6 @@ function DraggableBlock({
     top: block.y,
     width: block.width,
     height: block.height,
-    // transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
     transform: CSS.Translate.toString(transform),
     border: isSelected ? "2px solid #3b82f6" : "2px dashed #94a3b8",
     backgroundColor: "rgba(255, 255, 255, 0.5)",
@@ -40,7 +39,6 @@ function DraggableBlock({
 
   return (
     <div ref={setNodeRef} style={style} onMouseDown={onSelect} {...listeners} {...attributes}>
-      {/* <GripVertical className="mr-2 flex-shrink-0" size={16} style={{ color: '#64748b' }} /> */}
       <span className="truncate">{block.label}</span>
     </div>
   )

@@ -10,6 +10,7 @@ import { CourseActions } from "./course-actions"
 import type { UserType } from "@/types/user.type"
 import type { RegistrationType } from "@/types/registration.type"
 import { getPaymentColor, getPaymentStatus } from "@/helpers/get-payment-status"
+import { getRGB } from "@/constants/colors"
 
 type Props = {
   user: UserType
@@ -76,14 +77,22 @@ const MyCourseCard: FC<Props> = ({ registration, user }) => {
           <div className="flex flex-col items-start md:items-end gap-1">
             {registration?.course.status === "PLANNED" && (
               <Badge
-                className={`border-1 px-2 py-0.5 rounded-xl text-xs font-bold bg-${statusColor}/10 text-${statusColor} border-${statusColor}/20`}
+                className="border-1 px-2 py-0.5 rounded-xl text-xs font-bold"
+                style={{
+                  color: getRGB(statusColor),
+                  borderColor: getRGB(statusColor, 0.2),
+                  background: getRGB(statusColor, 0.1),
+                }}
               >
                 <Clock4 />
                 Реєстрація {registration?.course.registrationOpen === "OPEN" ? "відкрита" : "закрита"}
               </Badge>
             )}
 
-            <Badge className={`bg-${color}/10 text-${color} mb-4 md:mb-0`}>
+            <Badge
+              className={`mb-4 md:mb-0`}
+              style={{ background: getRGB(color, 0.1), color: getRGB(color), borderColor: getRGB(color, 0.2) }}
+            >
               {getPaymentStatus(registration.paymentStatus)}
             </Badge>
           </div>

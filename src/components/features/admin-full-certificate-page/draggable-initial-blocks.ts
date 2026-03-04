@@ -35,7 +35,7 @@ export const DRAGGABLE_INITIAL_BLOCKS: TextBlock[] = [
     width: 400,
     height: 40,
     fontSize: 22,
-    fontFamily: "Arial",
+    fontFamily: "Bookman_Old_Style",
     textAlign: "center",
     fontWeight: "regular",
     color: "#000000",
@@ -50,7 +50,7 @@ export const DRAGGABLE_INITIAL_BLOCKS: TextBlock[] = [
     width: 400,
     height: 40,
     fontSize: 18,
-    fontFamily: "Arial",
+    fontFamily: "Bookman_Old_Style",
     textAlign: "center",
     fontWeight: "regular",
     color: "#000000",
@@ -65,7 +65,7 @@ export const DRAGGABLE_INITIAL_BLOCKS: TextBlock[] = [
     width: 200,
     height: 30,
     fontSize: 14,
-    fontFamily: "Arial",
+    fontFamily: "Bookman_Old_Style",
     textAlign: "left",
 
     fontWeight: "regular",
@@ -81,7 +81,7 @@ export const DRAGGABLE_INITIAL_BLOCKS: TextBlock[] = [
     width: 200,
     height: 30,
     fontSize: 14,
-    fontFamily: "Arial",
+    fontFamily: "Bookman_Old_Style",
     textAlign: "left",
 
     fontWeight: "regular",
@@ -97,7 +97,7 @@ export const DRAGGABLE_INITIAL_BLOCKS: TextBlock[] = [
     width: 200,
     height: 30,
     fontSize: 14,
-    fontFamily: "Arial",
+    fontFamily: "Bookman_Old_Style",
     textAlign: "left",
 
     fontWeight: "regular",
@@ -113,7 +113,7 @@ export const DRAGGABLE_INITIAL_BLOCKS: TextBlock[] = [
     width: 200,
     height: 30,
     fontSize: 14,
-    fontFamily: "Arial",
+    fontFamily: "Bookman_Old_Style",
     textAlign: "left",
 
     fontWeight: "regular",
@@ -129,7 +129,7 @@ export const DRAGGABLE_INITIAL_BLOCKS: TextBlock[] = [
     width: 200,
     height: 30,
     fontSize: 14,
-    fontFamily: "Arial",
+    fontFamily: "Bookman_Old_Style",
     textAlign: "left",
 
     fontWeight: "regular",
@@ -145,7 +145,7 @@ export const DRAGGABLE_INITIAL_BLOCKS: TextBlock[] = [
     width: 200,
     height: 30,
     fontSize: 14,
-    fontFamily: "Arial",
+    fontFamily: "Bookman_Old_Style",
     textAlign: "left",
 
     fontWeight: "regular",
@@ -161,7 +161,7 @@ export const DRAGGABLE_INITIAL_BLOCKS: TextBlock[] = [
     width: 200,
     height: 30,
     fontSize: 14,
-    fontFamily: "Arial",
+    fontFamily: "Bookman_Old_Style",
     textAlign: "left",
 
     fontWeight: "regular",
@@ -177,7 +177,7 @@ export const DRAGGABLE_INITIAL_BLOCKS: TextBlock[] = [
     width: 200,
     height: 30,
     fontSize: 14,
-    fontFamily: "Arial",
+    fontFamily: "Bookman_Old_Style",
     textAlign: "left",
 
     fontWeight: "regular",
