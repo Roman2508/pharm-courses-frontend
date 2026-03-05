@@ -18,9 +18,6 @@ createRoot(document.getElementById("root")!).render(<RouterProvider router={rout
 // Для шаблону треба зробити для жирність тексту (regular, bold) (DONE! Залишилось перевірити)
 // Безкоштовна участь у заході (DONE! Залишилось перевірити)
 
-// Зміна емайла
-// Збереження файлів в mino
-// При вході помилка invalid email or password
 // Видалення реєстрації з адмінки (спочатку не завантажувати всіх юзерів, а потім зробити пошук по піб)
 // Після відправки запиту на безкоштовну участь треба змінити UI в модалці: "Оплата заходу"
 // Перевірити підтвердження оплати в <PaymentReceiptDialog />
@@ -33,20 +30,3 @@ createRoot(document.getElementById("root")!).render(<RouterProvider router={rout
 // Перевірити чи не зламалась ревалідація queryKey: ["user-registrations"],
 // "Сервер недоступний" не треба показувати багато разів
 // Перевірити на різних пристроях/емуляторах
-
-/* 
-translate better auth errors:
-export const authErrors: Record<string, string> = {
-  INVALID_ORIGIN: "Невірний домен запиту",
-  INVALID_CREDENTIALS: "Невірна пошта або пароль",
-  EMAIL_NOT_VERIFIED: "Підтвердіть електронну пошту",
-  USER_ALREADY_EXISTS: "Користувач уже існує",
-  TOO_MANY_REQUESTS: "Занадто багато запитів. Спробуйте пізніше",
-  WAIT: "Зачекайте перед повторною відправкою",
-};
-
-export function getAuthErrorMessage(error: any) {
-  if (!error?.code) return "Невідома помилка";
-  return authErrors[error.code] ?? error.message;
-}
-*/

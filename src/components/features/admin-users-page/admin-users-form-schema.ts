@@ -1,10 +1,8 @@
-// import { z } from "zod"
-
 import * as z from "zod"
 
 z.config(z.locales.uk())
 
-const phoneRegex = new RegExp(/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/)
+const phoneRegex = new RegExp(/^(\+380|380|0)(39|50|63|66|67|68|73|91|92|93|94|95|96|97|98|99)\d{7}$/)
 
 export const userFormSchema = z.object({
   name: z
@@ -49,57 +47,9 @@ const requiredPasswordSchema = z.object({
   password: z.string().min(8, "Пароль має містити мінімум 8 символів").max(30),
 })
 
-// const requiredPasswordSchema = z
-//   .object({
-//     password: z.string().min(8, "Пароль має містити мінімум 8 символів").max(30, "Пароль занадто довгий"),
-//     confirmPassword: z.string().min(8, "Пароль має містити мінімум 8 символів").max(30, "Пароль занадто довгий"),
-//   })
-//   .refine((data) => data.password === data.confirmPassword, {
-//     message: "Паролі не співпадають",
-//     path: ["confirmPassword"],
-//   })
-
-// const optionalPasswordSchema = z
-//   .object({
-//     password: z
-//       .string()
-//       .min(8, "Пароль має містити мінімум 8 символів")
-//       .max(30, "Пароль занадто довгий")
-//       .optional()
-//       .or(z.literal("")),
-//     confirmPassword: z.string().optional().or(z.literal("")),
-//   })
-//   .refine(
-//     (data) => {
-//       // Якщо пароль введено, confirmPassword також має бути введений
-//       if (data.password && data.password !== "") {
-//         return data.confirmPassword && data.confirmPassword !== ""
-//       }
-//       return true
-//     },
-//     {
-//       message: "Підтвердіть пароль",
-//       path: ["confirmPassword"],
-//     },
-//   )
-//   .refine(
-//     (data) => {
-//       // Якщо обидва паролі введені, вони мають співпадати
-//       if (data.password && data.password !== "" && data.confirmPassword && data.confirmPassword !== "") {
-//         return data.password === data.confirmPassword
-//       }
-//       return true
-//     },
-//     {
-//       message: "Паролі не співпадають",
-//       path: ["confirmPassword"],
-//     },
-//   )
-
 export const createUserSchema = userFormSchema.merge(requiredPasswordSchema)
 export type CreateUserFormData = z.infer<typeof createUserSchema>
 
-// export const updateUserSchema = userFormSchema.merge(optionalPasswordSchema)
 export const updateUserSchema = userFormSchema
   .extend({
     password: z.string().optional().or(z.literal("")),

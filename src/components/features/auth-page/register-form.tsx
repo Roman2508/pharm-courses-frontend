@@ -3,11 +3,10 @@ import { toast } from "sonner"
 import { Link } from "react-router"
 import { useState, type Dispatch, type FC, type MouseEvent, type SetStateAction } from "react"
 
-import { getRGB } from "@/constants/colors"
-
 import { Button } from "../../ui/button"
+import { signUp } from "@/api/auth-client"
+import { getRGB } from "@/constants/colors"
 import FormField from "../../custom/form-field"
-import { authClient, signUp } from "@/api/auth-client"
 import { getFormErrors } from "@/helpers/get-form-errors"
 import type { AuthPageVariants } from "@/pages/auth-page"
 
@@ -83,7 +82,7 @@ const RegisterForm: FC<Props> = ({ setAuthType, setEmail }) => {
             setIsPending(false)
             if (data?.user?.email) {
               setEmail(data.user.email)
-              authClient.sendVerificationEmail({ email: data.user.email, callbackURL: "/auth/verify-email" })
+              // authClient.sendVerificationEmail({ email: data.user.email, callbackURL: "/auth/verify-email" })
               setAuthType("verify-email")
             } else {
               toast.error("Помилка реєстрації")
