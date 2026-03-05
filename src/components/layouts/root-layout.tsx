@@ -7,12 +7,35 @@ import ScrollToTop from "./scroll-to-top"
 import TanstackLayout from "./tanstack-layout"
 import PermissionsLayout from "./permissions-layout"
 
+import { useEffect } from "react"
+import { useNavigate } from "react-router"
+
 export const RootLayout = () => {
   const location = useLocation()
+  const navigate = useNavigate()
 
-  window.addEventListener("offline", () => {
-    toast.error("Ви втратили інтернет-зʼєднання")
-  })
+  useEffect(() => {
+    const handleOffline = () => {
+      toast.error("Ви втратили інтернет-зʼєднання")
+    }
+
+    const handleOnline = () => {
+      toast.success("Зʼєднання відновлено")
+    }
+
+    window.addEventListener("offline", handleOffline)
+    window.addEventListener("online", handleOnline)
+
+    // Якщо шлях змінився і ми не в мережі - робимо редірект
+    if (!navigator.onLine && location.pathname !== "/offline") {
+      navigate("/offline")
+    }
+
+    return () => {
+      window.removeEventListener("offline", handleOffline)
+      window.removeEventListener("online", handleOnline)
+    }
+  }, [location.pathname, navigate])
 
   return (
     <TanstackLayout>

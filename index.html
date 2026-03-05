@@ -10,6 +10,17 @@
     <title>БПР - Житомирський базовий фармацевтичний фаховий коледж</title>
   </head>
   <body>
+    <script>
+      window.onerror = function (message, source, lineno, colno, error) {
+        if (navigator.onLine) {
+          // Якщо інтернет є, але сталася помилка завантаження/виконання — це проблема сервера/коду
+          window.location.href = "/500"
+        } else {
+          // Якщо інтернету немає, PWA сам підхопить офлайн сторінку або ми можемо редіректнути
+          window.location.href = "/offline"
+        }
+      }
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -19,9 +19,32 @@ import AdminRegistrationsPage from "./pages/admin-registrations-page"
 import InternalServerErrorPage from "./pages/internal-server-error-page"
 import AdminFullCertificatePage from "./pages/admin-full-certificate-page"
 
+import OfflinePage from "./pages/offline-page"
+import { useRouteError, isRouteErrorResponse } from "react-router"
+
+const RootErrorBoundary = () => {
+  const error = useRouteError()
+  console.error("Root Error Boundary caught:", error)
+
+  if (!navigator.onLine) {
+    return <OfflinePage />
+  }
+
+  // Якщо це 404 або інша відповідь роутера
+  if (isRouteErrorResponse(error)) {
+    if (error.status === 404) {
+      return <NotFoundErrorPage />
+    }
+    return <InternalServerErrorPage />
+  }
+
+  return <InternalServerErrorPage />
+}
+
 export const router = createBrowserRouter([
   {
     Component: RootLayout,
+    errorElement: <RootErrorBoundary />,
     children: [
       {
         path: "/",
@@ -109,6 +132,10 @@ export const router = createBrowserRouter([
       {
         path: "/500",
         element: <InternalServerErrorPage />,
+      },
+      {
+        path: "/offline",
+        element: <OfflinePage />,
       },
       {
         path: "*",
