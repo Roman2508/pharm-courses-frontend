@@ -16,30 +16,34 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: "autoUpdate",
-      devOptions: {
-        enabled: true,
-      },
       workbox: {
-        // Стара конфігурація (кешувала все підряд):
-        // globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
-
-        // Оптимізована конфігурація (без жорсткого шляху до assets/):
-        globPatterns: [
-          "index.html",
-          "**/*.{js,css}", // Знаходить всі скрипти і стилі в будь-яких папках білду
-          "logo.png",
-        ],
-
-        // Виключаємо великі зображення та інші ресурси з пре-кешу, щоб не вантажити мережу відразу
-        globIgnores: ["assets/*"],
-
+        skipWaiting: true,
+        clientsClaim: true,
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+        cleanupOutdatedCaches: true,
+        globPatterns: ["index.html", "assets/**/*.{js,css}", "logo.png"],
+        navigateFallback: "index.html",
         runtimeCaching: [
+          {
+            urlPattern: ({ url }) => url.pathname === "/logo.png",
+            handler: "CacheFirst",
+            options: {
+              cacheName: "logo-cache",
+              expiration: {
+                maxEntries: 1,
+                maxAgeSeconds: 60 * 60 * 24 * 365,
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
           {
             urlPattern: ({ request }) => request.mode === "navigate",
             handler: "NetworkFirst",
             options: {
               cacheName: "app-shell",
-              networkTimeoutSeconds: 5,
+              networkTimeoutSeconds: 3,
             },
           },
           {
@@ -87,6 +91,31 @@ export default defineConfig({
       "/upload": {
         target: "http://localhost:7777",
         changeOrigin: true,
+      },
+    },
+  },
+
+  optimizeDeps: {
+    include: ["react", "react-dom", "react-router", "@tanstack/react-query"],
+  },
+
+  build: {
+    target: "es2020",
+    cssCodeSplit: true,
+    chunkSizeWarningLimit: 2000,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            // Lazy-loaded heavy libraries
+            if (id.includes("pdf-lib") || id.includes("@pdf-lib")) return "vendor-pdf"
+            if (id.includes("xlsx")) return "vendor-xlsx"
+            if (id.includes("@tiptap") || id.includes("prosemirror")) return "vendor-editor"
+
+            // All other dependencies in one chunk to prevent cross-chunk circularity
+            return "vendor"
+          }
+        },
       },
     },
   },

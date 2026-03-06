@@ -160,7 +160,11 @@ const useUserData = (user: UserType | null) => {
     [formData, userFormData],
   )
 
-  return { formData, fields }
+  const resetPasswords = () => {
+    setUserFormData((prev) => ({ ...prev, password: "", oldPassword: "" }))
+  }
+
+  return { formData, fields, resetPasswords }
 }
 
 export default useUserData

@@ -1,5 +1,5 @@
 import { Link } from "react-router"
-import { WifiOff, RefreshCcw } from "lucide-react"
+import { WifiOff } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 

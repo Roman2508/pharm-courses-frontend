@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="uk">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/logo.png" />
@@ -9,19 +9,121 @@
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet" />
     <title>БПР - Житомирський базовий фармацевтичний фаховий коледж</title>
   </head>
-  <body>
-    <script>
-      window.onerror = function (message, source, lineno, colno, error) {
-        if (navigator.onLine) {
-          // Якщо інтернет є, але сталася помилка завантаження/виконання — це проблема сервера/коду
-          window.location.href = "/500"
-        } else {
-          // Якщо інтернету немає, PWA сам підхопить офлайн сторінку або ми можемо редіректнути
-          window.location.href = "/offline"
+  <body style="background-color: #fcfcfc">
+    <style>
+      #pwa-loader {
+        position: fixed;
+        top: 64px;
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 64px);
+        height: calc(100svh - 64px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: #fcfcfc;
+        z-index: 9999;
+        font-family: "Geist", sans-serif;
+      }
+      .pulse-logo {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 22px;
+        animation: pulse 2s ease-in-out infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.1);
+          opacity: 0.8;
         }
       }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+    <script>
+      async function checkReachability() {
+        try {
+          const resp = await fetch("/index.html", {
+            method: "HEAD",
+            cache: "no-store",
+            signal: AbortSignal.timeout(3000),
+          })
+          return resp.ok
+        } catch {
+          return false
+        }
+      }
+
+      async function handleFatalError(type) {
+        console.error("Fatal error type:", type)
+
+        const statusEl = document.querySelector("#pwa-loader > div")
+        if (statusEl) {
+          statusEl.innerText = "Оновлення додатку..."
+          statusEl.style.color = "#555555"
+        }
+
+        if ("serviceWorker" in navigator) {
+          try {
+            const regs = await navigator.serviceWorker.getRegistrations()
+            for (let reg of regs) {
+              await reg.unregister()
+            }
+            if ("caches" in window) {
+              const keys = await caches.keys()
+              for (let key of keys) {
+                await caches.delete(key)
+              }
+            }
+          } catch (e) {
+            console.error("Cleanup error:", e)
+          }
+        }
+
+        setTimeout(() => {
+          window.location.reload()
+        }, 1000)
+      }
+
+      window.addEventListener(
+        "error",
+        async function (e) {
+          if (e.target.tagName === "SCRIPT" || e.target.tagName === "LINK") {
+            handleFatalError("Resource Failure: " + (e.target.src || e.target.href))
+          }
+        },
+        true,
+      )
+
+      window.onerror = function (msg) {
+        handleFatalError("Runtime: " + msg)
+        return false
+      }
+
+      setTimeout(async function () {
+        if (!window.__REACT_HYDRATED__ && !document.querySelector("#root > *")) {
+          handleFatalError("Hydration Timeout")
+        }
+      }, 8000)
     </script>
-    <div id="root"></div>
+    <div id="root">
+      <div id="pwa-loader">
+        <img src="/logo.png" class="pulse-logo" alt="Logo" />
+        <div style="color: #555555; font-size: 18px">Завантаження...</div>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -11,7 +11,6 @@ import {
 import { Button } from "../ui/button"
 import Navigation from "./navigation"
 import { Spinner } from "../ui/spinner"
-import logo from "../../assets/logo.png"
 import { HeaderDrawer } from "./header-drawer"
 import { signOut, useSession } from "@/api/auth-client"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
@@ -30,7 +29,7 @@ const Header = () => {
         <div className="hidden"></div>
 
         <Link to="/" className="flex items-center gap-2">
-          <img src={logo} className="w-10" />
+          <img src="/logo.png" className="w-10" />
           <div className="hidden sm:block mt-1">
             <h3 className="font-bold text-lg leading-none">ЖБФФК</h3>
             <h3 className="text-sm text-muted-foreground">Заходи БПР</h3>

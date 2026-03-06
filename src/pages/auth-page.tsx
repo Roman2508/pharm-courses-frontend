@@ -4,7 +4,6 @@ import { ChevronLeft } from "lucide-react"
 import { getRGB } from "@/constants/colors"
 import { useEffect, useState, type FC } from "react"
 
-import logo from "../assets/logo.png"
 import { Button } from "@/components/ui/button"
 import LoginForm from "@/components/features/auth-page/login-form"
 import RegisterForm from "@/components/features/auth-page/register-form"
@@ -44,7 +43,7 @@ const AuthPage: FC<Props> = ({ defaultAuthType }) => {
         <div className="bg-surface rounded-2xl border border-border shadow-xl py-8 px-6 min-[500px]:p-8">
           <div className="mb-8 text-center">
             <div className="w-16 h-16 rounded-xl bg-primary mx-auto mb-4 flex items-center justify-center">
-              <img src={logo} alt="logo" className="w-12 h-12" />
+              <img src="/logo.png" alt="logo" className="w-12 h-12" />
             </div>
 
             <h1 className="text-2xl font-bold text-text-primary mb-2">{getAuthTitle(authType)}</h1>

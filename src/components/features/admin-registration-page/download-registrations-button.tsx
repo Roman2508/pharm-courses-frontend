@@ -1,4 +1,4 @@
-import * as XLSX from "xlsx"
+// import * as XLSX from "xlsx"
 import { toast } from "sonner"
 import { Upload } from "lucide-react"
 import { useState, type FC } from "react"
@@ -33,6 +33,7 @@ const DownloadRegistrationsButton: FC<Props> = ({ registrations }) => {
   }
 
   const handleExportFile = async () => {
+    const XLSX = await import("xlsx")
     const wb = XLSX.utils.book_new()
     const data = (await fetchData()) as any[]
     const ws = XLSX.utils.json_to_sheet(data)

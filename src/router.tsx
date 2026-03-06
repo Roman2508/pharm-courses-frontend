@@ -1,45 +1,70 @@
+import { lazy, Suspense } from "react"
 import { createBrowserRouter } from "react-router"
 
-import HomePage from "./pages/home-page"
-import AuthPage from "./pages/auth-page"
-import AdminPage from "./pages/admin-page"
-import ProfilePage from "./pages/profile-page"
-import { ArchivePage } from "./pages/archive-page"
-import MyCoursesPage from "./pages/my-courses-page"
-import AdminUsersPage from "./pages/admin-users-page"
-import FullCoursePage from "./pages/full-course-page"
-import TermsOfUsePage from "./pages/terms-of-use-page"
-import AdminCoursesPage from "./pages/admin-courses-page"
-import PrivacyPolicyPage from "./pages/privacy-policy-page"
-import NotFoundErrorPage from "./pages/not-found-error-page"
 import { RootLayout } from "./components/layouts/root-layout"
-import AdminFullCoursePage from "./pages/admin-full-course-page"
-import AdminCertificatesPage from "./pages/admin-certificates-page"
-import AdminRegistrationsPage from "./pages/admin-registrations-page"
-import InternalServerErrorPage from "./pages/internal-server-error-page"
-import AdminFullCertificatePage from "./pages/admin-full-certificate-page"
-
-import OfflinePage from "./pages/offline-page"
 import { useRouteError, isRouteErrorResponse } from "react-router"
+import PageLoader from "./components/custom/page-loader"
+
+// Lazy-loaded pages
+const HomePage = lazy(() => import("./pages/home-page"))
+const AuthPage = lazy(() => import("./pages/auth-page"))
+const ProfilePage = lazy(() => import("./pages/profile-page"))
+const ArchivePage = lazy(() => import("./pages/archive-page").then((m) => ({ default: m.ArchivePage })))
+const MyCoursesPage = lazy(() => import("./pages/my-courses-page"))
+const FullCoursePage = lazy(() => import("./pages/full-course-page"))
+const TermsOfUsePage = lazy(() => import("./pages/terms-of-use-page"))
+const PrivacyPolicyPage = lazy(() => import("./pages/privacy-policy-page"))
+const NotFoundErrorPage = lazy(() => import("./pages/not-found-error-page"))
+const InternalServerErrorPage = lazy(() => import("./pages/internal-server-error-page"))
+const OfflinePage = lazy(() => import("./pages/offline-page"))
+
+// Admin pages
+const AdminPage = lazy(() => import("./pages/admin-page"))
+const AdminUsersPage = lazy(() => import("./pages/admin-users-page"))
+const AdminCoursesPage = lazy(() => import("./pages/admin-courses-page"))
+const AdminFullCoursePage = lazy(() => import("./pages/admin-full-course-page"))
+const AdminCertificatesPage = lazy(() => import("./pages/admin-certificates-page"))
+const AdminRegistrationsPage = lazy(() => import("./pages/admin-registrations-page"))
+const AdminFullCertificatePage = lazy(() => import("./pages/admin-full-certificate-page"))
 
 const RootErrorBoundary = () => {
   const error = useRouteError()
   console.error("Root Error Boundary caught:", error)
 
   if (!navigator.onLine) {
-    return <OfflinePage />
+    return (
+      <Suspense fallback={<PageLoader className="h-screen" />}>
+        <OfflinePage />
+      </Suspense>
+    )
   }
 
   // Якщо це 404 або інша відповідь роутера
   if (isRouteErrorResponse(error)) {
     if (error.status === 404) {
-      return <NotFoundErrorPage />
+      return (
+        <Suspense fallback={<PageLoader className="h-screen" />}>
+          <NotFoundErrorPage />
+        </Suspense>
+      )
     }
-    return <InternalServerErrorPage />
+    return (
+      <Suspense fallback={<PageLoader className="h-screen" />}>
+        <InternalServerErrorPage />
+      </Suspense>
+    )
   }
 
-  return <InternalServerErrorPage />
+  return (
+    <Suspense fallback={<PageLoader className="h-screen" />}>
+      <InternalServerErrorPage />
+    </Suspense>
+  )
 }
+
+const PageSuspense = ({ children }: { children: React.ReactNode }) => (
+  <Suspense fallback={<PageLoader className="h-screen" />}>{children}</Suspense>
+)
 
 export const router = createBrowserRouter([
   {
@@ -48,98 +73,186 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <HomePage />,
+        element: (
+          <PageSuspense>
+            <HomePage />
+          </PageSuspense>
+        ),
       },
       {
         path: "/archive",
-        element: <ArchivePage />,
+        element: (
+          <PageSuspense>
+            <ArchivePage />
+          </PageSuspense>
+        ),
       },
       {
         path: "/my-courses",
-        element: <MyCoursesPage />,
+        element: (
+          <PageSuspense>
+            <MyCoursesPage />
+          </PageSuspense>
+        ),
       },
       {
         path: "/profile",
-        element: <ProfilePage />,
+        element: (
+          <PageSuspense>
+            <ProfilePage />
+          </PageSuspense>
+        ),
       },
       {
         path: "/courses/:id",
-        element: <FullCoursePage />,
+        element: (
+          <PageSuspense>
+            <FullCoursePage />
+          </PageSuspense>
+        ),
       },
 
-      //
+      // Admin routes
       {
         path: "/admin",
-        element: <AdminPage />,
+        element: (
+          <PageSuspense>
+            <AdminPage />
+          </PageSuspense>
+        ),
       },
       {
         path: "/admin/courses",
-        element: <AdminCoursesPage />,
+        element: (
+          <PageSuspense>
+            <AdminCoursesPage />
+          </PageSuspense>
+        ),
       },
       {
         path: "/admin/courses/:id",
-        element: <AdminFullCoursePage />,
+        element: (
+          <PageSuspense>
+            <AdminFullCoursePage />
+          </PageSuspense>
+        ),
       },
       {
         path: "/admin/courses/:id/registrations",
-        element: <AdminRegistrationsPage />,
+        element: (
+          <PageSuspense>
+            <AdminRegistrationsPage />
+          </PageSuspense>
+        ),
       },
       {
         path: "/admin/registrations",
-        element: <AdminRegistrationsPage />,
+        element: (
+          <PageSuspense>
+            <AdminRegistrationsPage />
+          </PageSuspense>
+        ),
       },
       {
         path: "/admin/certificates",
-        element: <AdminCertificatesPage />,
+        element: (
+          <PageSuspense>
+            <AdminCertificatesPage />
+          </PageSuspense>
+        ),
       },
       {
         path: "/admin/certificates/:id",
-        element: <AdminFullCertificatePage />,
+        element: (
+          <PageSuspense>
+            <AdminFullCertificatePage />
+          </PageSuspense>
+        ),
       },
       {
         path: "/admin/users",
-        element: <AdminUsersPage />,
+        element: (
+          <PageSuspense>
+            <AdminUsersPage />
+          </PageSuspense>
+        ),
       },
 
       //
       {
         path: "/privacy-policy",
-        element: <PrivacyPolicyPage />,
+        element: (
+          <PageSuspense>
+            <PrivacyPolicyPage />
+          </PageSuspense>
+        ),
       },
       {
         path: "/terms-of-use",
-        element: <TermsOfUsePage />,
+        element: (
+          <PageSuspense>
+            <TermsOfUsePage />
+          </PageSuspense>
+        ),
       },
 
       // auth
       {
         path: "/auth/login",
-        element: <AuthPage defaultAuthType="login" />,
+        element: (
+          <PageSuspense>
+            <AuthPage defaultAuthType="login" />
+          </PageSuspense>
+        ),
       },
       {
         path: "/auth/register",
-        element: <AuthPage defaultAuthType="register" />,
+        element: (
+          <PageSuspense>
+            <AuthPage defaultAuthType="register" />
+          </PageSuspense>
+        ),
       },
       {
         path: "/auth/verify-email",
-        element: <AuthPage defaultAuthType="verify-email" />,
+        element: (
+          <PageSuspense>
+            <AuthPage defaultAuthType="verify-email" />
+          </PageSuspense>
+        ),
       },
       {
         path: "/auth/verified",
-        element: <AuthPage defaultAuthType="verified" />,
+        element: (
+          <PageSuspense>
+            <AuthPage defaultAuthType="verified" />
+          </PageSuspense>
+        ),
       },
 
       {
         path: "/500",
-        element: <InternalServerErrorPage />,
+        element: (
+          <PageSuspense>
+            <InternalServerErrorPage />
+          </PageSuspense>
+        ),
       },
       {
         path: "/offline",
-        element: <OfflinePage />,
+        element: (
+          <PageSuspense>
+            <OfflinePage />
+          </PageSuspense>
+        ),
       },
       {
         path: "*",
-        element: <NotFoundErrorPage />,
+        element: (
+          <PageSuspense>
+            <NotFoundErrorPage />
+          </PageSuspense>
+        ),
       },
     ],
   },

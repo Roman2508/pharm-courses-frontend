@@ -20,7 +20,7 @@ const ProfilePage = () => {
 
   const [deleteInput, setDeleteInput] = useState("")
 
-  const { fields, formData } = useUserData(data?.user ? (data.user as unknown as UserType) : null)
+  const { fields, formData, resetPasswords } = useUserData(data?.user ? (data.user as unknown as UserType) : null)
 
   const availableFields = fields.filter((field) => field.name !== "role")
 
@@ -60,48 +60,57 @@ const ProfilePage = () => {
       return
     }
 
-    if (data?.user?.id) {
-      try {
-        setIsPending(true)
-        const isEmailChange = data.user.email !== formData.email
+    if (!data?.user?.id) return
 
-        const { email, password, oldPassword, role, ...rest } = formData
+    const isEmailChange = data.user.email !== formData.email
+    const { email, password, oldPassword, role, ...rest } = formData
 
-        if (isEmailChange) {
-          const { data } = await authClient.updateUser(rest)
-          const { data: emailData, error } = await authClient.changeEmail({ newEmail: formData.email })
+    setIsPending(true)
 
-          if (error) {
-            if (error.code === "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL") {
-              toast.error("Вказана адреса електронної пошти вже використовується")
-              return
-            }
-            toast.error("Сталась помилка під час зміни email")
-            return
-          }
-
-          if (emailData?.status) {
-            toast.success("Запит на зміну email відправлено на нову електронну пошту")
-            return
-          }
-          if (data?.status) toast.success("Профіль оновлено")
-          else toast.error("Сталась помилка під час оновлення профілю")
-        } else {
-          const { data } = await authClient.updateUser(rest)
-          if (data?.status) toast.success("Профіль оновлено")
-          else toast.error("Сталась помилка під час оновлення профілю")
+    try {
+      // 1. Зміна паролю (якщо заповнено)
+      if (password && oldPassword) {
+        const { error } = await authClient.changePassword({
+          currentPassword: oldPassword,
+          newPassword: password,
+        })
+        if (error) {
+          if (error.code === "INVALID_PASSWORD") toast.error("Поточний пароль введено не вірно")
+          else toast.error("Сталась помилка під час зміни паролю")
+          return
         }
-
-        if (password && password !== "" && oldPassword && oldPassword !== "") {
-          const data = await authClient.changePassword({ currentPassword: oldPassword, newPassword: password })
-          if (data?.error) {
-            if (data.error.code === "INVALID_PASSWORD") toast.error("Поточний пароль введено не вірно")
-            else toast.error("Сталась помилка під час зміни паролю")
-          } else toast.success("Пароль змінено")
-        }
-      } finally {
-        setIsPending(false)
+        toast.success("Пароль змінено")
+        resetPasswords()
       }
+
+      // 2. Зміна email (якщо змінено)
+      if (isEmailChange) {
+        const { error } = await authClient.changeEmail({ newEmail: email })
+        if (error) {
+          if (error.code === "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL") {
+            toast.error("Вказана адреса електронної пошти вже використовується")
+          } else {
+            toast.error("Сталась помилка під час зміни email")
+          }
+          return
+        }
+        toast.success("Запит на зміну email відправлено на нову електронну пошту")
+      }
+
+      // 3. Оновлення інших полів профілю
+      const { error } = await authClient.updateUser(rest)
+      if (error) {
+        toast.error("Сталась помилка під час оновлення профілю")
+        return
+      }
+
+      if (!isEmailChange) {
+        toast.success("Профіль оновлено")
+      }
+
+      refetch()
+    } finally {
+      setIsPending(false)
     }
   }
 

@@ -12,7 +12,7 @@ export const CoursesList = ({ courses, isLoading }: Props) => {
   return (
     <>
       {isLoading ? (
-        <PageLoader />
+        <PageLoader fullPage={false} />
       ) : courses && !!courses.length ? (
         <div
           className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 xl:gap-8 mb-0 max-w-7xl mx-auto px-4 ${

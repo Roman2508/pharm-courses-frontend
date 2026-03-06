@@ -1,7 +1,8 @@
 import { toast } from "sonner"
 import { useState } from "react"
-import fontkit from "@pdf-lib/fontkit"
-import { PDFDocument, rgb } from "pdf-lib"
+// import fontkit from "@pdf-lib/fontkit"
+// import { PDFDocument, rgb } from "pdf-lib"
+
 import { Download, File } from "lucide-react"
 
 import { axiosClient } from "@/api/client"
@@ -48,12 +49,17 @@ export const CertificateDownloadButton = ({
       }
 
       // Fetch the PDF template
-      const templateUrl = course.certificateTemplate.templateUrl
+      const templateUrl = `${import.meta.env.VITE_FILE_STORAGE_URL}/${course.certificateTemplate.templateUrl}`
       const templateResponse = await fetch(templateUrl)
 
       if (!templateResponse.ok) {
         throw new Error("Не вдалося завантажити шаблон сертифіката")
       }
+
+      // Dynamic load pdf-lib and fontkit
+      const [fontkitModule, pdfLibModule] = await Promise.all([import("@pdf-lib/fontkit"), import("pdf-lib")])
+      const fontkit = fontkitModule.default
+      const { PDFDocument, rgb } = pdfLibModule
 
       const templateBytes = await templateResponse.arrayBuffer()
       const pdfDoc = await PDFDocument.load(templateBytes)

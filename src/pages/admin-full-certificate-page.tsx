@@ -49,7 +49,7 @@ const AdminFullCertificatePage = () => {
   useEffect(() => {
     if (template && isUpdate) {
       setTemplateName(template.name)
-      setPdfFile(template.templateUrl)
+      setPdfFile(`${import.meta.env.VITE_FILE_STORAGE_URL}/${template.templateUrl}`)
 
       // Load text block positions from template
       const loadedBlocks: TextBlock[] = [

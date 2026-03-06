@@ -24,7 +24,6 @@ const fetchWithErrorHandling: typeof fetch = async (input, init) => {
     toast.error("Помилка сервера. Спробуйте пізніше.", {
       id: TOAST_IDS.SERVER,
     })
-    window.location.replace("/500")
   }
 
   return res

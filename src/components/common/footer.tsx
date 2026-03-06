@@ -1,6 +1,5 @@
 import { Link } from "react-router"
 
-import logo from "../../assets/logo.png"
 import { useSession } from "@/api/auth-client"
 
 export function Footer() {
@@ -8,12 +7,12 @@ export function Footer() {
 
   return (
     <footer className="bg-surface border-t border-border">
-      <div className="max-w-[1300px] mx-auto px-4 py-12 max-w-7xl">
+      <div className="max-w-[1300px] mx-auto px-4 pt-12 pb-8 max-w-7xl">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Brand */}
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <img src={logo} alt="ЖБФФК" className="h-10 w-auto" />
+              <img src="/logo.png" alt="ЖБФФК" className="h-10 w-auto" />
               <span className="font-bold text-lg text-text-primary">ЖБФФК</span>
             </div>
             <p className="text-text-secondary text-sm max-w-md mb-4">

@@ -166,3 +166,7 @@
 }
 
 /* ===== // browsers adaptation ===== */
+
+.sw-update-toast [data-close-button="true"] {
+  display: none !important;
+}

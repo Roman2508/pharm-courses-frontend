@@ -184,7 +184,9 @@ const HomePage = () => {
         description="Ознайомтеся з нашими попередніми програмами"
       />
 
-      <CoursesList courses={archivedCourses} isLoading={isArchivedLoading} />
+      <div className="mb-20">
+        <CoursesList courses={archivedCourses} isLoading={isArchivedLoading} />
+      </div>
     </main>
   )
 }

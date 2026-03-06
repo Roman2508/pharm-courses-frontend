@@ -11,7 +11,7 @@ const TermsOfUsePage = () => {
 
       <div className="space-y-8 leading-relaxed mb-8-10">
         <section className="space-y-3">
-          <p>Останнє оновлення: дд.мм.2026</p>
+          <p>Останнє оновлення: 10.03.2026</p>
 
           <p>
             Власником та розпорядником даного вебсайту є <b>{institution}</b> (далі — Сайт). Будь ласка, уважно

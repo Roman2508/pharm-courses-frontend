@@ -11,13 +11,18 @@ const PermissionsLayout: FC<PropsWithChildren> = ({ children }) => {
 
   const user = data?.user
 
+  // Skip permission checks on error pages
+  if (location.pathname === "/500" || location.pathname === "/offline") {
+    return <>{children}</>
+  }
+
   if (user && (location.pathname.startsWith("/auth/login") || location.pathname.startsWith("/auth/register"))) {
     return <Navigate to="/" replace />
   }
 
   if (location.pathname.includes("/profile") || location.pathname.includes("/my-courses")) {
     if (isPending) {
-      return <PageLoader className="h-screen" />
+      return <PageLoader /*  className="h-screen" */ />
     }
 
     if (!data || !data.session) {
@@ -29,7 +34,7 @@ const PermissionsLayout: FC<PropsWithChildren> = ({ children }) => {
 
   if (isAdminPage) {
     if (isPending) {
-      return <PageLoader className="h-screen" />
+      return <PageLoader /* className="h-screen" */ />
     }
 
     if (!data || !data.session) {

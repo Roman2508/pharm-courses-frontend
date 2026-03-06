@@ -65,15 +65,15 @@ export const useUserRegistrations = (params?: Pick<GetRegistrationsQuery, "page"
   })
 }
 
-export const useManyRegistrations = () => {
-  return useMutation({
-    mutationKey: ["many-registrations"],
-    mutationFn: async (ids: number[]) => {
-      const { data } = await axiosClient.post<RegistrationType[]>(`/registration/many`, { ids })
-      return data
-    },
-  })
-}
+// export const useManyRegistrations = () => {
+//   return useMutation({
+//     mutationKey: ["many-registrations"],
+//     mutationFn: async (ids: number[]) => {
+//       const { data } = await axiosClient.post<RegistrationType[]>(`/registration/many`, { ids })
+//       return data
+//     },
+//   })
+// }
 
 export const useRemoveManyRegistrations = (params?: GetRegistrationsQuery) => {
   const queryClient = useQueryClient()
